@@ -1,6 +1,10 @@
-# nubomedia-graphedit
+# Nubomedia Graph Editor
 
 This is currently very much a Work-In-Progress.
+
+The documentation for this project can be read online in [Read The Docs](http://nubomedia-graph-editor.readthedocs.org/)
+
+---
 
 ## Getting started
 
