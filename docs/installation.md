@@ -1,14 +1,12 @@
-# Implementation Details
+# Installation Guide
 
-## Getting started
-
-### Prerequisites
+## Prerequisites
 
 [NodeJS](https://nodejs.org/) and [Gulp](http://gulpjs.com/).
 
 This project is built using JavaScript and built using NodeJS-based tools. So please install the latest node from your OS package manager or from the [NodeJS site](https://nodejs.org/), and then install Gulp with `npm install -g gulp`. Depending on your system, you may need to use administrator privileges: `sudo npm install -g gulp`.
 
-### Clone the project
+## Clone the project
 
 To use this project, clone and install the repository with:
 
@@ -20,7 +18,7 @@ npm install
 
 It will take some time to download dependencies.
 
-### Build & run
+## Build & run
 
 `gulp electron` or `gulp`
 

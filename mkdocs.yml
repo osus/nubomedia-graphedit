@@ -1,0 +1,8 @@
+site_name: Nubomedia Graph Editor
+pages:
+- Home: index.md
+- 'Installation Guide': implementation.md
+- 'Developers Guide': developers.md
+- 'Reference Manual': reference.md
+- 'Software Architecture': architecture.md
+theme: readthedocs
