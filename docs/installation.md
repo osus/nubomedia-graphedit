@@ -43,26 +43,34 @@ A "task runner", a command-line tool that takes the specification for a set of t
 
 Electron is a combination of NodeJS and the Chromium HTML engine. It is used to create desktop applications based on HTML5 technologies, packaging them as native executables and giving them access to Operating System resources not normally available to web-based JavaScript applications. It was created by GitHub as part of the Atom text editor project.
 
-[React]()
+[React](https://facebook.github.io/react/)
 
 React is a framework for managing and rendering HTML content inside web applications. It roughly fills the role of the "View" in the common Model-View-Controller type of architectures.
 
-[Redux]()
+[Redux](https://github.com/rackt/redux)
 
-Redux is an implementation of the Flux architecture described by Facebook as part of the React project. It has become the de facto standard Flux implementation due to its simplicity and flexibility.
+Redux is a predictable state container for JavaScript apps. It is an implementation of the Flux architecture described by Facebook as part of the React project. It has become the de facto standard Flux implementation for many projects due to its simplicity and flexibility.
 
-[Bootstrap]()
+[Bootstrap](http://getbootstrap.com/)
 
-Bootstrap is a UI library of components and styles created by Twitter to facilitate the creation of responsive web applications that work well across different browsers and devices.
+Bootstrap is a UI library of components and styles created by Twitter to facilitate the creation of responsive web projects that work well across different browsers and devices.
 
-[Bootstrap-react]()
+[React-Bootstrap](https://react-bootstrap.github.io/)
 
 Boostrap-react is a derivation of Bootstrap that implements the UI widgets and React components.
 
-[jsPlumb]()
+[jsPlumb Community Edition](https://jsplumbtoolkit.com/)
 
 jsPlumb is a library that facilitates the creation, display and editing of connected graphs of nodes in HTML.
 
-[jQuery]()
+[Browserify](http://browserify.org/)
+
+Browserify is a module bundler for JavaScript projects
+
+[Babel](https://babeljs.io/)
+
+Babel is a compiler that transforms modern versions of the JavaScript language to older versions, compatible with more browsers and platforms.
+
+[jQuery](https://jquery.com/)
 
 jQuery is a widely used library of utilities and compatibility helpers for HTML web pages and applications.
