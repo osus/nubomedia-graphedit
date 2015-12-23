@@ -1,0 +1,119 @@
+// jsPlumb demo stuff
+
+.demo {
+    /* for IE10+ touch devices */
+    touch-action:none;
+}
+
+#nuboged-container { position: relative; height:100%; width: 100%; overflow: hidden; }
+
+.nubogednode {
+    /*border: 1px solid #346789;
+    box-shadow: 2px 2px 19px #aaa;
+    border-radius: 0.5em;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    background-color: #eeeeef;
+    color: black;
+    font-family: helvetica;
+    padding: 0.5em;
+    font-size: 0.9em;
+    line-height: 80px;*/
+    cursor: pointer;
+    z-index: 20;
+    position: absolute;
+    transition: box-shadow 0.15s ease-in;
+}
+
+.nubogednt_WebRtcEndpoint {
+    background-image: url("../images/nodes/WebRtcEndpoint.png");
+    width: 194px;
+    height: 97px;
+}
+
+.nubogednt_RtpEndpoint {
+    background-image: url("../images/nodes/RtpEndpoint.png");
+    width: 195px;
+    height: 97px;
+}
+
+.nubogednt_FaceOverlayFilter {
+    background-image: url("../images/nodes/FaceOverlayFilter.png");
+    width: 173px;
+    height: 78px;
+}
+
+.nubogednt_CompositeHub {
+    background-image: url("../images/nodes/CompositeHub.png");
+    width: 90px;
+    height: 90px;
+}
+
+.nubogednt_DispatcherHub {
+    background-image: url("../images/nodes/DispatcherHub.png");
+    width: 90px;
+    height: 90px;
+}
+
+.nubogednt_DispatcherOneToManyHub {
+    background-image: url("../images/nodes/DispatcherOneToManyHub.png");
+    width: 90px;
+    height: 90px;
+}
+
+.nubogednode:hover {
+    box-shadow: 2px 2px 19px #444;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    border-radius: 0.5em;
+}
+
+.nuboged .active {
+    border: 1px dotted green;
+}
+
+.nuboged .hover {
+    border: 1px dotted red;
+}
+
+.nuboged ._jsPlumb_connector {
+    z-index: 4;
+}
+
+.nuboged ._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel {
+    z-index: 21;
+    cursor: pointer;
+}
+
+.nuboged .aLabel {
+    background-color: white;
+    padding: 0.4em;
+    font: 12px sans-serif;
+    color: #444;
+    z-index: 21;
+    border: 1px dotted gray;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    cursor: pointer;
+}
+
+.nuboged .aLabel._jsPlumb_hover {
+    background-color: #5C96BC;
+    color: white;
+    border: 1px solid white;
+}
+
+.nubogednode._jsPlumb_connected {
+    /*border: 2px solid green;*/
+}
+
+.jsplumb-drag {
+    /*border: 4px solid pink !important;*/
+}
+
+path, ._jsPlumb_endpoint {
+    cursor: pointer;
+}

@@ -1,0 +1,32 @@
+{
+  "defs": {
+    "WebRtcEndpoint": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.25,  1, 0], "source":true},
+      { "name": "src2", "pos":[0, 0.75, -1, 0], "source":true},
+      { "name": "tgt1", "pos":[1, 0.75,  1, 0]},
+      { "name": "tgt2", "pos":[0, 0.25, -1, 0]}]},
+    "RtpEndpoint": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.25,  1, 0], "source":true},
+      { "name": "src2", "pos":[0, 0.75, -1, 0], "source":true},
+      { "name": "tgt1", "pos":[1, 0.75,  1, 0]},
+      { "name": "tgt2", "pos":[0, 0.25, -1, 0]}]},
+    "FaceOverlayFilter": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.5,  1, 0], "source":true},
+      { "name": "tgt1", "pos":[0, 0.5, -1, 0]}]},
+    "CompositeHub": { "anchors" : [
+      { "name": "src1", "pos":[0, 0.5, -1,  0], "source":true},
+      { "name": "tgt1", "pos":[1, 0.5,  1,  0]},
+      { "name": "tgt2", "pos":[0.5, 0,  0, -1]},
+      { "name": "tgt3", "pos":[0.5, 1,  0,  1]}]},
+    "DispatcherHub": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.5,  1,  0], "source":true},
+      { "name": "src2", "pos":[0, 0.5, -1,  0], "source":true},
+      { "name": "tgt1", "pos":[0.5, 0,  0, -1]},
+      { "name": "tgt2", "pos":[0.5, 1,  0,  1]}]},
+    "DispatcherOneToManyHub": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.5, 1, 0], "source":true},
+      { "name": "src2", "pos":[0.5, 0, 0, -1], "source":true},
+      { "name": "src3", "pos":[0, 0.5, -1, 0], "source":true},
+      { "name": "tgt1", "pos":[0.5, 1, 0, 1]}]}
+  }
+}

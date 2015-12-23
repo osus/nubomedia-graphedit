@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>Nubomedia Graph Editor</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/graphs.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="root" />
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script>
+            // Fix for jQuery placing itself in module.exports when running under the Electron shell.
+            // https://github.com/atom/electron/issues/345#issuecomment-43894441
+            try {
+                $ = jQuery = module.exports;
+                module.exports = {};
+            } catch(e) {}
+        </script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jsPlumb-1.7.9-min.js"></script>
+        <script type="text/javascript" src="js/bundle.js"></script>
+	</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "NuboEd",
+  "productName": "Nubomedia Graph Editor",
+  "version": "0.0.0",
+  "description": "Nubomedia Graph Editor",
+  "main": "main.js"
+}

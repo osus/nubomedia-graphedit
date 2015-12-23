@@ -13,12 +13,16 @@ To use this project, clone and install the repository with:
 ```
 git clone https://github.com/GlassOceanos/nubomedia-graphedit
 cd nubomedia-graphedit
+```
+
+## Build & run the editor
+
+```
+cd editor
 npm install
 ```
 
-It will take some time to download dependencies.
-
-## Build & run
+It will take some time to download dependencies. Once it's finished:
 
 `gulp electron` or `gulp`
 
@@ -39,3 +43,26 @@ A "task runner", a command-line tool that takes the specification for a set of t
 
 Electron is a combination of NodeJS and the Chromium HTML engine. It is used to create desktop applications based on HTML5 technologies, packaging them as native executables and giving them access to Operating System resources not normally available to web-based JavaScript applications. It was created by GitHub as part of the Atom text editor project.
 
+[React]()
+
+React is a framework for managing and rendering HTML content inside web applications. It roughly fills the role of the "View" in the common Model-View-Controller type of architectures.
+
+[Redux]()
+
+Redux is an implementation of the Flux architecture described by Facebook as part of the React project. It has become the de facto standard Flux implementation due to its simplicity and flexibility.
+
+[Bootstrap]()
+
+Bootstrap is a UI library of components and styles created by Twitter to facilitate the creation of responsive web applications that work well across different browsers and devices.
+
+[Bootstrap-react]()
+
+Boostrap-react is a derivation of Bootstrap that implements the UI widgets and React components.
+
+[jsPlumb]()
+
+jsPlumb is a library that facilitates the creation, display and editing of connected graphs of nodes in HTML.
+
+[jQuery]()
+
+jQuery is a widely used library of utilities and compatibility helpers for HTML web pages and applications.

@@ -1,0 +1,12 @@
+
+export const ADD_NODEDEF = 'ADD_NODEDEF'
+export const ADD_NODEDEFS = 'ADD_NODEDEFS'
+
+export const ADD_GRAPH = 'ADD_GRAPH'
+
+export const SELECT_GRAPH = 'SELECT_GRAPH'
+
+export const CREATE_NODE = 'CREATE_NODE'
+
+export const SET_PROJECT = 'SET_PROJECT'
+export const SET_PROJECT_FILENAME = 'SET_PROJECT_FILENAME'
