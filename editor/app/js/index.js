@@ -4,83 +4,45 @@ import { Provider, connect } from 'react-redux';
 
 import { Button, Navbar, Nav, NavItem, DropdownButton, MenuItem } from 'react-bootstrap';
 
-import * as reducers from './nodedefReducer';
-import {
-    ADD_NODEDEF, ADD_NODEDEFS,
-    ADD_GRAPH, SELECT_GRAPH,
-    SET_PROJECT, SET_PROJECT_FILENAME
-} from "./actionTypes";
+import rootReducer from './reducers/root';
+import * as ActionTypes from "./actions/actionTypes";
 
-import GraphEditor from './GraphEditor';
-
-import fs from 'fs';
+import GraphPanel from './components/GraphPanel';
+import InfoBar from './components/InfoBar';
+import MenuBar from './components/MenuBar';
 
 // Communicating with functions in the electron server process
 const desktopMode = window.require;
 var ipc = desktopMode?
   window.require('ipc') // Inside electron shell
-  : { sendSync: function(f, arg) { console.log("ipc unavailable in browser mode"); return null; } };
+  : { sendSync: function(f, arg) { console.log("ipc unavailable in browser mode"); return null; } };
+
+// -----------------
 
 // Main component, the app so to speak
 // TODO: break apart into more components, this is big and unwieldy
+
+
 class NuboEditor extends React.Component {
   render() {
-    var nodedefNames = Object.keys(this.props.nodedefs.defs)
-      .map((key) => <MenuItem eventKey={'Nodedef - '+key}
-        onClick={() => this.onCreateNode(key, this.props)} >{key}</MenuItem>);
-    var graphNames = Object.keys(this.props.graphs)
-      .map((key) => <MenuItem eventKey={'Graph - '+key}
-        onClick={() => {this.onGraphSelect(key, this.props);this.props.onGraphSelect(key)}}>{key}</MenuItem>);
     return (
       <div>
-      <Navbar brand={<a href="#">NuboEditor</a>}>
-        <Nav>
-          <DropdownButton title='Project'>
-            <MenuItem onClick={() => {this.resetProject()} } >New</MenuItem>
-            <MenuItem onClick={() => {this.loadProject()} } >Load</MenuItem>
-            <MenuItem onClick={() => {this.saveProject()} } >Save</MenuItem>
-            <MenuItem onClick={() => {this.saveProjectAs()} } >Save As...</MenuItem>
-            <MenuItem divider />
-            <MenuItem>Import Nodedefs</MenuItem>
-          </DropdownButton>
-          <DropdownButton title='Edit'>
-            <MenuItem>Cut</MenuItem>
-            <MenuItem>Copy</MenuItem>
-            <MenuItem>Paste</MenuItem>
-            <MenuItem>Delete</MenuItem>
-          </DropdownButton>
-          <DropdownButton title='Graphs'>
-            <MenuItem eventKey='4'
-              onClick={()=> {this.onGraphSelect("", this.props);this.props.onGraphSelect(this.curGraph)}}>New Graph</MenuItem>
-            <MenuItem divider />
-            { graphNames }
-          </DropdownButton>
-          <DropdownButton title='Nodes' disabled={!this.curGraph}>
-            { nodedefNames }
-          </DropdownButton>
-        </Nav>
-      </Navbar>
-      <div>Currently editing: {this.props.current}</div>
-      <div id="graphpanel" className="panel panel-default" style={{height:"600px",width:"100%"}}>
-        <div className="demo nuboged" ref="nuboged_container" id="nuboged-container" >
-        </div>
-      </div>
+      <MenuBar
+        graphs={this.props.graphs} nodedefs={this.props.nodedefs} editor={this.props.editor}
+        resetProject={() => this.resetProject()}
+        loadProject={() => this.loadProject()}
+        saveProject={() => this.saveProject()}
+        saveProjectAs={() => this.saveProjectAs()}
+        onCreateNode={this.props.onCreateNode}
+        onGraphSelect={this.props.onGraphSelect}
+      />
+      <InfoBar editor={this.props.editor} />
+      <GraphPanel onSetEditorPanel={this.props.onSetEditorPanel} />
       </div>
     );
   }
 
-  componentWillMount() {
-
-  }
-
   componentDidMount() {
-    // This will hurt: storing state in the component
-    // Need more practice on how to handle state of non-recative components
-    this.editorContainer = $(React.findDOMNode(this.refs.nuboged_container));
-    this.editor = null;
-    this.curGraph = null;
-    this.curId = 1;
-
     // Load the default nodedefs
     let nodedefs;
     if (desktopMode) {
@@ -88,7 +50,7 @@ class NuboEditor extends React.Component {
     } else {
       nodedefs = defaultNodedefs;
     }
-    store.dispatch({type:ADD_NODEDEFS, payload: nodedefs.defs})
+    store.dispatch({type:ActionTypes.ADD_NODEDEFS, payload: nodedefs.defs})
 
     // this is a bad hack for react-bootstrap not closing the menu on click
     // https://github.com/react-bootstrap/react-bootstrap/issues/368
@@ -98,52 +60,9 @@ class NuboEditor extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.editor) {
-      this.editor.destroy();
-    }
-  }
-
-  onCreateNode(key, props) {
-    if (!this.editor || !(key in props.nodedefs.defs)) {
-      return;
-    }
-    let posOffsetIndex = (this.curId % 12) - 6;
-    let offset = posOffsetIndex * 15;
-    this.editor.createNode(key, "Node_"+this.curId, 400 + offset, 200 + offset);
-    this.curId++;
-  }
-
-  onGraphSelect(key, props) {
-    if (key == this.curGraph) {
-      return;
-    }
-    if (this.editor) {
-      this._saveCurGraph();
-      this.editor.destroy();
-    }
-    this.editor = new GraphEditor(this.editorContainer, props.nodedefs);
-    //...
-    if (key in props.graphs) {
-      let graph = props.graphs[key];
-      this.editor.batch( function(editor) {
-        graph.nodes.forEach((node) => editor.createNode(node.type, node.name, node.x, node.y));
-        graph.connections.forEach((c) => editor.createConnection(c.source, c.sourceEP, c.target, c.targetEP));
-      });
-    } else {
-      key = "Graph_" + this.curId;
-      this.curId++;
-      props.graphs[key] = { nodes:[], connections:[]};
-    }
-    this.curGraph = key;
-  }
-
-  _saveCurGraph() {
-    if (this.curGraph) {
-      this.props.graphs[this.curGraph].nodes = this.editor.getNodes().map((node) =>
-        ({type:node.type, name: node.name, x:node.x, y:node.y})
-      )
-      this.props.graphs[this.curGraph].connections = this.editor.getConnections();
-    }
+    // if (this.editor) {
+    //   this.editor.destroy();
+    // }
   }
 
   resetProject() {
@@ -161,20 +80,15 @@ class NuboEditor extends React.Component {
 
   _setProject(graphs, path) {
     // TODO: Project is NOT SAVED
-    this.curGraph = null; // ugh state
-    if (this.editor) {
-      this.editor.destroy();
-      this.editor = null;
-    }
     this.props.onSetProject(graphs, path);
   }
 
   saveProject() {
-    if (!this.props.filename) {
+    if (!this.props.editor.filename) {
       this.saveProjectAs();
     } else {
-      this._saveCurGraph();
-      ipc.sendSync('writeJSONFile', {filename:this.props.filename, obj:{graphs:this.props.graphs}});
+      // TODO: Current graph edits are NOT SAVED
+      ipc.sendSync('writeJSONFile', {filename:this.props.editor.filename, obj:{graphs:this.props.graphs}});
     }
   }
 
@@ -182,7 +96,7 @@ class NuboEditor extends React.Component {
     let path = ipc.sendSync('selectSaveProject', 'ping');
     console.log(path);
     if (path) {
-      this._saveCurGraph();
+      // TODO: Current graph edits are NOT SAVED
       ipc.sendSync('writeJSONFile', {filename:path, obj:{graphs:this.props.graphs}});
       this.props.onSetProjectFilename(path);
     }
@@ -225,69 +139,14 @@ const defaultNodedefs = {
   }
 };
 
-// Action:
-const defaultState = {
-  nodedefs: { defs: {}},
-  graphs: {/*
-    "Graph 1": {
-      nodes: [
-        {type:"WebRtcEndpoint", name: "node1", x: 200, y: 100},
-      ],
-      connections: []
-    },
-    "Graph 2": {
-      nodes: [
-        {type:"WebRtcEndpoint", name: "node1", x: 400, y: 20},
-        {type:"FaceOverlayFilter", name: "node2", x: 40, y: 200},
-        {type:"CompositeHub", name: "node3", x: 400, y: 400},
-        {type:"WebRtcEndpoint", name: "node4", x: 800, y: 200},
-        {type:"RtpEndpoint", name: "node5", x: 40, y: 400},
-        {type:"DispatcherHub", name: "node6", x: 800, y: 20},
-        {type:"DispatcherOneToManyHub", name: "node7", x: 40, y: 20},
-      ],
-      connections: []
-    }
-  */},
-  currentGraph: null,
-  filename: null
-}
-
-// Reducer:
-// TODO: Move to use redux.combineReducers()
-function reducer(state=defaultState, action) {
-  // Run a reducer that applies to a subsection of the state
-  // Ensure state is only updated if subsection is
-  function runreducer(state, action, field, reducer) {
-    let v = state[field];
-    let r = reducer(v, action);
-    if (r == v) {
-      return state
-    }
-    return {...state, [field]: r };
-  }
-
-  switch(action.type) {
-    case SELECT_GRAPH:
-      state = {...state, currentGraph: action.payload.name};
-  }
-
-  state = runreducer(state, action, "graphs", reducers.graphReducer);
-  state = runreducer(state, action, "nodedefs", reducers.nodedefReducer);
-  state = reducers.projectReducer(state, action);
-
-  return state;
-}
-
-// Store:
-let store = createStore(reducer);
+let store = createStore(rootReducer);
 
 // Map Redux state to component props
 function mapStateToProps(state)  {
   return {
     nodedefs: state.nodedefs,
     graphs: state.graphs,
-    current: state.currentGraph,
-    filename: state.filename,
+    editor: state.editor,
   };
 }
 
@@ -295,14 +154,16 @@ function mapStateToProps(state)  {
 function mapDispatchToProps(dispatch) {
   return {
     // TODO: remove: test code
-    onAddNodedef: () => dispatch({type:ADD_NODEDEF, payload: {name: "NodeDef!"+Math.round(Math.random()*6)}}),
+    //onAddNodedef: () => dispatch({type:ActionTypes.ADD_NODEDEF, payload: {name: "NodeDef!"+Math.round(Math.random()*6)}}),
 
-    onAddNodedefs: () => dispatch({type:ADD_NODEDEFS, payload: defs}),
+    //onAddNodedefs: () => dispatch({type:ActionTypes.ADD_NODEDEFS, payload: defs}),
 
-    onAddGraph: (key) => dispatch({type:ADD_GRAPH, payload: {name: key}}),
-    onGraphSelect: (key) => dispatch({type:SELECT_GRAPH, payload: {name: key}}),
-    onSetProject: (graphs, filename) => dispatch({type:SET_PROJECT, payload: {graphs, filename}}),
-    onSetProjectFilename: (filename) => dispatch({type:SET_PROJECT_FILENAME, payload: {filename}}),
+    //onAddGraph: (key) => dispatch({type:ActionTypes.ADD_GRAPH, payload: {name: key}}),
+    onGraphSelect: (name) => dispatch({type:ActionTypes.SELECT_GRAPH, payload: {name}}),
+    onSetProject: (graphs, filename) => dispatch({type:ActionTypes.SET_PROJECT, payload: {graphs, filename}}),
+    onSetProjectFilename: (filename) => dispatch({type:ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
+    onCreateNode: (name) => dispatch({type:ActionTypes.CREATE_NODE, payload: {name}}),
+    onSetEditorPanel: (el) => dispatch({ type: ActionTypes.SET_GRAPH_PANEL, payload: {el}}),
   };
 }
 
