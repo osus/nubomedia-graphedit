@@ -33,7 +33,7 @@ var files = {
   vendor_js: [
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/bootstrap/dist/js/bootstrap.min.js',
-    'node_modules/jsplumb/dist/js/jsPlumb-1.7.9-min.js'
+    'node_modules/jsplumb/dist/js/jsPlumb-2.0.3-min.js'
   ],
   html:          [
     srcPath+'index.html',
@@ -57,7 +57,7 @@ function COPY(task, src, dst) {
 
 gulp.task('js', function() {
   return browserify(srcPath + 'js/index.js')
-    .transform(babelify)
+    .transform(babelify, {presets: ["es2015", "stage-0", "react"]})
     .bundle()
     .pipe(source('bundle.js'))
     .pipe(buffer())

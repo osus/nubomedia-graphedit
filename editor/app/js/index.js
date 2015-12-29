@@ -1,15 +1,16 @@
-import React from 'react';
-import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { createStore } from 'redux'
+import { Provider, connect } from 'react-redux'
 
-import { Button, Navbar, Nav, NavItem, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Button, Navbar, Nav, NavItem, DropdownButton, MenuItem } from 'react-bootstrap'
 
-import rootReducer from './reducers/root';
-import * as ActionTypes from "./actions/actionTypes";
+import rootReducer from './reducers/root'
+import * as ActionTypes from "./actions/actionTypes"
 
-import GraphPanel from './components/GraphPanel';
-import InfoBar from './components/InfoBar';
-import MenuBar from './components/MenuBar';
+import GraphPanel from './components/GraphPanel'
+import InfoBar from './components/InfoBar'
+import MenuBar from './components/MenuBar'
 
 // Communicating with functions in the electron server process
 const desktopMode = window.require;
@@ -51,12 +52,6 @@ class NuboEditor extends React.Component {
       nodedefs = defaultNodedefs;
     }
     store.dispatch({type:ActionTypes.ADD_NODEDEFS, payload: nodedefs.defs})
-
-    // this is a bad hack for react-bootstrap not closing the menu on click
-    // https://github.com/react-bootstrap/react-bootstrap/issues/368
-    // $('#menuBtn a').on('click', function () {
-    //   $('#menuBtn .dropdown-toggle').click()
-    // })
   }
 
   componentWillUnmount() {
@@ -173,9 +168,9 @@ let App = connect(
   mapDispatchToProps
 )(NuboEditor);
 
-React.render(
+ReactDOM.render(
   <Provider store={store}>
-    {() => <App />}
+    <App />
   </Provider>,
   document.getElementById('root')
 );

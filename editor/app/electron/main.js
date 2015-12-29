@@ -4,12 +4,19 @@
 
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
-var ipc = require('ipc');
+var ipc = require('electron').ipcMain;
 var dialog = require('dialog');
 var fs = require('fs');
 
 // Report crashes to our server.
-require('crash-reporter').start();
+// const crashReporter = require('electron').crashReporter;
+// crashReporter.start({
+//   productName: 'Nubomedia Graph Editor',
+//   companyName: 'Nubomedia Consortium',
+//   submitURL: 'https://your-domain.com/url-to-submit',
+//   autoSubmit: true
+// });
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
@@ -31,7 +38,7 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({/*width: 800, height: 600, "node-integration": false*/});
 
   // and load the index.html of the app.
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   // -------------------
   // Custom commands

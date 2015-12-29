@@ -79,11 +79,11 @@
     border: 1px dotted red;
 }
 
-.nuboged ._jsPlumb_connector {
-    z-index: 4;
+.nuboged .jsplumb-connector {
+    z-index: 24;
 }
 
-.nuboged ._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel {
+.nuboged .jsplumb-endpoint, .endpointTargetLabel, .endpointSourceLabel {
     z-index: 21;
     cursor: pointer;
 }

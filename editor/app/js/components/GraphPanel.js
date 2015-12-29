@@ -12,7 +12,7 @@ export default class GraphPanel extends React.Component {
   }
   // Can't use callback ref because a dynamic callback (needed to use 'this') gets fired every update
   componentDidMount() {
-    this.props.onSetEditorPanel(this.refs.editor_panel.getDOMNode());
+    this.props.onSetEditorPanel(this.refs.editor_panel);
   }
   componentWillUnmount() {
     this.props.onSetEditorPanel(null);
