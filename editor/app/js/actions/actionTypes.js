@@ -5,6 +5,7 @@ export const ADD_NODEDEFS = 'ADD_NODEDEFS'
 
 // Graph editing
 export const ADD_GRAPH = 'ADD_GRAPH'
+export const SAVE_CURRENT_GRAPH = 'SAVE_CURRENT_GRAPH'
 export const SELECT_GRAPH = 'SELECT_GRAPH'
 
 // Node editing

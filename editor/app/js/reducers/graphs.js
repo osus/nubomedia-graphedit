@@ -4,7 +4,7 @@ import * as ActionTypes from "../actions/actionTypes";
 export default function graphs(state = {}, action) {
   switch (action.type) {
   case ActionTypes.ADD_GRAPH:
-    return {...state, [action.payload.name]: action.payload}
+    return action.payload.name? {...state, [action.payload.name]: action.payload.graph} : state;
   }
 
   return state;

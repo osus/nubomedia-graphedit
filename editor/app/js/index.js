@@ -5,18 +5,14 @@ import { Provider, connect } from 'react-redux'
 
 import { Button, Navbar, Nav, NavItem, DropdownButton, MenuItem } from 'react-bootstrap'
 
+import * as platformAPI from './platformAPI'
+
 import rootReducer from './reducers/root'
 import * as ActionTypes from "./actions/actionTypes"
 
 import GraphPanel from './components/GraphPanel'
 import InfoBar from './components/InfoBar'
 import MenuBar from './components/MenuBar'
-
-// Communicating with functions in the electron server process
-const desktopMode = window.require;
-var ipc = desktopMode?
-  window.require('ipc') // Inside electron shell
-  : { sendSync: function(f, arg) { console.log("ipc unavailable in browser mode"); return null; } };
 
 // -----------------
 
@@ -35,7 +31,7 @@ class NuboEditor extends React.Component {
         saveProject={() => this.saveProject()}
         saveProjectAs={() => this.saveProjectAs()}
         onCreateNode={this.props.onCreateNode}
-        onGraphSelect={this.props.onGraphSelect}
+        onGraphSelect={(name) => this.graphSelect(name)}
       />
       <InfoBar editor={this.props.editor} />
       <GraphPanel onSetEditorPanel={this.props.onSetEditorPanel} />
@@ -46,12 +42,12 @@ class NuboEditor extends React.Component {
   componentDidMount() {
     // Load the default nodedefs
     let nodedefs;
-    if (desktopMode) {
-      nodedefs = ipc.sendSync('readJSONFile', "data/default.ngend") || {defs:{}}
+    if (platformAPI.desktopMode) {
+      nodedefs = platformAPI.readJSONFile("data/default.ngend") || {defs:{}}
     } else {
       nodedefs = defaultNodedefs;
     }
-    store.dispatch({type:ActionTypes.ADD_NODEDEFS, payload: nodedefs.defs})
+    this.props.onAddNodedefs(nodedefs.defs)
   }
 
   componentWillUnmount() {
@@ -60,15 +56,22 @@ class NuboEditor extends React.Component {
     // }
   }
 
+  graphSelect(name) {
+    if (name != this.props.editor.currentGraph) {
+      this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
+      this.props.onGraphSelect(name);
+    }
+  }
+
   resetProject() {
     this._setProject({}, "");
   }
 
   loadProject() {
-    let path = ipc.sendSync('selectOpenProject', 'ping');
+    let path = platformAPI.selectOpenProject();
     console.log(path);
     if (path) {
-      let prj = ipc.sendSync('readJSONFile', path) || {graphs:{}};
+      let prj = platformAPI.readJSONFile(path) || {graphs:{}};
       this._setProject(prj.graphs, path);
     }
   }
@@ -82,17 +85,17 @@ class NuboEditor extends React.Component {
     if (!this.props.editor.filename) {
       this.saveProjectAs();
     } else {
-      // TODO: Current graph edits are NOT SAVED
-      ipc.sendSync('writeJSONFile', {filename:this.props.editor.filename, obj:{graphs:this.props.graphs}});
+      this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
+      platformAPI.writeJSONFile(this.props.editor.filename, { graphs: store.getState().graphs }); // UGH getState() after being modified by previous dispatch
     }
   }
 
   saveProjectAs() {
-    let path = ipc.sendSync('selectSaveProject', 'ping');
+    let path = platformAPI.selectSaveProject();
     console.log(path);
     if (path) {
-      // TODO: Current graph edits are NOT SAVED
-      ipc.sendSync('writeJSONFile', {filename:path, obj:{graphs:this.props.graphs}});
+      this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
+      platformAPI.writeJSONFile(path, { graphs:store.getState().graphs }); // UGH getState() after being modified by previous dispatch
       this.props.onSetProjectFilename(path);
     }
   }
@@ -187,13 +190,15 @@ function mapDispatchToProps(dispatch) {
     // TODO: remove: test code
     //onAddNodedef: () => dispatch({type:ActionTypes.ADD_NODEDEF, payload: {name: "NodeDef!"+Math.round(Math.random()*6)}}),
 
-    //onAddNodedefs: () => dispatch({type:ActionTypes.ADD_NODEDEFS, payload: defs}),
+    onAddNodedefs: (defs) => dispatch({type:ActionTypes.ADD_NODEDEFS, payload: defs}),
 
-    //onAddGraph: (key) => dispatch({type:ActionTypes.ADD_GRAPH, payload: {name: key}}),
+    onAddGraph: (name, graph) => dispatch({type:ActionTypes.ADD_GRAPH, payload: {name, graph}}),
+    onSaveCurrentGraph: (name) => dispatch({type:ActionTypes.SAVE_CURRENT_GRAPH, payload: {name}}),
     onGraphSelect: (name) => dispatch({type:ActionTypes.SELECT_GRAPH, payload: {name}}),
+
     onSetProject: (graphs, filename) => dispatch({type:ActionTypes.SET_PROJECT, payload: {graphs, filename}}),
     onSetProjectFilename: (filename) => dispatch({type:ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
-    onCreateNode: (name) => dispatch({type:ActionTypes.CREATE_NODE, payload: {name}}),
+    onCreateNode: (type) => dispatch({type:ActionTypes.CREATE_NODE, payload: {type}}),
     onSetEditorPanel: (el) => dispatch({ type: ActionTypes.SET_GRAPH_PANEL, payload: {el}}),
   };
 }

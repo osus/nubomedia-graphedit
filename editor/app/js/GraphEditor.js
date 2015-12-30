@@ -52,7 +52,7 @@ function makeUUID(node, ep) { return `${node}.${ep}` }
 
 export default class GraphEditor {
 
-    constructor(container, nodedefs) {
+    constructor(container) {
         this.instance = jsPlumb.getInstance({
             // default drag options
             DragOptions: { cursor: 'pointer', zIndex: 2000 },
@@ -63,7 +63,6 @@ export default class GraphEditor {
             ]
         });
         this.instance.setContainer(container);
-        this.nodedefs = nodedefs;
         this.nodes = [];
 
         // var basicType = {
@@ -112,7 +111,7 @@ export default class GraphEditor {
         });
     }
 
-    createNode(type, id, x, y) {
+    createNode(type, def, id, x, y) {
 
         // Helper function to create the endpoints for the anchors of a given node
         var _addEndpoints = (toId, anchors) => {
@@ -122,12 +121,6 @@ export default class GraphEditor {
                     anchor: a.pos, uuid: uuid, parameters: (a.source? {srcEP: a.name} : {tgtEP: a.name}) });
             });
         };
-
-        // Find nodedef for this node type
-        if (!(type in this.nodedefs.defs)) {
-            throw "Unknown node type " + type;
-        }
-        let def = this.nodedefs.defs[type];
 
         // Create the node DOM element and the corresponding jsPlumb endpoints
         var el = document.createElement("div");
