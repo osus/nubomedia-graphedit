@@ -28,42 +28,6 @@
     transition: box-shadow 0.15s ease-in;
 }
 
-.nubogednt_WebRtcEndpoint {
-    background-image: url("../images/nodes/WebRtcEndpoint.png");
-    width: 194px;
-    height: 97px;
-}
-
-.nubogednt_RtpEndpoint {
-    background-image: url("../images/nodes/RtpEndpoint.png");
-    width: 195px;
-    height: 97px;
-}
-
-.nubogednt_FaceOverlayFilter {
-    background-image: url("../images/nodes/FaceOverlayFilter.png");
-    width: 173px;
-    height: 78px;
-}
-
-.nubogednt_CompositeHub {
-    background-image: url("../images/nodes/CompositeHub.png");
-    width: 90px;
-    height: 90px;
-}
-
-.nubogednt_DispatcherHub {
-    background-image: url("../images/nodes/DispatcherHub.png");
-    width: 90px;
-    height: 90px;
-}
-
-.nubogednt_DispatcherOneToManyHub {
-    background-image: url("../images/nodes/DispatcherOneToManyHub.png");
-    width: 90px;
-    height: 90px;
-}
-
 .nubogednode:hover {
     box-shadow: 2px 2px 19px #444;
     opacity: 0.6;

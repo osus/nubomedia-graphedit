@@ -102,35 +102,71 @@ class NuboEditor extends React.Component {
 
 // Since the browser can't read files, we have a copy of the default nodedefs here to work with
 const defaultNodedefs = {
-  defs: {
-    "WebRtcEndpoint": { anchors : [
-      { name: "src1", pos:[1, 0.25,  1, 0], source:true},
-      { name: "src2", pos:[0, 0.75, -1, 0], source:true},
-      { name: "tgt1", pos:[1, 0.75,  1, 0]},
-      { name: "tgt2", pos:[0, 0.25, -1, 0]}]},
-    "RtpEndpoint": { anchors : [
-      { name: "src1", pos:[1, 0.25,  1, 0], source:true},
-      { name: "src2", pos:[0, 0.75, -1, 0], source:true},
-      { name: "tgt1", pos:[1, 0.75,  1, 0]},
-      { name: "tgt2", pos:[0, 0.25, -1, 0]}]},
-    "FaceOverlayFilter": { anchors : [
-      { name: "src1", pos:[1, 0.5,  1, 0], source:true},
-      { name: "tgt1", pos:[0, 0.5, -1, 0]}]},
-    "CompositeHub": {anchors : [
-      { name: "src1", pos:[0, 0.5, -1,  0], source:true},
-      { name: "tgt1", pos:[1, 0.5,  1,  0]},
-      { name: "tgt2", pos:[0.5, 0,  0, -1]},
-      { name: "tgt3", pos:[0.5, 1,  0,  1]}]},
-    "DispatcherHub": { anchors : [
-      { name: "src1", pos:[1, 0.5,  1,  0], source:true},
-      { name: "src2", pos:[0, 0.5, -1,  0], source:true},
-      { name: "tgt1", pos:[0.5, 0,  0, -1]},
-      { name: "tgt2", pos:[0.5, 1,  0,  1]}]},
-    "DispatcherOneToManyHub": { anchors : [
-      { name: "src1", pos:[1, 0.5, 1, 0], source:true},
-      { name: "src2", pos:[0.5, 0, 0, -1], source:true},
-      { name: "src3", pos:[0, 0.5, -1, 0], source:true},
-      { name: "tgt1", pos:[0.5, 1, 0, 1]}]}
+  "defs": {
+    "WebRtcEndpoint": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.25,  1, 0], "source":true},
+      { "name": "src2", "pos":[0, 0.75, -1, 0], "source":true},
+      { "name": "tgt1", "pos":[1, 0.75,  1, 0]},
+      { "name": "tgt2", "pos":[0, 0.25, -1, 0]}],
+      "image": {
+        "width": 194,
+        "height": 97,
+        "name": "WebRtcEndpoint"
+      },
+    },
+    "RtpEndpoint": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.25,  1, 0], "source":true},
+      { "name": "src2", "pos":[0, 0.75, -1, 0], "source":true},
+      { "name": "tgt1", "pos":[1, 0.75,  1, 0]},
+      { "name": "tgt2", "pos":[0, 0.25, -1, 0]}],
+      "image": {
+        "width": 195,
+        "height": 97,
+        "name": "RtpEndpoint"
+      },
+    },
+    "FaceOverlayFilter": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.5,  1, 0], "source":true},
+      { "name": "tgt1", "pos":[0, 0.5, -1, 0]}],
+      "image": {
+        "width": 173,
+        "height": 78,
+        "name": "FaceOverlayFilter"
+      },
+    },
+    "CompositeHub": { "anchors" : [
+      { "name": "src1", "pos":[0, 0.5, -1,  0], "source":true},
+      { "name": "tgt1", "pos":[1, 0.5,  1,  0]},
+      { "name": "tgt2", "pos":[0.5, 0,  0, -1]},
+      { "name": "tgt3", "pos":[0.5, 1,  0,  1]}],
+      "image": {
+        "width": 90,
+        "height": 90,
+        "name": "CompositeHub"
+      },
+    },
+    "DispatcherHub": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.5,  1,  0], "source":true},
+      { "name": "src2", "pos":[0, 0.5, -1,  0], "source":true},
+      { "name": "tgt1", "pos":[0.5, 0,  0, -1]},
+      { "name": "tgt2", "pos":[0.5, 1,  0,  1]}],
+      "image": {
+        "width": 90,
+        "height": 90,
+        "name": "DispatcherHub"
+      },
+    },
+    "DispatcherOneToManyHub": { "anchors" : [
+      { "name": "src1", "pos":[1, 0.5, 1, 0], "source":true},
+      { "name": "src2", "pos":[0.5, 0, 0, -1], "source":true},
+      { "name": "src3", "pos":[0, 0.5, -1, 0], "source":true},
+      { "name": "tgt1", "pos":[0.5, 1, 0, 1]}],
+      "image": {
+        "width": 90,
+        "height": 90,
+        "name": "DispatcherOneToManyHub"
+      },
+    }
   }
 };
 

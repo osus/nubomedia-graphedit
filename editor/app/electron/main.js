@@ -49,6 +49,7 @@ app.on('ready', function() {
       title:"Open Project",
       filters: [{ name: 'Project files', extensions: ['ngeprj'] },
                 { name: 'All Files', extensions: ['*'] }],
+      defaultPath: ".",
       properties: ['openFile']
     });
     event.returnValue = paths?paths[0]:null; // Protect from 'undefined' causing Electron error
@@ -58,7 +59,7 @@ app.on('ready', function() {
     console.log('selectSaveProject: ', arg);
     var path = dialog.showSaveDialog(mainWindow, {
       title:"Save Project as...",
-      defaultPath: "untitled.ngeprj",
+      defaultPath: "./untitled.ngeprj",
       filters: [{ name: 'Project files', extensions: ['ngeprj'] },
                 { name: 'All Files', extensions: ['*'] }]
     });

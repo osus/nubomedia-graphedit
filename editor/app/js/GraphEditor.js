@@ -127,16 +127,19 @@ export default class GraphEditor {
         if (!(type in this.nodedefs.defs)) {
             throw "Unknown node type " + type;
         }
-        let anchors = this.nodedefs.defs[type].anchors;
+        let def = this.nodedefs.defs[type];
 
         // Create the node DOM element and the corresponding jsPlumb endpoints
         var el = document.createElement("div");
         el.id = id;
         el.style.top = y + "px";
         el.style.left = x + "px";
-        el.className = "nubogednode nubogednt_" + type;
+        el.style.backgroundImage = `url('images/nodes/${def.image.name}.png')`;
+        el.style.width = def.image.width + "px";
+        el.style.height = def.image.height + "px";
+        el.className = "nubogednode";// nubogednt_" + type;
         this.instance.getContainer().appendChild(el);
-        _addEndpoints(id, anchors);
+        _addEndpoints(id, def.anchors);
         this.instance.draggable(el, { grid: [20, 20] });
         this.nodes.push({element: el, type:type, name:id});
         return el;
