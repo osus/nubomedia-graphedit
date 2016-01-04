@@ -70,7 +70,7 @@ function globalReducer(state, action) {
     };
 
   case ActionTypes.SET_GRAPH_PANEL:
-    mutable.setContainer(action.payload.el);
+    mutable.setContainer(action.payload.el, action.payload.nodecb);
     if (action.payload.el) {
       mutable.setupNewEditor(state.graphs[state.editor.currentGraph], state.nodedefs);
     }

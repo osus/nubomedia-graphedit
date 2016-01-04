@@ -202,7 +202,7 @@ function mapDispatchToProps(dispatch) {
     onSetProject: (graphs, filename) => dispatch({type:ActionTypes.SET_PROJECT, payload: {graphs, filename}}),
     onSetProjectFilename: (filename) => dispatch({type:ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
     onCreateNode: (type) => dispatch({type:ActionTypes.CREATE_NODE, payload: {type}}),
-    onSetEditorPanel: (el) => dispatch({ type: ActionTypes.SET_GRAPH_PANEL, payload: {el}}),
+    onSetEditorPanel: (el, nodecb) => dispatch({ type: ActionTypes.SET_GRAPH_PANEL, payload: {el, nodecb}}),
   };
 }
 

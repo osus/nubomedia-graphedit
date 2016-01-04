@@ -52,7 +52,7 @@ function makeUUID(node, ep) { return `${node}.${ep}` }
 
 export default class GraphEditor {
 
-    constructor(container) {
+    constructor(container, nodecb) {
         this.instance = jsPlumb.getInstance({
             // default drag options
             DragOptions: { cursor: 'pointer', zIndex: 2000 },
@@ -63,6 +63,7 @@ export default class GraphEditor {
             ]
         });
         this.instance.setContainer(container);
+        this.nodeClickHandler = nodecb;
         this.nodes = [];
 
         // var basicType = {
@@ -102,6 +103,7 @@ export default class GraphEditor {
     destroy() {
         let c = this.instance.getContainer();
         $(c).empty();
+        this.nodes = [];
         this.instance.reset();
     }
 
@@ -133,8 +135,21 @@ export default class GraphEditor {
         el.className = "nubogednode";// nubogednt_" + type;
         this.instance.getContainer().appendChild(el);
         _addEndpoints(id, def.anchors);
-        this.instance.draggable(el, { grid: [20, 20] });
-        this.nodes.push({element: el, type:type, name:id});
+        // Prevent clicks when drag/drop
+        var dragged = false;
+        this.instance.draggable(el, {
+            grid: [20, 20],
+            drag: (e, ui) => dragged = true
+        });
+        let node = {element: el, type:type, name:id};
+        el.addEventListener("click", (e) => {
+            if (dragged) {
+                dragged = false;
+                return;
+            }
+            this.nodeClickHandler(this, node)
+        });
+        this.nodes.push(node);
         return el;
     }
 
