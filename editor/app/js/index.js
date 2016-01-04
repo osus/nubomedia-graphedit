@@ -33,7 +33,9 @@ class NuboEditor extends React.Component {
         onCreateNode={this.props.onCreateNode}
         onGraphSelect={(name) => this.graphSelect(name)}
       />
-      <InfoBar editor={this.props.editor} />
+      <InfoBar editor={this.props.editor}
+        renameGraph={this.props.onRenameGraph}
+      />
       <GraphPanel onSetEditorPanel={this.props.onSetEditorPanel} />
       </div>
     );
@@ -195,6 +197,7 @@ function mapDispatchToProps(dispatch) {
     onAddGraph: (name, graph) => dispatch({type:ActionTypes.ADD_GRAPH, payload: {name, graph}}),
     onSaveCurrentGraph: (name) => dispatch({type:ActionTypes.SAVE_CURRENT_GRAPH, payload: {name}}),
     onGraphSelect: (name) => dispatch({type:ActionTypes.SELECT_GRAPH, payload: {name}}),
+    onRenameGraph: (oldName, newName) => dispatch({type:ActionTypes.RENAME_GRAPH, payload: {oldName, newName}}),
 
     onSetProject: (graphs, filename) => dispatch({type:ActionTypes.SET_PROJECT, payload: {graphs, filename}}),
     onSetProjectFilename: (filename) => dispatch({type:ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),

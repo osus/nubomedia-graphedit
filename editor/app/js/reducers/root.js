@@ -56,6 +56,19 @@ function globalReducer(state, action) {
       editor: {...state.editor, currentGraph: name, curNodeId: graph.curNodeId || 1}
     };
 
+  case ActionTypes.RENAME_GRAPH:
+    // TODO: perform more validation on the names
+    let newGraphs = {...state.graphs, [action.payload.newName]: state.graphs[action.payload.oldName]};
+    delete newGraphs[action.payload.oldName];
+    let newEditor = state.editor;
+    if (state.editor.currentGraph == action.payload.oldName) {
+      newEditor = {...state.editor, currentGraph: action.payload.newName};
+    }
+    return {...state,
+      graphs: newGraphs,
+      editor: newEditor
+    };
+
   case ActionTypes.SET_GRAPH_PANEL:
     mutable.setContainer(action.payload.el);
     if (action.payload.el) {
