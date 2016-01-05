@@ -22,7 +22,7 @@ export function getEditedGraph() {
   if (editor) {
     return {
       nodes: editor.getNodes().map((node) =>
-        ({type:node.type, name: node.name, x:node.x, y:node.y})
+        ({type:node.type, name: node.name, x:node.x, y:node.y, properties: node.properties})
       ),
       connections: editor.getConnections()
     };

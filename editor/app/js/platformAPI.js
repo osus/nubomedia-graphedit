@@ -4,7 +4,7 @@ export const desktopMode = window.require;
 
 var ipc = desktopMode?
   window.require('ipc') // Inside electron shell
-  : { sendSync: function(f, arg) { console.log("ipc unavailable in browser mode"); return null; } };
+  : { sendSync: function(f, arg) { console.log("ipc unavailable in browser mode\n function:", f, "\n args:", JSON.stringify(arg)); return null; } };
 
 export function readJSONFile(filename) {
   return ipc.sendSync('readJSONFile', filename);
@@ -19,5 +19,5 @@ export function selectOpenProject() {
 }
 
 export function selectSaveProject() {
-  return ipc.sendSync('selectSaveProject');
+  return desktopMode? ipc.sendSync('selectSaveProject') : "unnamed.ngeprj";
 }

@@ -36,7 +36,7 @@ class NuboEditor extends React.Component {
       <InfoBar editor={this.props.editor}
         renameGraph={this.props.onRenameGraph}
       />
-      <GraphPanel onSetEditorPanel={this.props.onSetEditorPanel} />
+      <GraphPanel onSetEditorPanel={this.props.onSetEditorPanel} nodedefs={this.props.nodedefs} />
       </div>
     );
   }
@@ -118,6 +118,17 @@ const defaultNodedefs = {
         "height": 97,
         "name": "WebRtcEndpoint"
       },
+      "properties": {
+        "testProp": {
+          "type": "string",
+          "nativeName": "Test Prop"
+        },
+        "testProp2": {
+          "type": "string",
+          "nativeName": "Test Prop 2",
+          "default": "default value for prop 2"
+        }
+      }
     },
     "RtpEndpoint": { "anchors" : [
       { "name": "src1", "pos":[1, 0.25,  1, 0], "source":true},

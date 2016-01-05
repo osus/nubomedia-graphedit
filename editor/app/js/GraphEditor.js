@@ -1,6 +1,7 @@
 // Graph Editor widget for the Nubomedia Graph Editor tool
 // Uses jsPlumb as the connector library
 
+import { mapObject } from './util'
 
 // this is the paint style for the connecting lines..
 const connectorPaintStyle = {
@@ -141,7 +142,8 @@ export default class GraphEditor {
             grid: [20, 20],
             drag: (e, ui) => dragged = true
         });
-        let node = {element: el, type:type, name:id};
+        let props = mapObject(def.properties, (val, key) => val.default || "");
+        let node = {element: el, type:type, name:id, properties: props};
         el.addEventListener("click", (e) => {
             if (dragged) {
                 dragged = false;
@@ -161,7 +163,7 @@ export default class GraphEditor {
         return this.nodes.map((node) => {
             let x = parseInt(node.element.style.left, 10);
             let y = parseInt(node.element.style.top, 10);
-            return { type:node.type, name:node.name, x:x, y:y};
+            return { type:node.type, name:node.name, x:x, y:y, properties: node.properties || {}};
         });
     }
 
