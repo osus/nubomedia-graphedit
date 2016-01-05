@@ -46,7 +46,7 @@ export default class GraphPanel extends React.Component {
       <div id="graphpanel" className="panel panel-default" style={{height:"600px",width:"100%"}}>
         <div className="demo nuboged" ref="editor_panel" id="nuboged-container" >
         </div>
-        <Modal show={this.state.showNodeModal} onHide={this.closeNodeModal.bind(this)}>
+        <Modal show={this.state.showNodeModal} onHide={this.closeNodeModal.bind(this)} bsSize="large">
           <Modal.Header closeButton>
             <Modal.Title>{this.state.node.type} Node: {this.state.node.name}</Modal.Title>
           </Modal.Header>
