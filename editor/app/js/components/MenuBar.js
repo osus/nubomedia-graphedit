@@ -4,12 +4,16 @@ import { Button, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-boots
 
 export default class EditorMenu extends React.Component {
   render() {
-    var nodedefNames = Object.keys(this.props.nodedefs.defs)
-      .map((key) => <MenuItem key={'Nodedef - '+key}
-        onClick={() => this.props.onCreateNode(key)} >{key}</MenuItem>);
-    var graphNames = Object.keys(this.props.graphs)
-      .map((key) => <MenuItem key={'Graph - '+key}
-        onClick={() => this.props.onGraphSelect(key)}>{key}</MenuItem>);
+    var nodedefNames = Object.keys(this.props.nodedefs.defs).map((key) =>
+      <MenuItem key={key} onClick={() => this.props.onCreateNode(key)}>
+        {key}
+      </MenuItem>
+    );
+    var graphNames = Object.keys(this.props.graphs).map((key) =>
+      <MenuItem key={key} onClick={() => this.props.onGraphSelect(key)}>
+        {key==this.props.editor.currentGraph? "\u2713 " : ""}{key} // Unicode for checkmark on current graph
+      </MenuItem>
+    );
     return (
       <Navbar inverse fluid>
         <Navbar.Header>

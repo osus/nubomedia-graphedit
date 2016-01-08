@@ -29,7 +29,7 @@ export default class InfoBar extends React.Component {
       <div className="form-inline">
         <Input type='text'
             ref="input_box"
-            label="Currently editing:"
+            label={"Currently editing:\u00A0"} // no-break space, must be interpreted as Javascript string
             onChange={onChangeName}
             onKeyDown={onKeydownName}
             value={this.state.currentGraph}>

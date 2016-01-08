@@ -30,14 +30,33 @@ export default class GraphPanel extends React.Component {
         (key) => {
           let p = properties[key];
           let name = p.nativeName || key;
+          let type = 'text';
+          let inputChildren = null;
+          if (Array.isArray(p.type)) {
+            type = 'select';
+            inputChildren = Object.keys(p.type).map(
+              (key) => {
+                let opt = p.type[key];
+                return <option value={opt.value || opt} key={key}>{opt.name || opt}</option>
+            });
+          }
+          else if (typeof p.type == 'object') {
+            type = 'select';
+            inputChildren = Object.keys(p.type).map(
+              (key) => {
+                let opt = p.type[key];
+                return <option value={key} key={key}>{p.type[key]}</option>
+            });
+          }
           return (<div className="form-horizontal" key={key}>
-            <Input type='text'
+            <Input type={type}
                 ref={"input_box_"+key}
                 label={name+": "}
                 labelClassName="col-xs-3" wrapperClassName="col-xs-9"
 //                onChange={onChangeName}
 //                onKeyDown={onKeydownName}
                 value={this.state.node.properties[key]}>
+                {inputChildren}
             </Input>
           </div>);
       });

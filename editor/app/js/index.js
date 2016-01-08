@@ -127,6 +127,16 @@ const defaultNodedefs = {
           "type": "string",
           "nativeName": "Test Prop 2",
           "default": "default value for prop 2"
+        },
+        "testArrayProp": {
+          "type": ["type 1", {"name":"Array Option 2", "value":"type 2"}, "type 3"],
+          "nativeName": "Test Array Prop",
+          "default": "type 2"
+        },
+        "testDictionaryProp": {
+          "type": {"type1": "Dictionary Option 1", "type2": "Dictionary Option 2"},
+          "nativeName": "Test Dictionary Prop",
+          "default": "type2"
         }
       }
     },

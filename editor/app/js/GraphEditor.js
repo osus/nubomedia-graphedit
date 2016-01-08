@@ -140,7 +140,7 @@ export default class GraphEditor {
         var dragged = false;
         this.instance.draggable(el, {
             grid: [20, 20],
-            drag: (e, ui) => dragged = true
+            drag: (e) => { dragged = true }
         });
         let props = mapObject(def.properties, (val, key) => val.default || "");
         let node = {element: el, type:type, name:id, properties: props};
