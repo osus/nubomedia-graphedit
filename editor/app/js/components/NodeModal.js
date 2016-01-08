@@ -42,15 +42,19 @@ export default class NodeModal extends React.Component {
         </div>);
     });
     return (
-      <Modal onHide={this.props.closeNodeModal} bsSize="large">
+      <Modal show={true} onHide={this.props.closeNodeModal} bsSize="large">
         <Modal.Header closeButton>
           <Modal.Title>{this.props.node.type} Node: {this.props.node.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Button bsStyle="danger">Delete</Button>
           <h4>Properties:</h4>
           {modalFields}
         </Modal.Body>
+        <Modal.Footer>
+          <Button bsStyle="danger" style={{float:"left"}}>Delete Node</Button>
+          <Button>Close</Button>
+          <Button bsStyle="primary">Save Changes</Button>
+        </Modal.Footer>
       </Modal>
     );
   }

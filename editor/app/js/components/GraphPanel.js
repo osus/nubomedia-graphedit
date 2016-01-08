@@ -16,7 +16,7 @@ export default class GraphPanel extends React.Component {
     this.setState({ showNodeModal: true, node: node });
   }
   render() {
-    let nodemodal = <p>No modal visible</p>;
+    let nodemodal = null;
     if (this.state.showNodeModal) {
       nodemodal = <NodeModal node={this.state.node} nodedefs={this.props.nodedefs} closeNodeModal={this.closeNodeModal.bind(this)} />;
     }
