@@ -1,80 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Modal, Button, Input } from 'react-bootstrap';
-
-const NullNode = {
-  element: null,
-  type: "",
-  name: ""
-}
+import NodeModal from './NodeModal';
 
 export default class GraphPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {showNodeModal: false, node: NullNode};
+    this.state = {showNodeModal: false, node: null};
   }
   closeNodeModal() {
-    this.setState({ showNodeModal: false/*, node: NullNode*/ }); // TODO: ensure this won't leave leaks
+    this.setState({ showNodeModal: false, node: null }); // TODO: ensure this won't leave leaks
   }
 
   nodeClickHandler(editor, node) {
     this.setState({ showNodeModal: true, node: node });
   }
   render() {
-    let modalFields = []
+    let nodemodal = <p>No modal visible</p>;
     if (this.state.showNodeModal) {
-      let def = this.props.nodedefs.defs[this.state.node.type];
-      let properties = def.properties || {};
-      modalFields = Object.keys(properties).map(
-        (key) => {
-          let p = properties[key];
-          let name = p.nativeName || key;
-          let type = 'text';
-          let inputChildren = null;
-          if (Array.isArray(p.type)) {
-            type = 'select';
-            inputChildren = Object.keys(p.type).map(
-              (key) => {
-                let opt = p.type[key];
-                return <option value={opt.value || opt} key={key}>{opt.name || opt}</option>
-            });
-          }
-          else if (typeof p.type == 'object') {
-            type = 'select';
-            inputChildren = Object.keys(p.type).map(
-              (key) => {
-                let opt = p.type[key];
-                return <option value={key} key={key}>{p.type[key]}</option>
-            });
-          }
-          return (<div className="form-horizontal" key={key}>
-            <Input type={type}
-                ref={"input_box_"+key}
-                label={name+": "}
-                labelClassName="col-xs-3" wrapperClassName="col-xs-9"
-//                onChange={onChangeName}
-//                onKeyDown={onKeydownName}
-                value={this.state.node.properties[key]}>
-                {inputChildren}
-            </Input>
-          </div>);
-      });
+      nodemodal = <NodeModal node={this.state.node} nodedefs={this.props.nodedefs} closeNodeModal={this.closeNodeModal.bind(this)} />;
     }
     return (
       <div id="graphpanel" className="panel panel-default" style={{height:"600px",width:"100%"}}>
         <div className="demo nuboged" ref="editor_panel" id="nuboged-container" >
         </div>
-        <Modal show={this.state.showNodeModal} onHide={this.closeNodeModal.bind(this)} bsSize="large">
-          <Modal.Header closeButton>
-            <Modal.Title>{this.state.node.type} Node: {this.state.node.name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Button bsStyle="danger">Delete</Button>
-            <h4>Properties:</h4>
-            {modalFields}
-          </Modal.Body>
-        </Modal>
+        {nodemodal}
       </div>
     );
   }

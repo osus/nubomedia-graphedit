@@ -11,7 +11,7 @@ export default class EditorMenu extends React.Component {
     );
     var graphNames = Object.keys(this.props.graphs).map((key) =>
       <MenuItem key={key} onClick={() => this.props.onGraphSelect(key)}>
-        {key==this.props.editor.currentGraph? "\u2713 " : ""}{key} // Unicode for checkmark on current graph
+        {key==this.props.editor.currentGraph? "\u2713 " : ""}{key}
       </MenuItem>
     );
     return (
