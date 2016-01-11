@@ -26,7 +26,7 @@ It will take some time to download dependencies. Once it's finished:
 
 `gulp electron` or `gulp`
 
-To run the application, you can just type `gulp`, which will build it and then launch a browser connected to it. If you want to run it as a desktop application (packaged using the [Electron Shell](http://electron.atom.io/)), type `gulp electron`. Note that some functionality, like access to the local filesystem for saving and loading, will only be available from Electron - the browser version is there to help during development.
+To run the application, you can just type `gulp`, which will build it and then launch a browser connected to it. If you want to run it in its final form as a desktop application (packaged using the [Electron Shell](http://electron.atom.io/)), type `gulp electron`. Note that some functionality, like access to the local filesystem for saving and loading, will only be available from Electron - the browser version is maintained solely to help during development.
 
 
 ## Third Party Software used
@@ -37,7 +37,7 @@ NodeJS is a cross-platform combination of the JavaScript V8 engine from Google a
 
 [Gulp](http://gulpjs.com/)
 
-A "task runner", a command-line tool that takes the specification for a set of tasks and can execute them on demand. It is built on top of NodeJS.
+A "task runner", a command-line tool that takes the specification for a set of tasks and can execute them on demand. It is built on top of NodeJS, and used to execute the different tasks related to building and testing different versions of the project.
 
 [Electron Shell](http://electron.atom.io/)
 
@@ -49,7 +49,7 @@ React is a framework for managing and rendering HTML content inside web applicat
 
 [Redux](https://github.com/rackt/redux)
 
-Redux is a predictable state container for JavaScript apps. It is an implementation of the Flux architecture described by Facebook as part of the React project. It has become the de facto standard Flux implementation for many projects due to its simplicity and flexibility.
+Redux is a predictable state container for JavaScript apps. It is a variation of the Flux architecture described by Facebook as part of the React project. It has become the de facto standard state management solution for many React projects due to its simplicity and flexibility.
 
 [Bootstrap](http://getbootstrap.com/)
 
@@ -74,3 +74,8 @@ Babel is a compiler that transforms modern versions of the JavaScript language t
 [jQuery](https://jquery.com/)
 
 jQuery is a widely used library of utilities and compatibility helpers for HTML web pages and applications.
+
+**Other**
+
+A number of minor node modules to support the various major components listed above. See the file `package.json` for a complete list of runtime and development modules.
+
