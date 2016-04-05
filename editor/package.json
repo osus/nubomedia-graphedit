@@ -21,7 +21,7 @@
   "dependencies": {
     "bootstrap": "^3.3.5",
     "jquery": "^2.1.4",
-    "jsplumb": "^2.0.3",
+    "jsplumb": "^2.0.7",
     "react": "^0.14.3",
     "react-bootstrap": "^0.28.1",
     "react-dom": "^0.14.3",
