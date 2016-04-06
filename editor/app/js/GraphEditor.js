@@ -147,9 +147,10 @@ export default class GraphEditor {
         el.addEventListener("click", (e) => {
             if (dragged) {
                 dragged = false;
-                return;
             }
-            this.nodeClickHandler(this, node)
+        });
+        el.addEventListener("dblclick", (e) => {
+            this.nodeClickHandler(this, node);
         });
         this.nodes.push(node);
         return el;
