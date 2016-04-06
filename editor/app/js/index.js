@@ -45,10 +45,13 @@ class NuboEditor extends React.Component {
     // Load the default nodedefs
     let nodedefs;
     if (platformAPI.desktopMode) {
-      nodedefs = platformAPI.readJSONFile("data/default.ngend") || {defs:{}}
-    } else {
-      nodedefs = defaultNodedefs;
+      nodedefs = {defs:platformAPI.readNodeJSONFiles("data/nodes")};
     }
+    //if (platformAPI.desktopMode) {
+    //  nodedefs = platformAPI.readJSONFile("data/default.ngend") || {defs:{}}
+    //} else {
+    //  nodedefs = defaultNodedefs;
+    //}
     this.props.onAddNodedefs(nodedefs.defs)
   }
 

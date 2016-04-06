@@ -1,0 +1,13 @@
+{
+  "DispatcherOneToManyHub": { "anchors" : [
+    { "name": "src1", "pos":[1, 0.5, 1, 0], "source":true},
+    { "name": "src2", "pos":[0.5, 0, 0, -1], "source":true},
+    { "name": "src3", "pos":[0, 0.5, -1, 0], "source":true},
+    { "name": "tgt1", "pos":[0.5, 1, 0, 1]}],
+    "image": {
+      "width": 90,
+      "height": 90,
+      "name": "DispatcherOneToManyHub"
+    }
+  }
+}

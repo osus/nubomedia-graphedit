@@ -6,6 +6,10 @@ var ipc = desktopMode?
   window.require('ipc') // Inside electron shell
   : { sendSync: function(f, arg) { console.log("ipc unavailable in browser mode\n function:", f, "\n args:", JSON.stringify(arg)); return null; } };
 
+export function readNodeJSONFiles(directory) {
+  return ipc.sendSync('readNodeJSONFiles', directory);
+}
+
 export function readJSONFile(filename) {
   return ipc.sendSync('readJSONFile', filename);
 }
