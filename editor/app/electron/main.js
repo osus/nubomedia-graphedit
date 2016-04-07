@@ -121,6 +121,7 @@ app.on('ready', function() {
           nodes[a] = node[a] || null;
         }
       // Only JSON file
+      // TODO: Check the extension file (.ngend)
       } else {
         let node = JSON.parse(fs.readFileSync(filePath, "utf8"));
         let nodeName    = Object.keys(node)[0];

@@ -28,6 +28,14 @@ function globalReducer(state, action) {
     mutable.getEditor().createNode(action.payload.type, state.nodedefs.defs[action.payload.type], "Node_" + state.editor.curNodeId, 400 + offset, 200 + offset);
     return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
 
+  case ActionTypes.DELETE_NODE:
+    let node = action.payload.node;
+    if (!mutable.getEditor() || !(action.payload.node.type in state.nodedefs.defs)) {
+      throw "Unknown node type " + action.payload.node.type;
+    }
+    mutable.getEditor().deleteNode(node);
+    return state;
+
   case ActionTypes.SAVE_CURRENT_GRAPH:
     if (mutable.getEditor() && action.payload.name) {
       return {...state,

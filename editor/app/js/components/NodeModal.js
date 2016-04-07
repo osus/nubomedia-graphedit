@@ -4,7 +4,7 @@ import { Modal, Button, Input } from 'react-bootstrap';
 
 export default class NodeModal extends React.Component {
   render() {
-    let modalFields = []
+    let modalFields = [];
     let def = this.props.nodedefs.defs[this.props.node.type];
     let properties = def.properties || {};
     modalFields = Object.keys(properties).map(
@@ -51,8 +51,8 @@ export default class NodeModal extends React.Component {
           {modalFields}
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="danger" style={{float:"left"}}>Delete Node</Button>
-          <Button>Close</Button>
+          <Button onClick={() => this.props.onDeleteNode(this.props.node)} bsStyle="danger" style={{float:"left"}}>Delete Node</Button>
+          <Button onClick={this.props.closeNodeModal}>Close</Button>
           <Button bsStyle="primary">Save Changes</Button>
         </Modal.Footer>
       </Modal>

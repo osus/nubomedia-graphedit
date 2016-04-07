@@ -11,14 +11,19 @@ export default class GraphPanel extends React.Component {
   closeNodeModal() {
     this.setState({ showNodeModal: false, node: null }); // TODO: ensure this won't leave leaks
   }
-
   nodeClickHandler(editor, node) {
     this.setState({ showNodeModal: true, node: node });
   }
   render() {
     let nodemodal = null;
     if (this.state.showNodeModal) {
-      nodemodal = <NodeModal node={this.state.node} nodedefs={this.props.nodedefs} closeNodeModal={this.closeNodeModal.bind(this)} />;
+      nodemodal =
+        <NodeModal
+          node={this.state.node}
+          nodedefs={this.props.nodedefs}
+          onDeleteNode={this.props.onDeleteNode}
+          closeNodeModal={this.closeNodeModal.bind(this)}
+        />;
     }
     return (
       <div id="graphpanel" className="panel panel-default" style={{height:"600px",width:"100%"}}>

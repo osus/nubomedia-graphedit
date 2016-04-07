@@ -11,6 +11,7 @@ export const RENAME_GRAPH = 'RENAME_GRAPH'
 
 // Node editing
 export const CREATE_NODE = 'CREATE_NODE'
+export const DELETE_NODE = 'DELETE_NODE'
 
 // Project management
 export const SET_PROJECT = 'SET_PROJECT'

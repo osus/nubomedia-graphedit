@@ -147,13 +147,24 @@ export default class GraphEditor {
         el.addEventListener("click", (e) => {
             if (dragged) {
                 dragged = false;
+                return;
             }
+            // TODO: On only click, select node
         });
         el.addEventListener("dblclick", (e) => {
             this.nodeClickHandler(this, node);
         });
-        this.nodes.push(node);
+        this.nodes.push(node.element);
         return el;
+    }
+
+    deleteNode(node) {
+        let ix = this.nodes.indexOf(node);
+        if (ix != -1) {
+            this.nodes.splice(ix, 1);
+        }
+        // TODO: Don't save the changes
+        this.instance.getContainer().remove(node);
     }
 
     createConnection(src, srcEP, tgt, tgtEP) {
