@@ -66,6 +66,15 @@ export default class GraphEditor {
         this.instance.setContainer(container);
         this.nodeClickHandler = nodecb;
         this.nodes = [];
+        this.selectedNode = null;
+        this.deselectNode = null;
+
+        // Listener to deselected node when clicks in container
+        this.instance.getContainer().addEventListener('click', (e) => {
+            if (e.target == this.instance.getContainer()) {
+                this.deselectNode();
+            }
+        });
 
         // var basicType = {
         //     connector: 'StateMachine',
@@ -124,6 +133,23 @@ export default class GraphEditor {
                     anchor: a.pos, uuid: uuid, parameters: (a.source? {srcEP: a.name} : {tgtEP: a.name}) });
             });
         };
+        // Helper function to select node
+        var _selectNode = (node) => {
+            if (this.selectedNode != node) {
+                _deselectNode();
+                this.selectedNode       = node;
+                node.element.className += " selected";
+            } else {
+                _deselectNode();
+            }
+        };
+        // Helper function to unselect node
+        var _deselectNode = () => {
+            if (this.selectedNode) {
+                this.selectedNode.element.className = this.selectedNode.element.className.replace(/\sselected\b/,'');
+                this.selectedNode = null;
+            }
+        };
 
         // Create the node DOM element and the corresponding jsPlumb endpoints
         var el = document.createElement("div");
@@ -149,11 +175,14 @@ export default class GraphEditor {
                 dragged = false;
                 return;
             }
-            // TODO: On only click, select node
+            _selectNode(node);
         });
         el.addEventListener("dblclick", (e) => {
             this.nodeClickHandler(this, node);
         });
+        // Attach container event listener
+        this.deselectNode = _deselectNode;
+        // Add node
         this.nodes.push(node);
         return el;
     }
@@ -165,12 +194,10 @@ export default class GraphEditor {
                 this.instance.deleteEndpoint(uuid);
             });
         };
-
         let ix = this.nodes.indexOf(node);
         if (ix != -1) {
             this.nodes.splice(ix, 1);
         }
-        // TODO: Don't save the changes
         _deleteEndpoints(node.element.id, node.anchors);
         this.instance.getContainer().removeChild(node.element);
     }
@@ -185,6 +212,10 @@ export default class GraphEditor {
             let y = parseInt(node.element.style.top, 10);
             return { type:node.type, name:node.name, x:x, y:y, properties: node.properties || {}};
         });
+    }
+
+    getSelectedNode() {
+        return this.selectedNode;
     }
 
     getConnections() {

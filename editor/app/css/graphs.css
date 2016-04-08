@@ -35,6 +35,10 @@
     border-radius: 0.5em;
 }
 
+.nuboged .selected {
+    border: 2px solid red;
+}
+
 .nuboged .active {
     border: 1px dotted green;
 }
