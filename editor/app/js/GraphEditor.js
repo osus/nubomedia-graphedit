@@ -143,7 +143,7 @@ export default class GraphEditor {
             drag: (e) => { dragged = true }
         });
         let props = mapObject(def.properties, (val, key) => val.default || "");
-        let node = {element: el, type:type, name:id, properties: props};
+        let node = {element: el, type:type, name:id, properties: props, anchors: def.anchors};
         el.addEventListener("click", (e) => {
             if (dragged) {
                 dragged = false;
@@ -154,17 +154,25 @@ export default class GraphEditor {
         el.addEventListener("dblclick", (e) => {
             this.nodeClickHandler(this, node);
         });
-        this.nodes.push(node.element);
+        this.nodes.push(node);
         return el;
     }
 
     deleteNode(node) {
+        var _deleteEndpoints = (toId, anchors) => {
+            anchors.map((a) => {
+                var uuid = makeUUID(toId, a.name);
+                this.instance.deleteEndpoint(uuid);
+            });
+        };
+
         let ix = this.nodes.indexOf(node);
         if (ix != -1) {
             this.nodes.splice(ix, 1);
         }
         // TODO: Don't save the changes
-        this.instance.getContainer().remove(node);
+        _deleteEndpoints(node.element.id, node.anchors);
+        this.instance.getContainer().removeChild(node.element);
     }
 
     createConnection(src, srcEP, tgt, tgtEP) {

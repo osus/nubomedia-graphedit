@@ -51,7 +51,7 @@ export default class NodeModal extends React.Component {
           {modalFields}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => this.props.onDeleteNode(this.props.node)} bsStyle="danger" style={{float:"left"}}>Delete Node</Button>
+          <Button onClick={this.props.onDeleteNode} bsStyle="danger" style={{float:"left"}}>Delete Node</Button>
           <Button onClick={this.props.closeNodeModal}>Close</Button>
           <Button bsStyle="primary">Save Changes</Button>
         </Modal.Footer>

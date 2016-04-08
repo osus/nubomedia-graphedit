@@ -14,6 +14,11 @@ export default class GraphPanel extends React.Component {
   nodeClickHandler(editor, node) {
     this.setState({ showNodeModal: true, node: node });
   }
+  onDeleteNode() {
+    this.closeNodeModal();
+    this.props.onDeleteNode(this.state.node);
+  }
+
   render() {
     let nodemodal = null;
     if (this.state.showNodeModal) {
@@ -21,7 +26,7 @@ export default class GraphPanel extends React.Component {
         <NodeModal
           node={this.state.node}
           nodedefs={this.props.nodedefs}
-          onDeleteNode={this.props.onDeleteNode}
+          onDeleteNode={this.onDeleteNode.bind(this)}
           closeNodeModal={this.closeNodeModal.bind(this)}
         />;
     }
