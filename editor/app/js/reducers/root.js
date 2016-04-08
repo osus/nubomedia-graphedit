@@ -44,6 +44,31 @@ function globalReducer(state, action) {
     }
     return state;
 
+  case ActionTypes.CUT_SELECTED_NODE:
+    if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode) {
+      throw "No node selected";
+    }
+    return state;
+
+  case ActionTypes.COPY_SELECTED_NODE:
+    if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode) {
+      throw "No node selected";
+    }
+    return state;
+
+  case ActionTypes.PASTE_SELECTED_NODE:
+    if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode) {
+      throw "No node selected";
+    }
+    return state;
+
+  case ActionTypes.DELETED_SELECTED_NODE:
+    if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode()) {
+      throw "No node selected";
+    }
+    mutable.getEditor().deleteNode(mutable.getEditor().getSelectedNode());
+    return state;
+
   case ActionTypes.SELECT_GRAPH:
     let {name} = action.payload;
     // Create or restore graph we're switching to

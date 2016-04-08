@@ -31,10 +31,10 @@ export default class EditorMenu extends React.Component {
             <MenuItem>Import Nodedefs</MenuItem>
           </NavDropdown>
           <NavDropdown title='Edit' id="edit-dd">
-            <MenuItem>Cut</MenuItem>
-            <MenuItem>Copy</MenuItem>
-            <MenuItem>Paste</MenuItem>
-            <MenuItem>Delete</MenuItem>
+            <MenuItem onClick={this.props.onCutSelectedNode}>Cut</MenuItem>
+            <MenuItem onClick={this.props.onCopySelectedNode}>Copy</MenuItem>
+            <MenuItem onClick={this.props.onPasteSelectedNode}>Paste</MenuItem>
+            <MenuItem onClick={this.props.onDeleteSelectedNode}>Delete</MenuItem>
           </NavDropdown>
           <NavDropdown title='Graphs' id="graphs-dd">
             <MenuItem eventKey='4'

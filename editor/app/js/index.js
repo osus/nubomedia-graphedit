@@ -32,6 +32,10 @@ class NuboEditor extends React.Component {
         saveProjectAs={() => this.saveProjectAs()}
         onCreateNode={this.props.onCreateNode}
         onGraphSelect={(name) => this.graphSelect(name)}
+        onCutSelectedNode={() => this.props.onCutSelectedNode()}
+        onCopySelectedNode={() => this.props.onCopySelectedNode()}
+        onPasteSelectedNode={() => this.props.onPasteSelectedNode()}
+        onDeleteSelectedNode={() => this.props.onDeleteSelectedNode()}
       />
       <InfoBar editor={this.props.editor}
         renameGraph={this.props.onRenameGraph}
@@ -229,6 +233,11 @@ function mapDispatchToProps(dispatch) {
 
     onCreateNode: (type) => dispatch({type:ActionTypes.CREATE_NODE, payload: {type}}),
     onDeleteNode: (node) => dispatch({type:ActionTypes.DELETE_NODE, payload: {node}}),
+
+    onCutSelectedNode: () => dispatch({type:ActionTypes.CUT_SELECTED_NODE}),
+    onCopySelectedNode: () => dispatch({type:ActionTypes.COPY_SELECTED_NODE}),
+    onPasteSelectedNode: () => dispatch({type:ActionTypes.PASTE_SELECTED_NODE}),
+    onDeleteSelectedNode: () => dispatch({type:ActionTypes.DELETED_SELECTED_NODE}),
 
     onSetEditorPanel: (el, nodecb) => dispatch({ type: ActionTypes.SET_GRAPH_PANEL, payload: {el, nodecb}}),
   };

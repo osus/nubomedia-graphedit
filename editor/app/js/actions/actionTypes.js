@@ -13,6 +13,12 @@ export const RENAME_GRAPH = 'RENAME_GRAPH'
 export const CREATE_NODE = 'CREATE_NODE'
 export const DELETE_NODE = 'DELETE_NODE'
 
+// Node selected editing
+export const CUT_SELECTED_NODE     = 'CUT_SELECTED_NODE'
+export const COPY_SELECTED_NODE    = 'COPY_SELECTED_NODE'
+export const PASTE_SELECTED_NODE   = 'PASTE_SELECTED_NODE'
+export const DELETED_SELECTED_NODE = 'DELETED_SELECTED_NODE'
+
 // Project management
 export const SET_PROJECT = 'SET_PROJECT'
 export const SET_PROJECT_FILENAME = 'SET_PROJECT_FILENAME'
