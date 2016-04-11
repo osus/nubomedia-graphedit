@@ -65,14 +65,18 @@ export default class GraphEditor {
         });
         this.instance.setContainer(container);
         this.nodeClickHandler = nodecb;
+        this.deselectNodeHandler = null;
+
         this.nodes = [];
         this.selectedNode = null;
-        this.deselectNode = null;
+        this.copiedNode   = null;
 
         // Listener to deselected node when clicks in container
         this.instance.getContainer().addEventListener('click', (e) => {
             if (e.target == this.instance.getContainer()) {
-                this.deselectNode();
+                if (this.deselectNodeHandler) {
+                    this.deselectNodeHandler();
+                }
             }
         });
 
@@ -181,7 +185,7 @@ export default class GraphEditor {
             this.nodeClickHandler(this, node);
         });
         // Attach container event listener
-        this.deselectNode = _deselectNode;
+        this.deselectNodeHandler = _deselectNode;
         // Add node
         this.nodes.push(node);
         return el;
@@ -200,6 +204,10 @@ export default class GraphEditor {
         }
         _deleteEndpoints(node.element.id, node.anchors);
         this.instance.getContainer().removeChild(node.element);
+    }
+
+    copyNode(node) {
+        this.copiedNode = node;
     }
 
     createConnection(src, srcEP, tgt, tgtEP) {

@@ -237,7 +237,7 @@ function mapDispatchToProps(dispatch) {
     onCutSelectedNode: () => dispatch({type:ActionTypes.CUT_SELECTED_NODE}),
     onCopySelectedNode: () => dispatch({type:ActionTypes.COPY_SELECTED_NODE}),
     onPasteSelectedNode: () => dispatch({type:ActionTypes.PASTE_SELECTED_NODE}),
-    onDeleteSelectedNode: () => dispatch({type:ActionTypes.DELETED_SELECTED_NODE}),
+    onDeleteSelectedNode: () => dispatch({type:ActionTypes.DELETE_SELECTED_NODE}),
 
     onSetEditorPanel: (el, nodecb) => dispatch({ type: ActionTypes.SET_GRAPH_PANEL, payload: {el, nodecb}}),
   };

@@ -45,24 +45,32 @@ function globalReducer(state, action) {
     return state;
 
   case ActionTypes.CUT_SELECTED_NODE:
-    if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode) {
+    if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
       throw "No node selected";
     }
+    let selectedNode = mutable.getEditor().selectedNode;
+    mutable.getEditor().copyNode(selectedNode);
+    mutable.getEditor().deleteNode(selectedNode);
     return state;
 
   case ActionTypes.COPY_SELECTED_NODE:
-    if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode) {
+    if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
       throw "No node selected";
     }
+    mutable.getEditor().copyNode(mutable.getEditor().selectedNode);
     return state;
 
   case ActionTypes.PASTE_SELECTED_NODE:
-    if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode) {
-      throw "No node selected";
+    if(!mutable.getEditor() || !mutable.getEditor().copiedNode) {
+      throw "No copied or cut node";
     }
-    return state;
+    let copiedNode = mutable.getEditor().copiedNode;
+    let posCopiedNodeOffsetIndex = (state.editor.curNodeId % 12) - 6;
+    let copiedNodeoffset         = posCopiedNodeOffsetIndex * 15;
+    mutable.getEditor().createNode(copiedNode.type, state.nodedefs.defs[copiedNode.type], "Node_" + state.editor.curNodeId, 400 + copiedNodeoffset, 200 + copiedNodeoffset);
+    return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
 
-  case ActionTypes.DELETED_SELECTED_NODE:
+  case ActionTypes.DELETE_SELECTED_NODE:
     if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode()) {
       throw "No node selected";
     }
