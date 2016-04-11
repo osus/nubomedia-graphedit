@@ -222,10 +222,6 @@ export default class GraphEditor {
         });
     }
 
-    getSelectedNode() {
-        return this.selectedNode;
-    }
-
     getConnections() {
         return this.instance.getConnections().map((connection) => ({
             source: connection.sourceId,

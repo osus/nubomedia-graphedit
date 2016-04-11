@@ -15,7 +15,7 @@ function globalReducer(state, action) {
     mutable.setupNewEditor(null, state.nodedefs);
     return {...state,
       graphs: action.payload.graphs,
-      editor: {...defaultEditorState, filename: action.payload.filename}
+      editor: {...defaultEditorState, filename: action.payload.filename, curNodeId: action.payload.curNodeId}
     };
 
   case ActionTypes.CREATE_NODE:
@@ -34,14 +34,6 @@ function globalReducer(state, action) {
       throw "Unknown node type " + action.payload.node.type;
     }
     mutable.getEditor().deleteNode(node);
-    return state;
-
-  case ActionTypes.SAVE_CURRENT_GRAPH:
-    if (mutable.getEditor() && action.payload.name) {
-      return {...state,
-        graphs: { ...state.graphs, [action.payload.name]: mutable.getEditedGraph()}
-      };
-    }
     return state;
 
   case ActionTypes.CUT_SELECTED_NODE:
@@ -71,10 +63,18 @@ function globalReducer(state, action) {
     return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
 
   case ActionTypes.DELETE_SELECTED_NODE:
-    if(!mutable.getEditor() || !mutable.getEditor().getSelectedNode()) {
+    if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
       throw "No node selected";
     }
-    mutable.getEditor().deleteNode(mutable.getEditor().getSelectedNode());
+    mutable.getEditor().deleteNode(mutable.getEditor().selectedNode);
+    return state;
+
+  case ActionTypes.SAVE_CURRENT_GRAPH:
+    if (mutable.getEditor() && action.payload.name) {
+      return {...state,
+        graphs: { ...state.graphs, [action.payload.name]: mutable.getEditedGraph()}
+      };
+    }
     return state;
 
   case ActionTypes.SELECT_GRAPH:
@@ -83,6 +83,7 @@ function globalReducer(state, action) {
     let graph;
     if (name in state.graphs) {
       graph = state.graphs[name];
+      graph.curNodeId = state.editor.curNodeId || 1;
     } else {
       // Generate new graph name
       // TODO: ensure unique
