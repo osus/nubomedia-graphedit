@@ -9,16 +9,23 @@ export default class GraphPanel extends React.Component {
     this.state = {showNodeModal: false, node: null};
   }
   closeNodeModal() {
+    // TODO: Discard changes
     this.setState({ showNodeModal: false, node: null }); // TODO: ensure this won't leave leaks
   }
   nodeClickHandler(editor, node) {
-    this.setState({ showNodeModal: true, node: node });
+    this.setState({ showNodeModal: true, node: node});
   }
   onDeleteNode() {
     this.closeNodeModal();
     this.props.onDeleteNode(this.state.node);
   }
-
+  onSavePropsNode() {
+    this.setState({showNodeModal: false, node: null}); // TODO: ensure this won't leave leaks
+  }
+  onChangeNodeProp(e) {
+    this.state.node.properties[e.target.name] = e.target.value;
+    this.setState({node: this.state.node});
+  }
   render() {
     let nodemodal = null;
     if (this.state.showNodeModal) {
@@ -28,6 +35,8 @@ export default class GraphPanel extends React.Component {
           nodedefs={this.props.nodedefs}
           onDeleteNode={this.onDeleteNode.bind(this)}
           closeNodeModal={this.closeNodeModal.bind(this)}
+          onSavePropsNode={this.onSavePropsNode.bind(this)}
+          onChangeNodeProp={this.onChangeNodeProp.bind(this)}
         />;
     }
     return (

@@ -1,6 +1,6 @@
 
 // Nodedefs
-export const ADD_NODEDEF = 'ADD_NODEDEF'
+export const ADD_NODEDEF  = 'ADD_NODEDEF'
 export const ADD_NODEDEFS = 'ADD_NODEDEFS'
 
 // Graph editing

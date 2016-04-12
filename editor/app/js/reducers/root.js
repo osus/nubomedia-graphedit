@@ -29,11 +29,10 @@ function globalReducer(state, action) {
     return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
 
   case ActionTypes.DELETE_NODE:
-    let node = action.payload.node;
     if (!mutable.getEditor() || !(action.payload.node.type in state.nodedefs.defs)) {
       throw "Unknown node type " + action.payload.node.type;
     }
-    mutable.getEditor().deleteNode(node);
+    mutable.getEditor().deleteNode(action.payload.node);
     return state;
 
   case ActionTypes.CUT_SELECTED_NODE:

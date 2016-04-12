@@ -223,23 +223,23 @@ function mapDispatchToProps(dispatch) {
 
     onAddNodedefs: (defs) => dispatch({type:ActionTypes.ADD_NODEDEFS, payload: defs}),
 
-    onAddGraph: (name, graph) => dispatch({type:ActionTypes.ADD_GRAPH, payload: {name, graph}}),
-    onSaveCurrentGraph: (name) => dispatch({type:ActionTypes.SAVE_CURRENT_GRAPH, payload: {name}}),
-    onGraphSelect: (name) => dispatch({type:ActionTypes.SELECT_GRAPH, payload: {name}}),
-    onRenameGraph: (oldName, newName) => dispatch({type:ActionTypes.RENAME_GRAPH, payload: {oldName, newName}}),
+    onAddGraph: (name, graph) => dispatch({type: ActionTypes.ADD_GRAPH, payload: {name, graph}}),
+    onSaveCurrentGraph: (name) => dispatch({type: ActionTypes.SAVE_CURRENT_GRAPH, payload: {name}}),
+    onGraphSelect: (name) => dispatch({type: ActionTypes.SELECT_GRAPH, payload: {name}}),
+    onRenameGraph: (oldName, newName) => dispatch({type: ActionTypes.RENAME_GRAPH, payload: {oldName, newName}}),
 
-    onSetProject: (graphs, curNodeId, filename) => dispatch({type:ActionTypes.SET_PROJECT, payload: {graphs, curNodeId, filename}}),
-    onSetProjectFilename: (filename) => dispatch({type:ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
+    onSetProject: (graphs, curNodeId, filename) => dispatch({type: ActionTypes.SET_PROJECT, payload: {graphs, curNodeId, filename}}),
+    onSetProjectFilename: (filename) => dispatch({type: ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
 
-    onCreateNode: (type) => dispatch({type:ActionTypes.CREATE_NODE, payload: {type}}),
-    onDeleteNode: (node) => dispatch({type:ActionTypes.DELETE_NODE, payload: {node}}),
+    onCreateNode: (type) => dispatch({type: ActionTypes.CREATE_NODE, payload: {type}}),
+    onDeleteNode: (node) => dispatch({type: ActionTypes.DELETE_NODE, payload: {node}}),
 
-    onCutSelectedNode: () => dispatch({type:ActionTypes.CUT_SELECTED_NODE}),
-    onCopySelectedNode: () => dispatch({type:ActionTypes.COPY_SELECTED_NODE}),
-    onPasteSelectedNode: () => dispatch({type:ActionTypes.PASTE_SELECTED_NODE}),
-    onDeleteSelectedNode: () => dispatch({type:ActionTypes.DELETE_SELECTED_NODE}),
+    onCutSelectedNode: () => dispatch({type: ActionTypes.CUT_SELECTED_NODE}),
+    onCopySelectedNode: () => dispatch({type: ActionTypes.COPY_SELECTED_NODE}),
+    onPasteSelectedNode: () => dispatch({type: ActionTypes.PASTE_SELECTED_NODE}),
+    onDeleteSelectedNode: () => dispatch({type: ActionTypes.DELETE_SELECTED_NODE}),
 
-    onSetEditorPanel: (el, nodecb) => dispatch({ type: ActionTypes.SET_GRAPH_PANEL, payload: {el, nodecb}}),
+    onSetEditorPanel: (el, nodecb) => dispatch({type: ActionTypes.SET_GRAPH_PANEL, payload: {el, nodecb}}),
   };
 }
 

@@ -64,7 +64,7 @@ export default class GraphEditor {
             ]
         });
         this.instance.setContainer(container);
-        this.nodeClickHandler = nodecb;
+        this.nodeClickHandler    = nodecb;
         this.deselectNodeHandler = null;
 
         this.nodes = [];
