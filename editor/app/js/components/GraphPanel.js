@@ -7,13 +7,19 @@ export default class GraphPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {showNodeModal: false, node: null};
+    this.initialNode = null;
   }
   closeNodeModal() {
-    // TODO: Discard changes
+    Object.keys(this.initialNode.props).map(
+      (key) => {
+        let p = this.initialNode.props[key];
+        this.state.node.properties[key] = p;
+      });
     this.setState({ showNodeModal: false, node: null }); // TODO: ensure this won't leave leaks
   }
   nodeClickHandler(editor, node) {
     this.setState({ showNodeModal: true, node: node});
+    this.initialNode = React.cloneElement(node, node.properties);
   }
   onDeleteNode() {
     this.closeNodeModal();
