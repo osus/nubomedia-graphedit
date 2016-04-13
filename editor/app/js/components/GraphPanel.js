@@ -6,7 +6,7 @@ import NodeModal from './NodeModal';
 export default class GraphPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {showNodeModal: false, node: null};
+    this.state = {showNodeModal: false, showProjectModal: false, node: null};
     this.initialNode = null;
   }
   closeNodeModal() {
@@ -22,8 +22,8 @@ export default class GraphPanel extends React.Component {
     this.initialNode = React.cloneElement(node, node.properties);
   }
   onDeleteNode() {
-    this.closeNodeModal();
     this.props.onDeleteNode(this.state.node);
+    this.setState({ showNodeModal: false, node: null }); // TODO: ensure this won't leave leaks
   }
   onSavePropsNode() {
     this.setState({showNodeModal: false, node: null}); // TODO: ensure this won't leave leaks

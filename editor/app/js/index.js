@@ -81,14 +81,17 @@ class NuboEditor extends React.Component {
     let path = platformAPI.selectOpenProject();
     console.log(path);
     if (path) {
-      let prj = platformAPI.readJSONFile(path) || {graphs:{}, curNodeId: 0};
-      this._setProject(prj.graphs, prj.curNodeId, path);
+      let prj = platformAPI.readJSONFile(path) || {graphs:{}, editor: {}};
+      this._setProject(prj.graphs, prj.editor, path);
+      if (prj.editor.currentGraph) {
+        this.graphSelect(prj.editor.currentGraph);
+      }
     }
   }
 
-  _setProject(graphs, curNodeId, path) {
+  _setProject(graphs, editor, path) {
     // TODO: Project is NOT SAVED
-    this.props.onSetProject(graphs, curNodeId, path);
+    this.props.onSetProject(graphs, editor, path);
   }
 
   saveProject() {
@@ -96,7 +99,7 @@ class NuboEditor extends React.Component {
       this.saveProjectAs();
     } else {
       this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
-      platformAPI.writeJSONFile(this.props.editor.filename, { graphs: store.getState().graphs, curNodeId: store.getState().editor.curNodeId || 0 }); // UGH getState() after being modified by previous dispatch
+      platformAPI.writeJSONFile(this.props.editor.filename, {graphs: store.getState().graphs, editor: store.getState().editor}); // UGH getState() after being modified by previous dispatch
     }
   }
 
@@ -105,7 +108,7 @@ class NuboEditor extends React.Component {
     console.log(path);
     if (path) {
       this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
-      platformAPI.writeJSONFile(path, { graphs:store.getState().graphs, curNodeId: store.getState().editor.curNodeId || 0 }); // UGH getState() after being modified by previous dispatch
+      platformAPI.writeJSONFile(path, {graphs: store.getState().graphs, editor: store.getState().editor}); // UGH getState() after being modified by previous dispatch
       this.props.onSetProjectFilename(path);
     }
   }
@@ -228,7 +231,7 @@ function mapDispatchToProps(dispatch) {
     onGraphSelect: (name) => dispatch({type: ActionTypes.SELECT_GRAPH, payload: {name}}),
     onRenameGraph: (oldName, newName) => dispatch({type: ActionTypes.RENAME_GRAPH, payload: {oldName, newName}}),
 
-    onSetProject: (graphs, curNodeId, filename) => dispatch({type: ActionTypes.SET_PROJECT, payload: {graphs, curNodeId, filename}}),
+    onSetProject: (graphs, editor, filename) => dispatch({type: ActionTypes.SET_PROJECT, payload: {graphs, editor, filename}}),
     onSetProjectFilename: (filename) => dispatch({type: ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
 
     onCreateNode: (type) => dispatch({type: ActionTypes.CREATE_NODE, payload: {type}}),

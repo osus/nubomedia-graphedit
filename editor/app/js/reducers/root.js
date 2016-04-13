@@ -11,11 +11,11 @@ import * as mutable from './mutable'
 // Applied to the entire state
 function globalReducer(state, action) {
   switch (action.type) {
-  case ActionTypes.SET_PROJECT:
+    case ActionTypes.SET_PROJECT:
     mutable.setupNewEditor(null, state.nodedefs);
     return {...state,
       graphs: action.payload.graphs,
-      editor: {...defaultEditorState, filename: action.payload.filename, curNodeId: action.payload.curNodeId}
+      editor: {...defaultEditorState, ...action.payload.editor}
     };
 
   case ActionTypes.CREATE_NODE:

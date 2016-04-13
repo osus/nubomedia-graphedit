@@ -23,10 +23,10 @@ export default class EditorMenu extends React.Component {
         </Navbar.Header>
         <Nav>
           <NavDropdown title='Project' id="project-dd">
-            <MenuItem onClick={this.props.resetProject} >New</MenuItem>
-            <MenuItem onClick={this.props.loadProject} >Load</MenuItem>
-            <MenuItem onClick={this.props.saveProject} >Save</MenuItem>
-            <MenuItem onClick={this.props.saveProjectAs} >Save As...</MenuItem>
+            <MenuItem onClick={this.props.resetProject}>New</MenuItem>
+            <MenuItem onClick={this.props.loadProject}>Load</MenuItem>
+            <MenuItem onClick={this.props.saveProject}>Save</MenuItem>
+            <MenuItem onClick={this.props.saveProjectAs}>Save As...</MenuItem>
             <MenuItem divider />
             <MenuItem>Import Nodedefs</MenuItem>
           </NavDropdown>
