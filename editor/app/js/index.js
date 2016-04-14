@@ -82,7 +82,9 @@ class NuboEditor extends React.Component {
 
   setProjectProperties(projectName, packageName, graphName) {
     this.props.onSetProjectProperties(projectName, packageName);
-    this.props.onRenameGraph(this.props.editor.currentGraph, graphName);
+    if (graphName != this.props.editor.currentGraph) {
+      this.props.onRenameGraph(this.props.editor.currentGraph, graphName);
+    }
   }
 
   loadProject() {
@@ -229,9 +231,6 @@ function mapStateToProps(state)  {
 // Map Redux actions to component props
 function mapDispatchToProps(dispatch) {
   return {
-    // TODO: remove: test code
-    //onAddNodedef: () => dispatch({type:ActionTypes.ADD_NODEDEF, payload: {name: "NodeDef!"+Math.round(Math.random()*6)}}),
-
     onAddNodedefs: (defs) => dispatch({type:ActionTypes.ADD_NODEDEFS, payload: defs}),
 
     onAddGraph: (name, graph) => dispatch({type: ActionTypes.ADD_GRAPH, payload: {name, graph}}),

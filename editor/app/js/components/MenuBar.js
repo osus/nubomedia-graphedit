@@ -36,7 +36,7 @@ export default class EditorMenu extends React.Component {
             <MenuItem onClick={this.props.onPasteSelectedNode}>Paste</MenuItem>
             <MenuItem onClick={this.props.onDeleteSelectedNode}>Delete</MenuItem>
           </NavDropdown>
-          <NavDropdown title='Graphs' id="graphs-dd">
+          <NavDropdown title='Graphs' id="graphs-dd" disabled={!this.props.editor.name}>
             <MenuItem eventKey='4'
               onClick={()=> {this.props.onGraphSelect("")}}>New Graph</MenuItem>
             <MenuItem divider />
