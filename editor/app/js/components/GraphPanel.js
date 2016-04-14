@@ -7,8 +7,10 @@ import NodeModal from './NodeModal';
 export default class GraphPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {showNodeModal: false, showProjectModal: false, projectEdit: false, node: null};
-    this.initialNode = null;
+    this.state = {
+      showProjectModal: false, projectEdit: false,
+      showNodeModal: false, node: null, initialNode: null, currentNodeName: null
+    };
   }
 
   // Project
@@ -25,23 +27,29 @@ export default class GraphPanel extends React.Component {
 
   // Node
   closeNodeModal() {
-    Object.keys(this.initialNode.props).map(
+    Object.keys(this.state.initialNode.props).map(
       (key) => {
-        let p = this.initialNode.props[key];
-        this.state.node.properties[key] = p;
+        this.state.node.properties[key] = this.state.initialNode.props[key];
       });
-    this.setState({ showNodeModal: false, node: null }); // TODO: ensure this won't leave leaks
+    this.setState({showNodeModal: false, node: null}); // TODO: ensure this won't leave leaks
   }
   nodeClickHandler(editor, node) {
-    this.setState({ showNodeModal: true, node: node});
-    this.initialNode = React.cloneElement(node, node.properties);
+    this.setState({showNodeModal: true, node: node, initialNode: React.cloneElement(node, node.properties), currentNodeName: node.name});
   }
   onDeleteNode() {
     this.props.onDeleteNode(this.state.node);
-    this.setState({showNodeModal: false, node: null}); // TODO: ensure this won't leave leaks
+    this.setState({showNodeModal: false, node: null, initialNode: null, currentNodeName: null}); // TODO: ensure this won't leave leaks
   }
   onSavePropsNode() {
-    this.setState({showNodeModal: false, node: null}); // TODO: ensure this won't leave leaks
+    if (this.state.currentNodeName != null && this.state.currentNodeName != this.state.node.name) {
+      // TODO: Ensure if unique
+      this.state.node.name = this.state.currentNodeName;
+      this.setState({node: {...this.state.node}});
+    }
+    this.setState({showNodeModal: false, node: null, initialNode: null, currentNodeName: null}); // TODO: ensure this won't leave leaks
+  }
+  onChangeNodeName(e) {
+    this.setState({currentNodeName: e.target.value});
   }
   onChangeNodeProp(e) {
     this.state.node.properties[e.target.name] = e.target.value;
@@ -63,10 +71,12 @@ export default class GraphPanel extends React.Component {
       nodemodal =
         <NodeModal
           node={this.state.node}
+          currentNodeName={this.state.currentNodeName}
           nodedefs={this.props.nodedefs}
           onDeleteNode={this.onDeleteNode.bind(this)}
           closeNodeModal={this.closeNodeModal.bind(this)}
           onSavePropsNode={this.onSavePropsNode.bind(this)}
+          onChangeNodeName={this.onChangeNodeName.bind(this)}
           onChangeNodeProp={this.onChangeNodeProp.bind(this)}
         />;
     }

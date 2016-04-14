@@ -130,7 +130,6 @@ export default class GraphEditor {
     }
 
     createNode(type, def, id, x, y, savedProps) {
-
         // Helper function to create the endpoints for the anchors of a given node
         var _addEndpoints = (toId, anchors) => {
             anchors.map((a) => {

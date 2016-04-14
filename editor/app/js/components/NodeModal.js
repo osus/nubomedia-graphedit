@@ -43,9 +43,19 @@ export default class NodeModal extends React.Component {
     return (
       <Modal show={true} onHide={this.props.closeNodeModal} bsSize="large">
         <Modal.Header closeButton>
-          <Modal.Title>{this.props.node.type} Node: {this.props.node.name}</Modal.Title>
+          <Modal.Title>{this.props.node.type} Node: {this.props.currentNodeName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <h4>Node:</h4>
+          <div className="form-horizontal">
+            <Input type="text"
+                   name="nodeName"
+                   label="Name: "
+                   labelClassName="col-xs-3" wrapperClassName="col-xs-9"
+                   onChange={this.props.onChangeNodeName}
+                   value={this.props.currentNodeName}>
+            </Input>
+          </div>
           <h4>Properties:</h4>
           {modalFields}
         </Modal.Body>

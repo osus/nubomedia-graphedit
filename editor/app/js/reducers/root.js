@@ -42,6 +42,9 @@ function globalReducer(state, action) {
       mutable.getEditor().deleteNode(action.payload.node);
       return state;
 
+    case ActionTypes.RENAME_NODE:
+      return state;
+
     case ActionTypes.CUT_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
         throw "No node selected";
