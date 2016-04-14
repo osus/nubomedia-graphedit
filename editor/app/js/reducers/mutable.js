@@ -7,15 +7,17 @@ import GraphEditor from '../GraphEditor'
 
 var editor = null;
 var editorContainer = null;
-var editorNodecb = null;
+var editorProjectcb = null;
+var editorNodecb    = null;
 
 export function getEditor() {
   return editor;
 }
 
-export function setContainer(el, nodecb) {
+export function setContainer(el, projectcb, nodecb) {
   editorContainer = el;
-  editorNodecb = nodecb;
+  editorProjectcb = projectcb;
+  editorNodecb    = nodecb;
 }
 
 export function getEditedGraph() {
@@ -40,7 +42,7 @@ function setEditor(e) {
 export function setupNewEditor(graph, nodedefs) {
   setEditor(null);
   if (graph) {
-    setEditor(new GraphEditor(editorContainer, editorNodecb));
+    setEditor(new GraphEditor(editorContainer, editorProjectcb, editorNodecb));
     editor.batch( function(editor) {
       graph.nodes.forEach((node) => editor.createNode(node.type, nodedefs.defs[node.type], node.name, node.x, node.y));
       graph.connections.forEach((c) => editor.createConnection(c.source, c.sourceEP, c.target, c.targetEP));

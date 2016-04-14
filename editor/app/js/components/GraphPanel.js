@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import ProjectModal from './ProjectModal';
 import NodeModal from './NodeModal';
 
 export default class GraphPanel extends React.Component {
@@ -9,6 +10,20 @@ export default class GraphPanel extends React.Component {
     this.state = {showNodeModal: false, showProjectModal: false, node: null};
     this.initialNode = null;
   }
+
+  // Project
+  closeProjectModal() {
+    this.setState({showProjectModal: false});
+  }
+  projectClickHandler() {
+    this.setState({showProjectModal: true});
+  }
+  setProjectProperties(projectName, packageName, graphName) {
+    this.setState({showProjectModal: false});
+    this.props.setProjectProperties(projectName, packageName, graphName);
+  }
+
+  // Node
   closeNodeModal() {
     Object.keys(this.initialNode.props).map(
       (key) => {
@@ -23,7 +38,7 @@ export default class GraphPanel extends React.Component {
   }
   onDeleteNode() {
     this.props.onDeleteNode(this.state.node);
-    this.setState({ showNodeModal: false, node: null }); // TODO: ensure this won't leave leaks
+    this.setState({showNodeModal: false, node: null}); // TODO: ensure this won't leave leaks
   }
   onSavePropsNode() {
     this.setState({showNodeModal: false, node: null}); // TODO: ensure this won't leave leaks
@@ -32,8 +47,17 @@ export default class GraphPanel extends React.Component {
     this.state.node.properties[e.target.name] = e.target.value;
     this.setState({node: this.state.node});
   }
+
   render() {
-    let nodemodal = null;
+    let projectmodal = null;
+    let nodemodal    = null;
+    if (this.state.showProjectModal) {
+      projectmodal =
+        <ProjectModal editor={this.props.editor}
+          closeProjectModal={this.closeProjectModal.bind(this)}
+          setProjectProperties={this.setProjectProperties.bind(this)}
+        />
+    }
     if (this.state.showNodeModal) {
       nodemodal =
         <NodeModal
@@ -49,13 +73,14 @@ export default class GraphPanel extends React.Component {
       <div id="graphpanel" className="panel panel-default" style={{height:"600px",width:"100%"}}>
         <div className="demo nuboged" ref="editor_panel" id="nuboged-container" >
         </div>
+        {projectmodal}
         {nodemodal}
       </div>
     );
   }
   // Can't use callback ref because a dynamic callback (needed to use 'this') gets fired every update
   componentDidMount() {
-    this.props.onSetEditorPanel(this.refs.editor_panel, this.nodeClickHandler.bind(this));
+    this.props.onSetEditorPanel(this.refs.editor_panel, this.projectClickHandler.bind(this), this.nodeClickHandler.bind(this));
   }
   componentWillUnmount() {
     this.props.onSetEditorPanel(null);

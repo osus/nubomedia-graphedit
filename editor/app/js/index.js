@@ -26,7 +26,7 @@ class NuboEditor extends React.Component {
       <div>
       <MenuBar
         graphs={this.props.graphs} nodedefs={this.props.nodedefs} editor={this.props.editor}
-        resetProject={() => this.resetProject()}
+        createProject={() => this.createProject()}
         loadProject={() => this.loadProject()}
         saveProject={() => this.saveProject()}
         saveProjectAs={() => this.saveProjectAs()}
@@ -40,8 +40,9 @@ class NuboEditor extends React.Component {
       <InfoBar editor={this.props.editor}
         renameGraph={this.props.onRenameGraph}
       />
-      <GraphPanel
+      <GraphPanel editor={this.props.editor}
         onSetEditorPanel={this.props.onSetEditorPanel}
+        setProjectProperties={(projectName, packageName, graphName) => this.setProjectProperties(projectName, packageName, graphName)}
         onDeleteNode={this.props.onDeleteNode}
         nodedefs={this.props.nodedefs} />
       </div>
@@ -73,8 +74,15 @@ class NuboEditor extends React.Component {
     }
   }
 
-  resetProject() {
+  createProject() {
     this._setProject({}, "");
+    this.graphSelect("");
+    this.props.onCreateProject();
+  }
+
+  setProjectProperties(projectName, packageName, graphName) {
+    this.props.onSetProjectProperties(projectName, packageName);
+    this.props.onRenameGraph(this.props.editor.currentGraph, graphName);
   }
 
   loadProject() {
@@ -231,8 +239,10 @@ function mapDispatchToProps(dispatch) {
     onGraphSelect: (name) => dispatch({type: ActionTypes.SELECT_GRAPH, payload: {name}}),
     onRenameGraph: (oldName, newName) => dispatch({type: ActionTypes.RENAME_GRAPH, payload: {oldName, newName}}),
 
+    onCreateProject: () => dispatch({type: ActionTypes.CREATE_PROJECT}),
     onSetProject: (graphs, editor, filename) => dispatch({type: ActionTypes.SET_PROJECT, payload: {graphs, editor, filename}}),
     onSetProjectFilename: (filename) => dispatch({type: ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
+    onSetProjectProperties: (projectName, packageName) => dispatch({type: ActionTypes.SET_PROJECT_PROPERTIES, payload: {projectName, packageName}}),
 
     onCreateNode: (type) => dispatch({type: ActionTypes.CREATE_NODE, payload: {type}}),
     onDeleteNode: (node) => dispatch({type: ActionTypes.DELETE_NODE, payload: {node}}),
@@ -242,7 +252,7 @@ function mapDispatchToProps(dispatch) {
     onPasteSelectedNode: () => dispatch({type: ActionTypes.PASTE_SELECTED_NODE}),
     onDeleteSelectedNode: () => dispatch({type: ActionTypes.DELETE_SELECTED_NODE}),
 
-    onSetEditorPanel: (el, nodecb) => dispatch({type: ActionTypes.SET_GRAPH_PANEL, payload: {el, nodecb}}),
+    onSetEditorPanel: (el, projectcb, nodecb) => dispatch({type: ActionTypes.SET_GRAPH_PANEL, payload: {el, projectcb, nodecb}}),
   };
 }
 

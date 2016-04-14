@@ -53,7 +53,7 @@ function makeUUID(node, ep) { return `${node}.${ep}` }
 
 export default class GraphEditor {
 
-    constructor(container, nodecb) {
+    constructor(container, projectcb, nodecb) {
         this.instance = jsPlumb.getInstance({
             // default drag options
             DragOptions: { cursor: 'pointer', zIndex: 2000 },
@@ -64,6 +64,8 @@ export default class GraphEditor {
             ]
         });
         this.instance.setContainer(container);
+
+        this.projectClickHandler = projectcb;
         this.nodeClickHandler    = nodecb;
         this.deselectNodeHandler = null;
 
