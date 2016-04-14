@@ -29,8 +29,6 @@ export default class EditorMenu extends React.Component {
             <MenuItem onClick={this.props.saveProjectAs} disabled={!this.props.editor.name}>Save As...</MenuItem>
             <MenuItem onClick={this.props.editProject} disabled={!this.props.editor.name}>Project properties</MenuItem>
             <MenuItem onClick={this.props.closeProject} disabled={!this.props.editor.name}>Close Project</MenuItem>
-            <MenuItem divider />
-            <MenuItem>Import Nodedefs</MenuItem>
           </NavDropdown>
           <NavDropdown title='Edit' id="edit-dd">
             <MenuItem onClick={this.props.onCutSelectedNode}>Cut</MenuItem>

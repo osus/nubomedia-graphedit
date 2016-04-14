@@ -45,7 +45,7 @@ export default class GraphPanel extends React.Component {
     if (this.state.currentNodeName != null && this.state.currentNodeName != this.state.node.name) {
       // TODO: Ensure if unique
       this.state.node.name = this.state.currentNodeName;
-      this.setState({node: {...this.state.node}});
+      this.setState({node: this.state.node});
     }
     this.setState({showNodeModal: false, node: null, initialNode: null, currentNodeName: null}); // TODO: ensure this won't leave leaks
   }
