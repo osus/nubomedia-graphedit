@@ -120,21 +120,28 @@ class NuboEditor extends React.Component {
   }
 
   saveProject() {
-    if (!this.props.editor.filename) {
-      this.saveProjectAs();
-    } else {
-      this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
-      platformAPI.writeJSONFile(this.props.editor.filename, {graphs: store.getState().graphs, editor: store.getState().editor}); // UGH getState() after being modified by previous dispatch
+    if (this.props.editor.name) {
+      if (!this.props.editor.filename) {
+        this.saveProjectAs();
+      } else {
+        this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
+        platformAPI.writeJSONFile(this.props.editor.filename, {
+          graphs: store.getState().graphs,
+          editor: store.getState().editor
+        }); // UGH getState() after being modified by previous dispatch
+      }
     }
   }
 
   saveProjectAs() {
-    let path = platformAPI.selectSaveProject();
-    console.log(path);
-    if (path) {
-      this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
-      platformAPI.writeJSONFile(path, {graphs: store.getState().graphs, editor: store.getState().editor}); // UGH getState() after being modified by previous dispatch
-      this.props.onSetProjectFilename(path);
+    if (this.props.editor.name) {
+      let path = platformAPI.selectSaveProject();
+      console.log(path);
+      if (path) {
+        this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
+        platformAPI.writeJSONFile(path, {graphs: store.getState().graphs, editor: store.getState().editor}); // UGH getState() after being modified by previous dispatch
+        this.props.onSetProjectFilename(path);
+      }
     }
   }
 }
