@@ -22,6 +22,6 @@ export function selectOpenProject() {
   return ipc.sendSync('selectOpenProject');
 }
 
-export function selectSaveProject() {
-  return desktopMode? ipc.sendSync('selectSaveProject') : "unnamed.ngeprj";
+export function selectSaveProject(projectname) {
+  return desktopMode? ipc.sendSync('selectSaveProject', projectname ) : projectname + ".ngeprj";
 }

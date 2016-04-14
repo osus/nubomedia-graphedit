@@ -59,7 +59,7 @@ app.on('ready', function() {
     console.log('selectSaveProject: ', arg);
     var path = dialog.showSaveDialog(mainWindow, {
       title:"Save Project as...",
-      defaultPath: "./untitled.ngeprj",
+      defaultPath: "./" + arg.replace(/ /g,"_") + ".ngeprj",
       filters: [{ name: 'Project files', extensions: ['ngeprj'] },
                 { name: 'All Files', extensions: ['*'] }]
     });

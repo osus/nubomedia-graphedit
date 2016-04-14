@@ -135,7 +135,7 @@ class NuboEditor extends React.Component {
 
   saveProjectAs() {
     if (this.props.editor.name) {
-      let path = platformAPI.selectSaveProject();
+      let path = platformAPI.selectSaveProject(this.props.editor.name);
       console.log(path);
       if (path) {
         this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
