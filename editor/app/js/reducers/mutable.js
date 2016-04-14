@@ -44,7 +44,7 @@ export function setupNewEditor(graph, nodedefs) {
   if (graph) {
     setEditor(new GraphEditor(editorContainer, editorProjectcb, editorNodecb));
     editor.batch( function(editor) {
-      graph.nodes.forEach((node) => editor.createNode(node.type, nodedefs.defs[node.type], node.name, node.x, node.y));
+      graph.nodes.forEach((node) => editor.createNode(node.type, nodedefs.defs[node.type], node.name, node.x, node.y, node.properties));
       graph.connections.forEach((c) => editor.createConnection(c.source, c.sourceEP, c.target, c.targetEP));
     });
   }
