@@ -6,42 +6,27 @@ import { Modal, Button, Input } from 'react-bootstrap';
 export default class ProjectModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {showProjectBody: true, showGraphBody: false,
-      projectName: this.props.editor.name, packageName: this.props.editor.package, graphName: this.props.editor.currentGraph};
-  }
-  onProjectNext() {
-    this.setState({showProjectBody: false, showGraphBody: true});
-  }
-  onGraphBack() {
-    this.setState({showProjectBody: true, showGraphBody: false});
+    this.state = {projectName: this.props.editor.name, packageName: this.props.editor.package};
   }
   onSave() {
-    this.setState({showProjectBody: true, showGraphBody: false});
-    this.props.setProjectProperties(this.state.projectName, this.state.packageName, this.state.graphName);
+    this.props.setProjectProperties(this.state.projectName, this.state.packageName);
   }
   onEdit() {
-    this.setState({showProjectBody: true, showGraphBody: false});
-    this.props.setProjectProperties(this.state.projectName, this.state.packageName, this.state.graphName);
+    this.props.setProjectProperties(this.state.projectName, this.state.packageName);
   }
   render() {
+    let modalTitle = (!this.props.projectEdit) ? "Create project" : "Edit project";
     let onChangeProjectName = (e) => {
       this.setState({projectName: e.target.value})
     };
     let onChangePackageName = (e) => {
       this.setState({packageName: e.target.value})
     };
-    let onChangeGraphName = (e) => {
-      this.setState({graphName: e.target.value})
-    };
-
-    let modalTitle    = (!this.props.projectEdit) ? "Create project" : "Edit project";
-    let projectbody   = null;
-    let projectfooter = null;
-    let graphbody     = null;
-    let graphfooter   = null;
-
-    if (this.state.showProjectBody) {
-      projectbody =
+    return (
+      <Modal show={true} onHide={this.props.closeProjectModal} bsSize="large">
+        <Modal.Header closeButton>
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
         <Modal.Body>
           <div className="form-horizontal">
             <Input type="text"
@@ -62,52 +47,11 @@ export default class ProjectModal extends React.Component {
                    onChange={onChangePackageName}
                    value={this.state.packageName}/>
           </div>
-        </Modal.Body>;
-      if (!this.props.projectEdit) {
-        projectfooter =
-          <Modal.Footer>
-            <Button onClick={this.props.closeProjectModal}>Close</Button>
-            <Button onClick={() => this.onProjectNext()} bsStyle="primary">Next</Button>
-          </Modal.Footer>;
-      } else {
-        projectfooter =
-          <Modal.Footer>
-            <Button onClick={this.props.closeProjectModal}>Close</Button>
-            <Button onClick={() => this.onEdit()} bsStyle="primary">Save</Button>
-          </Modal.Footer>;
-      }
-    }
-    if (this.state.showGraphBody) {
-      graphbody =
-        <Modal.Body>
-          <div className="form-horizontal">
-            <Input type="text"
-                   name="graph_name"
-                   label="Graph name: "
-                   labelClassName="col-xs-3"
-                   wrapperClassName="col-xs-9"
-                   onChange={onChangeGraphName}
-                   value={this.state.graphName}
-                   autoFocus={true}/>
-          </div>
-        </Modal.Body>;
-      graphfooter =
+        </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.props.closeProjectModal}>Close</Button>
-          <Button onClick={() => this.onGraphBack()} bsStyle="danger">Back</Button>
-          <Button onClick={() => this.onSave()} bsStyle="primary">Create</Button>
+          <Button onClick={() => this.onEdit()} bsStyle="primary">Save</Button>
         </Modal.Footer>;
-    }
-
-    return (
-      <Modal show={true} onHide={this.props.closeProjectModal} bsSize="large">
-        <Modal.Header closeButton>
-          <Modal.Title>{modalTitle}</Modal.Title>
-        </Modal.Header>
-        {projectbody}
-        {projectfooter}
-        {graphbody}
-        {graphfooter}
       </Modal>
     );
   }

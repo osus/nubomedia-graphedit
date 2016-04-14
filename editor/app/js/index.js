@@ -33,7 +33,6 @@ class NuboEditor extends React.Component {
         saveProjectAs={() => this.saveProjectAs()}
         closeProject={() => this.closeProject()}
         onCreateNode={this.props.onCreateNode}
-        onGraphSelect={(name) => this.graphSelect(name)}
         onCutSelectedNode={() => this.props.onCutSelectedNode()}
         onCopySelectedNode={() => this.props.onCopySelectedNode()}
         onPasteSelectedNode={() => this.props.onPasteSelectedNode()}
@@ -79,7 +78,7 @@ class NuboEditor extends React.Component {
 
   createProject() {
     this._setProject({}, "");
-    this.graphSelect("");
+    this.graphSelect("graph");
     this.props.onCreateProject(false);
   }
 
@@ -95,11 +94,8 @@ class NuboEditor extends React.Component {
     }
   }
 
-  setProjectProperties(projectName, packageName, graphName) {
+  setProjectProperties(projectName, packageName) {
     this.props.onSetProjectProperties(projectName, packageName);
-    if (graphName != this.props.editor.currentGraph) {
-      this.props.onRenameGraph(this.props.editor.currentGraph, graphName);
-    }
   }
 
   loadProject() {

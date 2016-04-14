@@ -28,7 +28,6 @@ function globalReducer(state, action) {
     case ActionTypes.CREATE_NODE:
       if (!mutable.getEditor() || !(action.payload.type in state.nodedefs.defs)) {
         throw "Unknown node type " + action.payload.type;
-        return state;
       }
       let posOffsetIndex = (state.editor.curNodeId % 12) - 6;
       let offset = posOffsetIndex * 15;
@@ -42,7 +41,10 @@ function globalReducer(state, action) {
       mutable.getEditor().deleteNode(action.payload.node);
       return state;
 
-    case ActionTypes.RENAME_NODE:
+    case ActionTypes.RENAME_NODE_CONNECTIONS:
+      if (!mutable.getEditor() || !(action.payload.node.type in state.nodedefs.defs)) {
+        throw "Unknown node type " + action.payload.node.type;
+      }
       return state;
 
     case ActionTypes.CUT_SELECTED_NODE:

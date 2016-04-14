@@ -21,9 +21,9 @@ export default class GraphPanel extends React.Component {
   projectClickHandler(edit) {
     this.setState({showProjectModal: true, projectEdit: edit});
   }
-  setProjectProperties(projectName, packageName, graphName) {
+  setProjectProperties(projectName, packageName) {
     this.setState({showProjectModal: false, projectEdit: false});
-    this.props.setProjectProperties(projectName, packageName, graphName);
+    this.props.setProjectProperties(projectName, packageName);
   }
 
   // Node

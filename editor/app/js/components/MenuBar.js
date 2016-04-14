@@ -25,9 +25,11 @@ export default class EditorMenu extends React.Component {
           <NavDropdown title='Project' id="project-dd">
             <MenuItem onClick={this.props.createProject}>New</MenuItem>
             <MenuItem onClick={this.props.loadProject}>Load</MenuItem>
+            <MenuItem divider />
             <MenuItem onClick={this.props.saveProject} disabled={!this.props.editor.name}>Save</MenuItem>
-            <MenuItem onClick={this.props.saveProjectAs} disabled={!this.props.editor.name}>Save As...</MenuItem>
-            <MenuItem onClick={this.props.editProject} disabled={!this.props.editor.name}>Project properties</MenuItem>
+            <MenuItem onClick={this.props.saveProjectAs} disabled={!this.props.editor.name}>Save As…</MenuItem>
+            <MenuItem divider />
+            <MenuItem onClick={this.props.editProject} disabled={!this.props.editor.name}>Project Properties</MenuItem>
             <MenuItem onClick={this.props.closeProject} disabled={!this.props.editor.name}>Close Project</MenuItem>
           </NavDropdown>
           <NavDropdown title='Edit' id="edit-dd">
@@ -35,12 +37,6 @@ export default class EditorMenu extends React.Component {
             <MenuItem onClick={this.props.onCopySelectedNode}>Copy</MenuItem>
             <MenuItem onClick={this.props.onPasteSelectedNode}>Paste</MenuItem>
             <MenuItem onClick={this.props.onDeleteSelectedNode}>Delete</MenuItem>
-          </NavDropdown>
-          <NavDropdown title='Graphs' id="graphs-dd" disabled={!this.props.editor.name}>
-            <MenuItem eventKey='4'
-              onClick={()=> {this.props.onGraphSelect("")}}>New Graph</MenuItem>
-            <MenuItem divider />
-            { graphNames }
           </NavDropdown>
           <NavDropdown title='Nodes' id="nodes-dd" disabled={!this.props.editor.currentGraph || !this.props.editor.name}>
             { nodedefNames }
