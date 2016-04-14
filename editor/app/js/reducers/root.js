@@ -15,7 +15,7 @@ function globalReducer(state, action) {
       if (!mutable.getEditor() || !mutable.getEditor().projectClickHandler) {
         throw "No project handler";
       }
-      mutable.getEditor().projectClickHandler();
+      mutable.getEditor().projectClickHandler(action.payload.edit);
       return state;
 
     case ActionTypes.SET_PROJECT:

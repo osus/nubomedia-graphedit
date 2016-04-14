@@ -27,6 +27,7 @@ export default class EditorMenu extends React.Component {
             <MenuItem onClick={this.props.loadProject}>Load</MenuItem>
             <MenuItem onClick={this.props.saveProject}>Save</MenuItem>
             <MenuItem onClick={this.props.saveProjectAs}>Save As...</MenuItem>
+            <MenuItem onClick={this.props.editProject} disabled={!this.props.editor.name}>Project properties</MenuItem>
             <MenuItem divider />
             <MenuItem>Import Nodedefs</MenuItem>
           </NavDropdown>
@@ -42,7 +43,7 @@ export default class EditorMenu extends React.Component {
             <MenuItem divider />
             { graphNames }
           </NavDropdown>
-          <NavDropdown title='Nodes' id="nodes-dd" disabled={!this.props.editor.currentGraph}>
+          <NavDropdown title='Nodes' id="nodes-dd" disabled={!this.props.editor.currentGraph || !this.props.editor.name}>
             { nodedefNames }
           </NavDropdown>
         </Nav>

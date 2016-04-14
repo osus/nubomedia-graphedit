@@ -7,7 +7,7 @@ export default class ProjectModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {showProjectBody: true, showGraphBody: false,
-      projectName: "untitled", packageName: "untitled", graphName: this.props.editor.currentGraph};
+      projectName: this.props.editor.name, packageName: this.props.editor.package, graphName: this.props.editor.currentGraph};
   }
   onProjectNext() {
     this.setState({showProjectBody: false, showGraphBody: true});
@@ -16,6 +16,10 @@ export default class ProjectModal extends React.Component {
     this.setState({showProjectBody: true, showGraphBody: false});
   }
   onSave() {
+    this.setState({showProjectBody: true, showGraphBody: false});
+    this.props.setProjectProperties(this.state.projectName, this.state.packageName, this.state.graphName);
+  }
+  onEdit() {
     this.setState({showProjectBody: true, showGraphBody: false});
     this.props.setProjectProperties(this.state.projectName, this.state.packageName, this.state.graphName);
   }
@@ -30,6 +34,7 @@ export default class ProjectModal extends React.Component {
       this.setState({graphName: e.target.value})
     };
 
+    let modalTitle    = (!this.props.projectEdit) ? "Create project" : "Edit project";
     let projectbody   = null;
     let projectfooter = null;
     let graphbody     = null;
@@ -45,7 +50,8 @@ export default class ProjectModal extends React.Component {
                    labelClassName="col-xs-3"
                    wrapperClassName="col-xs-9"
                    onChange={onChangeProjectName}
-                   value={this.state.projectName}/>
+                   value={this.state.projectName}
+                   autoFocus={true}/>
           </div>
           <div className="form-horizontal">
             <Input type="text"
@@ -57,11 +63,19 @@ export default class ProjectModal extends React.Component {
                    value={this.state.packageName}/>
           </div>
         </Modal.Body>;
-      projectfooter =
-        <Modal.Footer>
-          <Button onClick={this.props.closeProjectModal}>Close</Button>
-          <Button onClick={() => this.onProjectNext()} bsStyle="primary">Next</Button>
-        </Modal.Footer>;
+      if (!this.props.projectEdit) {
+        projectfooter =
+          <Modal.Footer>
+            <Button onClick={this.props.closeProjectModal}>Close</Button>
+            <Button onClick={() => this.onProjectNext()} bsStyle="primary">Next</Button>
+          </Modal.Footer>;
+      } else {
+        projectfooter =
+          <Modal.Footer>
+            <Button onClick={this.props.closeProjectModal}>Close</Button>
+            <Button onClick={() => this.onEdit()} bsStyle="primary">Save</Button>
+          </Modal.Footer>;
+      }
     }
     if (this.state.showGraphBody) {
       graphbody =
@@ -73,7 +87,8 @@ export default class ProjectModal extends React.Component {
                    labelClassName="col-xs-3"
                    wrapperClassName="col-xs-9"
                    onChange={onChangeGraphName}
-                   value={this.state.graphName}/>
+                   value={this.state.graphName}
+                   autoFocus={true}/>
           </div>
         </Modal.Body>;
       graphfooter =
@@ -87,7 +102,7 @@ export default class ProjectModal extends React.Component {
     return (
       <Modal show={true} onHide={this.props.closeProjectModal} bsSize="large">
         <Modal.Header closeButton>
-          <Modal.Title>Create project</Modal.Title>
+          <Modal.Title>{modalTitle}</Modal.Title>
         </Modal.Header>
         {projectbody}
         {projectfooter}

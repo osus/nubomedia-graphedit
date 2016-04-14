@@ -27,6 +27,7 @@ class NuboEditor extends React.Component {
       <MenuBar
         graphs={this.props.graphs} nodedefs={this.props.nodedefs} editor={this.props.editor}
         createProject={() => this.createProject()}
+        editProject={() => this.editProject()}
         loadProject={() => this.loadProject()}
         saveProject={() => this.saveProject()}
         saveProjectAs={() => this.saveProjectAs()}
@@ -77,7 +78,13 @@ class NuboEditor extends React.Component {
   createProject() {
     this._setProject({}, "");
     this.graphSelect("");
-    this.props.onCreateProject();
+    this.props.onCreateProject(false);
+  }
+
+  editProject() {
+    if (this.props.editor.name) {
+      this.props.onCreateProject(true);
+    }
   }
 
   setProjectProperties(projectName, packageName, graphName) {
@@ -238,7 +245,7 @@ function mapDispatchToProps(dispatch) {
     onGraphSelect: (name) => dispatch({type: ActionTypes.SELECT_GRAPH, payload: {name}}),
     onRenameGraph: (oldName, newName) => dispatch({type: ActionTypes.RENAME_GRAPH, payload: {oldName, newName}}),
 
-    onCreateProject: () => dispatch({type: ActionTypes.CREATE_PROJECT}),
+    onCreateProject: (edit) => dispatch({type: ActionTypes.CREATE_PROJECT, payload: {edit}}),
     onSetProject: (graphs, editor, filename) => dispatch({type: ActionTypes.SET_PROJECT, payload: {graphs, editor, filename}}),
     onSetProjectFilename: (filename) => dispatch({type: ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
     onSetProjectProperties: (projectName, packageName) => dispatch({type: ActionTypes.SET_PROJECT_PROPERTIES, payload: {projectName, packageName}}),

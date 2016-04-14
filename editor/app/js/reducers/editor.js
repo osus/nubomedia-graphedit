@@ -4,8 +4,8 @@ export const defaultEditorState = {
   currentGraph: null,
   filename: null,
   curNodeId: 0,
-  package: null,
-  name: null
+  package: "",
+  name: ""
 };
 
 export function editor(state = defaultEditorState, action) {

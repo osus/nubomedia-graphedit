@@ -7,7 +7,7 @@ import NodeModal from './NodeModal';
 export default class GraphPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {showNodeModal: false, showProjectModal: false, node: null};
+    this.state = {showNodeModal: false, showProjectModal: false, projectEdit: false, node: null};
     this.initialNode = null;
   }
 
@@ -15,11 +15,11 @@ export default class GraphPanel extends React.Component {
   closeProjectModal() {
     this.setState({showProjectModal: false});
   }
-  projectClickHandler() {
-    this.setState({showProjectModal: true});
+  projectClickHandler(edit) {
+    this.setState({showProjectModal: true, projectEdit: edit});
   }
   setProjectProperties(projectName, packageName, graphName) {
-    this.setState({showProjectModal: false});
+    this.setState({showProjectModal: false, projectEdit: false});
     this.props.setProjectProperties(projectName, packageName, graphName);
   }
 
@@ -54,6 +54,7 @@ export default class GraphPanel extends React.Component {
     if (this.state.showProjectModal) {
       projectmodal =
         <ProjectModal editor={this.props.editor}
+          projectEdit={this.state.projectEdit}
           closeProjectModal={this.closeProjectModal.bind(this)}
           setProjectProperties={this.setProjectProperties.bind(this)}
         />
