@@ -41,12 +41,6 @@ function globalReducer(state, action) {
       mutable.getEditor().deleteNode(action.payload.node);
       return state;
 
-    case ActionTypes.RENAME_NODE_CONNECTIONS:
-      if (!mutable.getEditor() || !(action.payload.node.type in state.nodedefs.defs)) {
-        throw "Unknown node type " + action.payload.node.type;
-      }
-      return state;
-
     case ActionTypes.CUT_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
         throw "No node selected";
@@ -97,9 +91,8 @@ function globalReducer(state, action) {
         graph.curNodeId = state.editor.curNodeId || 1;
       } else {
         // Generate new graph name
-        // TODO: ensure unique
         if (name == "") {
-          name = "Graph_" + Math.floor(Math.random()*10000);
+          name = "graph";
         }
         graph = { nodes: [], connections: [], curNodeId: 1 };
       }

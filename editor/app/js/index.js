@@ -70,15 +70,13 @@ class NuboEditor extends React.Component {
   }
 
   graphSelect(name) {
-    if (name != this.props.editor.currentGraph) {
-      this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
-      this.props.onGraphSelect(name);
-    }
+    this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
+    this.props.onGraphSelect(name);
   }
 
   createProject() {
     this._setProject({}, "");
-    this.graphSelect("graph");
+    this.graphSelect();
     this.props.onCreateProject(false);
   }
 
