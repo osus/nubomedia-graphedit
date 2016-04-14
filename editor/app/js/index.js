@@ -31,6 +31,7 @@ class NuboEditor extends React.Component {
         loadProject={() => this.loadProject()}
         saveProject={() => this.saveProject()}
         saveProjectAs={() => this.saveProjectAs()}
+        closeProject={() => this.closeProject()}
         onCreateNode={this.props.onCreateNode}
         onGraphSelect={(name) => this.graphSelect(name)}
         onCutSelectedNode={() => this.props.onCutSelectedNode()}
@@ -44,6 +45,7 @@ class NuboEditor extends React.Component {
       <GraphPanel editor={this.props.editor}
         onSetEditorPanel={this.props.onSetEditorPanel}
         setProjectProperties={(projectName, packageName, graphName) => this.setProjectProperties(projectName, packageName, graphName)}
+        closeProject={() => this.closeProject(true)}
         onDeleteNode={this.props.onDeleteNode}
         nodedefs={this.props.nodedefs} />
       </div>
@@ -84,6 +86,12 @@ class NuboEditor extends React.Component {
   editProject() {
     if (this.props.editor.name) {
       this.props.onCreateProject(true);
+    }
+  }
+
+  closeProject(force) {
+    if (force || this.props.editor.name) {
+      this._setProject({}, "");
     }
   }
 
