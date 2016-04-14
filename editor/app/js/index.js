@@ -76,7 +76,7 @@ class NuboEditor extends React.Component {
 
   createProject() {
     this._setProject({}, "");
-    this.graphSelect();
+    this.graphSelect("graph");
     this.props.onCreateProject(false);
   }
 
