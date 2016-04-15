@@ -31,8 +31,7 @@ function globalReducer(state, action) {
       }
       let posOffsetIndex = (state.editor.curNodeId % 12) - 6;
       let offset = posOffsetIndex * 15;
-      let id = "node_" + state.editor.curNodeId;
-      mutable.getEditor().createNode(action.payload.type, state.nodedefs.defs[action.payload.type], id, id, 400 + offset, 200 + offset);
+      mutable.getEditor().createNode(action.payload.type, state.nodedefs.defs[action.payload.type], "node_" + state.editor.curNodeId,  "node_" + state.editor.curNodeId, 400 + offset, 200 + offset);
       return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
 
     case ActionTypes.DELETE_NODE:
@@ -45,6 +44,7 @@ function globalReducer(state, action) {
     case ActionTypes.CUT_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
         throw "No node selected";
+        return state;
       }
       let selectedNode = mutable.getEditor().selectedNode;
       mutable.getEditor().copyNode(selectedNode);
@@ -54,6 +54,7 @@ function globalReducer(state, action) {
     case ActionTypes.COPY_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
         throw "No node selected";
+        return state;
       }
       mutable.getEditor().copyNode(mutable.getEditor().selectedNode);
       return state;
@@ -61,16 +62,18 @@ function globalReducer(state, action) {
     case ActionTypes.PASTE_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().copiedNode) {
         throw "No copied or cut node";
+        return state;
       }
       let copiedNode = mutable.getEditor().copiedNode;
       let posCopiedNodeOffsetIndex = (state.editor.curNodeId % 12) - 6;
       let copiedNodeoffset         = posCopiedNodeOffsetIndex * 15;
-      mutable.getEditor().createNode(copiedNode.type, state.nodedefs.defs[copiedNode.type], state.editor.curNodeId, "Node_" + state.editor.curNodeId, 400 + copiedNodeoffset, 200 + copiedNodeoffset);
+      mutable.getEditor().createNode(copiedNode.type, state.nodedefs.defs[copiedNode.type], "node_" + state.editor.curNodeId, "node_" + state.editor.curNodeId, 400 + copiedNodeoffset, 200 + copiedNodeoffset);
       return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
 
     case ActionTypes.DELETE_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
         throw "No node selected";
+        return state;
       }
       mutable.getEditor().deleteNode(mutable.getEditor().selectedNode);
       return state;

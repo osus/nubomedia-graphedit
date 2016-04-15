@@ -205,6 +205,7 @@ export default class GraphEditor {
         }
         _deleteEndpoints(node.element.id, node.anchors);
         this.instance.getContainer().removeChild(node.element);
+        this.selectedNode = (this.selectedNode != node) ? this.selectedNode : null;
     }
 
     copyNode(node) {

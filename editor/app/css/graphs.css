@@ -5,6 +5,10 @@ html, body {
     overflow: hidden;
 }
 
+.shortcut {
+    outline: 0;
+}
+
 .demo {
     /* for IE10+ touch devices */
     touch-action: none;

@@ -1,11 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import ShortcutsManager from 'react-shortcuts'
+
 import { createStore } from 'redux'
 import { Provider, connect } from 'react-redux'
 
 import { Button, Navbar, Nav, NavItem, DropdownButton, MenuItem } from 'react-bootstrap'
+import Shortcuts from 'react-shortcuts/component'
 
 import * as platformAPI from './platformAPI'
+import * as shortcutKeymap from './keymap'
 
 import rootReducer from './reducers/root'
 import * as ActionTypes from "./actions/actionTypes"
@@ -24,49 +28,72 @@ class NuboEditor extends React.Component {
   render() {
     return (
       <div>
-      <MenuBar
-        graphs={this.props.graphs} nodedefs={this.props.nodedefs} editor={this.props.editor}
-        createProject={() => this.createProject()}
-        editProject={() => this.editProject()}
-        loadProject={() => this.loadProject()}
-        saveProject={() => this.saveProject()}
-        saveProjectAs={() => this.saveProjectAs()}
-        closeProject={() => this.closeProject()}
-        onCreateNode={this.props.onCreateNode}
-        onCutSelectedNode={() => this.props.onCutSelectedNode()}
-        onCopySelectedNode={() => this.props.onCopySelectedNode()}
-        onPasteSelectedNode={() => this.props.onPasteSelectedNode()}
-        onDeleteSelectedNode={() => this.props.onDeleteSelectedNode()}
-      />
-      <InfoBar editor={this.props.editor}
-        renameGraph={this.props.onRenameGraph}
-      />
-      <GraphPanel editor={this.props.editor}
-        onSetEditorPanel={this.props.onSetEditorPanel}
-        setProjectProperties={(projectName, packageName, graphName) => this.setProjectProperties(projectName, packageName, graphName)}
-        closeProject={() => this.closeProject(true)}
-        onDeleteNode={this.props.onDeleteNode}
-        nodedefs={this.props.nodedefs} />
+        <Shortcuts
+          name="NuboEditor"
+          className="shortcut"
+          handler={this.handleShortcuts.bind(this)}>
+          <MenuBar
+            graphs={this.props.graphs} nodedefs={this.props.nodedefs} editor={this.props.editor}
+            createProject={() => this.createProject()}
+            editProject={() => this.editProject()}
+            loadProject={() => this.loadProject()}
+            saveProject={() => this.saveProject()}
+            saveProjectAs={() => this.saveProjectAs()}
+            closeProject={() => this.closeProject()}
+            onCreateNode={this.props.onCreateNode}
+            onCutSelectedNode={() => this.props.onCutSelectedNode()}
+            onCopySelectedNode={() => this.props.onCopySelectedNode()}
+            onPasteSelectedNode={() => this.props.onPasteSelectedNode()}
+            onDeleteSelectedNode={() => this.props.onDeleteSelectedNode()}
+          />
+          <InfoBar editor={this.props.editor}
+                   renameGraph={this.props.onRenameGraph}
+          />
+          <GraphPanel editor={this.props.editor}
+                      onSetEditorPanel={this.props.onSetEditorPanel}
+                      setProjectProperties={(projectName, packageName, graphName) => this.setProjectProperties(projectName, packageName, graphName)}
+                      closeProject={() => this.closeProject(true)}
+                      onDeleteNode={this.props.onDeleteNode}
+                      nodedefs={this.props.nodedefs}
+          />
+        </Shortcuts>
       </div>
     );
   }
 
   componentDidMount() {
-    // Load the default nodedefs
+    // Load nodedefs
     let nodedefs;
     if (platformAPI.desktopMode) {
-      // nodedefs = platformAPI.readJSONFile("data/default.ngend") || {defs:{}}
       nodedefs = {defs:platformAPI.readNodeJSONFiles("data/nodes")};
     } else {
       nodedefs = defaultNodedefs;
     }
-    this.props.onAddNodedefs(nodedefs.defs)
+    this.props.onAddNodedefs(nodedefs.defs);
   }
 
-  componentWillUnmount() {
-    // if (this.editor) {
-    //   this.editor.destroy();
-    // }
+  static childContextTypes = {
+    shortcuts: React.PropTypes.object.isRequired
+  };
+
+  getChildContext() {
+    return {
+      shortcuts: new ShortcutsManager(shortcutKeymap.keymap())
+    }
+  }
+
+  handleShortcuts(action) {
+    console.log(action);
+    switch (action) {
+      case 'CUT':
+        return this.props.onCutSelectedNode();
+      case 'COPY':
+        return this.props.onCopySelectedNode();
+      case 'PASTE':
+        return this.props.onPasteSelectedNode();
+      case 'DELETE':
+        return this.props.onDeleteSelectedNode();
+    }
   }
 
   graphSelect(name) {

@@ -101,9 +101,10 @@ app.on('ready', function() {
       event.returnValue = false;
     }
   });
-  // -------------------
-  // -------------------
 
+  // -------------------
+  // Functions
+  // -------------------
   function recursiveReadJSON(arg) {
     let nodes = {};
     let dir = fs.readdirSync(arg, "utf8");

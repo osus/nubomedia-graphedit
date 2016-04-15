@@ -26,6 +26,7 @@
     "react-bootstrap": "^0.28.1",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.6",
+    "react-shortcuts": "^0.9.0",
     "redux": "^3.0.5"
   },
   "devDependencies": {
