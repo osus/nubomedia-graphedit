@@ -1,0 +1,14 @@
+{
+  "PlateDetectorFilter": { "anchors" : [
+    { "name": "src1", "pos":[1, 0.5,  1, 0], "source":true},
+    { "name": "tgt1", "pos":[0, 0.5, -1, 0]}],
+    "image": {
+      "width": 173,
+      "height": 78,
+      "name": "PlateDetectorFilter"
+    },
+    "properties": {
+    },
+    "group": "filters"
+  }
+}

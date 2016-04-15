@@ -8,6 +8,7 @@
       "width": 90,
       "height": 90,
       "name": "DispatcherHub"
-    }
+    },
+    "group": "hubs"
   }
 }
