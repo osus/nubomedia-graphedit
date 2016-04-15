@@ -129,7 +129,7 @@ export default class GraphEditor {
         });
     }
 
-    createNode(type, def, id, x, y, savedProps) {
+    createNode(type, def, id, name, x, y, savedProps) {
         // Helper function to create the endpoints for the anchors of a given node
         var _addEndpoints = (toId, anchors) => {
             anchors.map((a) => {
@@ -174,7 +174,7 @@ export default class GraphEditor {
             drag: (e) => { dragged = true }
         });
         let props = (savedProps) ? savedProps : mapObject(def.properties, (val, key) => val.default || "");
-        let node = {element: el, type:type, name:id, properties: props, anchors: def.anchors};
+        let node = {element: el, type:type, id:id, name: name, properties: props, anchors: def.anchors};
         el.addEventListener("click", (e) => {
             if (dragged) {
                 dragged = false;
@@ -212,14 +212,14 @@ export default class GraphEditor {
     }
 
     createConnection(src, srcEP, tgt, tgtEP) {
-        this.instance.connect({uuids: [makeUUID(src,srcEP), makeUUID(tgt,tgtEP)]});
+        this.instance.connect({uuids: [makeUUID(src,srcEP), makeUUID(tgt, tgtEP)]});
     }
 
     getNodes() {
         return this.nodes.map((node) => {
             let x = parseInt(node.element.style.left, 10);
             let y = parseInt(node.element.style.top, 10);
-            return { type:node.type, name:node.name, x:x, y:y, properties: node.properties || {}};
+            return {type: node.type, id: node.id, name: node.name, x: x, y: y, properties: node.properties || {}};
         });
     }
 

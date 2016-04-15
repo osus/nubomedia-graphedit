@@ -1,11 +1,21 @@
-// jsPlumb demo stuff
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
 
 .demo {
     /* for IE10+ touch devices */
-    touch-action:none;
+    touch-action: none;
 }
 
-#nuboged-container { position: relative; height:100%; width: 100%; overflow: hidden; }
+#nuboged-container {
+    position: relative;
+    height:100%;
+    width: 100%;
+    overflow: hidden;
+}
 
 .nubogednode {
     /*border: 1px solid #346789;
@@ -84,4 +94,8 @@
 
 path, ._jsPlumb_endpoint {
     cursor: pointer;
+}
+
+.navbar {
+    border-radius: 0 !important;
 }

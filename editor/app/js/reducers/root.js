@@ -31,7 +31,8 @@ function globalReducer(state, action) {
       }
       let posOffsetIndex = (state.editor.curNodeId % 12) - 6;
       let offset = posOffsetIndex * 15;
-      mutable.getEditor().createNode(action.payload.type, state.nodedefs.defs[action.payload.type], "Node_" + state.editor.curNodeId, 400 + offset, 200 + offset);
+      let id = "node_" + state.editor.curNodeId;
+      mutable.getEditor().createNode(action.payload.type, state.nodedefs.defs[action.payload.type], id, id, 400 + offset, 200 + offset);
       return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
 
     case ActionTypes.DELETE_NODE:
@@ -64,7 +65,7 @@ function globalReducer(state, action) {
       let copiedNode = mutable.getEditor().copiedNode;
       let posCopiedNodeOffsetIndex = (state.editor.curNodeId % 12) - 6;
       let copiedNodeoffset         = posCopiedNodeOffsetIndex * 15;
-      mutable.getEditor().createNode(copiedNode.type, state.nodedefs.defs[copiedNode.type], "Node_" + state.editor.curNodeId, 400 + copiedNodeoffset, 200 + copiedNodeoffset);
+      mutable.getEditor().createNode(copiedNode.type, state.nodedefs.defs[copiedNode.type], state.editor.curNodeId, "Node_" + state.editor.curNodeId, 400 + copiedNodeoffset, 200 + copiedNodeoffset);
       return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
 
     case ActionTypes.DELETE_SELECTED_NODE:
