@@ -4,6 +4,12 @@ import { Modal, Button, Input } from 'react-bootstrap';
 
 export default class NodeModal extends React.Component {
   render() {
+    let onKeydownProp = (e) => {
+      if (e.keyCode == 13) {
+        this.props.onSavePropsNode();
+      }
+    };
+
     let def = this.props.nodedefs.defs[this.props.node.type];
     let properties = def.properties || {};
     let modalFields = Object.keys(properties).map(
@@ -18,7 +24,7 @@ export default class NodeModal extends React.Component {
             (key) => {
               let opt = p.type[key];
               return <option value={opt.value || opt} key={key}>{opt.name || opt}</option>
-          });
+            });
         }
         else if (typeof p.type == 'object') {
           type = 'select';
@@ -26,20 +32,21 @@ export default class NodeModal extends React.Component {
             (key) => {
               let opt = p.type[key];
               return <option value={key} key={key}>{p.type[key]}</option>
-          });
+            });
         }
         return (<div className="form-horizontal" key={key}>
           <Input type={type}
-              name={key}
-              ref={"input_box_"+key}
-              label={name+": "}
-              labelClassName="col-xs-3" wrapperClassName="col-xs-9"
-              onChange={this.props.onChangeNodeProp}
-              value={this.props.node.properties[key]}>
-              {inputChildren}
+                 name={key}
+                 ref={"input_box_"+key}
+                 label={name+": "}
+                 labelClassName="col-xs-3" wrapperClassName="col-xs-9"
+                 onChange={this.props.onChangeNodeProp}
+                 onKeyDown={onKeydownProp}
+                 value={this.props.node.properties[key]}>
+            {inputChildren}
           </Input>
         </div>);
-    });
+      });
     return (
       <Modal show={true} onHide={this.props.closeNodeModal} bsSize="large">
         <Modal.Header closeButton>
@@ -53,6 +60,7 @@ export default class NodeModal extends React.Component {
                    label="Name: "
                    labelClassName="col-xs-3" wrapperClassName="col-xs-9"
                    onChange={this.props.onChangeNodeName}
+                   onKeyDown={onKeydownProp}
                    value={this.props.currentNodeName}>
             </Input>
           </div>

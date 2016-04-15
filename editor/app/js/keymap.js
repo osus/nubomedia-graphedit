@@ -1,3 +1,5 @@
+// Shortcuts keymap
+
 export function keymap() {
   return {
     NuboEditor: {
