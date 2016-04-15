@@ -8,6 +8,7 @@
       "width": 195,
       "height": 97,
       "name": "RtpEndpoint"
-    }
+    },
+    "group": "elements"
   }
 }

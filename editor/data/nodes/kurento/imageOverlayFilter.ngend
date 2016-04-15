@@ -1,13 +1,17 @@
 {
-  "FaceOverlayFilter": { "anchors" : [
+  "ImageOverlayFilter": { "anchors" : [
     { "name": "src1", "pos":[1, 0.5,  1, 0], "source":true},
     { "name": "tgt1", "pos":[0, 0.5, -1, 0]}],
     "image": {
       "width": 173,
       "height": 78,
-      "name": "FaceOverlayFilter"
+      "name": "ImageOverlayFilter"
     },
     "properties": {
+      "id": {
+        "type": "string",
+        "nativeName": "Image ID"
+      },
       "overlayedImageUrl": {
         "type": "string",
         "nativeName": "Overlayed image url"
@@ -31,6 +35,16 @@
         "type": "float",
         "nativeName": "Height %",
         "default": "1.6"
+      },
+      "keepAspectRatio": {
+        "type": [{"name":"true", "value": true}, {"name":"false", "value": false}],
+        "nativeName": "Keep Aspect Ratio",
+        "default": "true"
+      },
+      "center": {
+        "type": [{"name":"true", "value": true}, {"name":"false", "value": false}],
+        "nativeName": "Center",
+        "default": "true"
       }
     },
     "group": "filters"
