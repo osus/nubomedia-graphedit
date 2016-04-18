@@ -36,6 +36,7 @@ const sourceEndpoint = {
     connectorStyle: connectorPaintStyle,
     hoverPaintStyle: endpointHoverStyle,
     connectorHoverStyle: connectorHoverStyle,
+    maxConnections: -1,
     dragOptions: {},
 };
 // the definition of target endpoints (will appear when the user drags a connection)
