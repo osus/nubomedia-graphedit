@@ -1,0 +1,27 @@
+{
+  "name": "esl-nubo",
+  "version": "1.0.0",
+  "description": "Essential Code Generator.",
+  "main": "index.js",
+  "bin": {
+    "esl-nubo": "bin/esl-nubo"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "dsl",
+    "codegen",
+    "nubomedia"
+  ],
+  "author": "Pedro J. Molina",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "fs-extra": "^0.26.7",
+    "yargs": "^4.6.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  }
+}

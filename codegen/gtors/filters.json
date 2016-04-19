@@ -1,0 +1,141 @@
+{
+	"RecorderEndpoint":{
+		"imports":[
+			"import org.kurento.client.RecorderEndpoint;",
+			"import org.kurento.client.EventListener;",
+			"import java.io.IOException;"
+		],
+		"code":[
+			"    RecorderEndpoint {{name}} = new RecorderEndpoint.Builder({{inStream}}, \"file://{{filename}}\").build();",
+			"    {{inObject}}.connect({{name}});",
+			"    {{name}}.record();"
+		],
+		"events":[
+			"      {{name}}.addRecordingListener(new EventListener<RecordingEvent>() {",
+			"        @Override",
+			"        public void onEvent(RecordingEvent event) {",
+			"          JsonObject response = new JsonObject();",
+			"          response.addProperty(\"id\", \"recording\");",
+			"          try {",
+			"            synchronized (session) {",
+			"              session.sendMessage(new TextMessage(response.toString()));",
+			"            }",
+			"          } catch (IOException e) {",
+			"            //TODO",
+			"          }",
+			"        }",
+			"      });",
+			"      {{name}}.addStoppedListener(new EventListener<StoppedEvent>() {",
+			"        @Override",
+			"        public void onEvent(StoppedEvent event) {",
+			"          JsonObject response = new JsonObject();",
+			"          response.addProperty(\"id\", \"stopped\");",
+			"          try {",
+			"            synchronized (session) {",
+			"              session.sendMessage(new TextMessage(response.toString()));",
+			"            }",
+			"          } catch (IOException e) {",
+			"            //TODO",
+			"          }",
+			"        }",
+			"      });",
+			"      {{name}}.addPausedListener(new EventListener<PausedEvent>() {",
+			"        @Override",
+			"        public void onEvent(PausedEvent event) {",
+			"          JsonObject response = new JsonObject();",
+			"          response.addProperty(\"id\", \"paused\");",
+			"          try {",
+			"            synchronized (session) {",
+			"              session.sendMessage(new TextMessage(response.toString()));",
+			"            }",
+			"          } catch (IOException e) {",
+			"            //TODO",
+			"          }",
+			"        }",
+			"      });"
+		]
+	},
+	"FaceOverlayFilter":{
+		"imports":[
+			"import org.kurento.client.FaceOverlayFilter;"
+		],
+		"code":[
+			"    FaceOverlayFilter {{name}} = new FaceOverlayFilter.Builder({{inStream}}).build();",
+			"    {{name}}.setOverlayedImage(\"{{overlayedImageUrl}}\", {{offsetx}}f, {{offsety}}f, {{width}}f, {{height}}f);",
+			"    {{name}}.connect({{inObject}});"
+		],
+		"events":[]
+	},
+	"ImageOverlayFilter":{
+		"imports":[
+			"import org.kurento.client.ImageOverlayFilter;"
+		],
+		"code":[
+			"    ImageOverlayFilter {{name}} = new ImageOverlayFilter.Builder({{inStream}}).build();",
+			"    {{name}}.addImage(\"{{id}}\", \"{{overlayedImageUrl}}\", {{offsetx}}f, {{offsety}}f, {{width}}f, {{height}}f, {{keepAspectRatio}}, {{center}});",
+			"    {{name}}.connect({{inObject}});"
+		],
+		"events":[]
+	},
+	"ZBarFilter":{
+		"imports":[
+			"import org.kurento.client.ZBarFilter;",
+			"import org.kurento.client.CodeFoundEvent;"
+		],
+		"code":[
+			"    ZBarFilter {{name}} = new ZBarFilter.Builder({{inStream}}).build();",
+			"    {{name}}.connect({{inObject}});"
+		],
+		"events":[
+		    "    {{name}}.addCodeFoundListener(new EventListener<CodeFoundEvent>() {",
+		    "      @Override",
+		    "      public void onEvent(CodeFoundEvent event) {",
+			"        JsonObject response = new JsonObject();",
+			"        response.addProperty(\"id\", \"codeFound\");",
+			"        response.addProperty(\"code\", event.getValue());",
+			"        try {",
+			"            session.sendMessage(new TextMessage(response.toString()));",
+			"        } catch (Throwable t) {",
+			"            //TODO",
+			"        }",
+		    "      }",
+		    "    });"
+		]
+	},
+	"ChromaFilter":{
+		"imports":[
+			"import org.kurento.module.chroma.ChromaFilter;",
+			"import org.kurento.module.chroma.WindowParam;"
+		],
+		"code":[
+			"    ChromaFilter {{name}} = new ChromaFilter.Builder({{inStream}}, new WindowParam(5, 5, 40, 40)).build();",
+			"    {{name}}.setBackground({{backgroundImageUrl}});"
+		],
+		"events":[]
+	},
+	"PlateDetectorFilter":{
+		"imports":[
+			"import org.kurento.module.platedetector.PlateDetectedEvent;",
+			"import org.kurento.module.platedetector.PlateDetectorFilter;"
+		],
+		"code":[
+			"    PlateDetectorFilter {{name}} = new PlateDetectorFilter.Builder({{inStream}}).build();",
+			"    {{name}}.connect({{inObject}});"
+		],
+		"events":[
+			"    {{name}}.addPlateDetectedListener(new EventListener<PlateDetectedEvent>() {",
+			"        @Override",
+			"        public void onEvent(PlateDetectedEvent event) {",
+			"          JsonObject response = new JsonObject();",
+			"          response.addProperty(\"id\", \"plateDetected\");",
+			"          response.addProperty(\"plate\", event.getPlate());",
+			"          try {",
+			"            session.sendMessage(new TextMessage(response.toString()));",
+			"          } catch (Throwable t) {",
+			"            //TODO",
+			"          }",
+			"        }",
+			"    });"
+		]
+	}
+}

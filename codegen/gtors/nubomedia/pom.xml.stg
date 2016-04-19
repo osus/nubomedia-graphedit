@@ -1,0 +1,174 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>eu.nubomedia</groupId>
+	<artifactId>nubomedia-{{name}}</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.kurento</groupId>
+		<artifactId>kurento-parent-pom</artifactId>
+		<version>6.4.1-SNAPSHOT</version>
+	</parent>
+
+	<name>{{name}}</name>
+	<description>WebRTC in loopback with N filters</description>
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>NUBOMEDIA</name>
+		<url>http://www.nubomedia.eu/</url>
+	</organization>
+	<scm>
+		<url>https://github.com/GlassOceanos/nubomedia-graphedit</url>
+		<connection>scm:git:https://github.com/GlassOceanos/nubomedia-graphedit</connection>
+		<developerConnection>scm:git://git@github.com:/GlassOceanos/nubomedia-graphedit</developerConnection>
+		<tag>master</tag>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>nubomedia.eu</id>
+			<name>-nubomedia.eu Community</name>
+			<organization>nubomedia.eu</organization>
+			<organizationUrl>http://www.nubomedia.eu</organizationUrl>
+		</developer>
+	</developers>
+
+	<properties>
+		<!-- Nubomedia -->
+		<nubomedia-media-client.version>1.0.1</nubomedia-media-client.version>
+
+		<!-- Main class -->
+		<start-class>{{package}}.{{name}}</start-class>
+	</properties>
+
+	<dependencies>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+		</dependency>
+
+		<!-- Kurento -->
+		<dependency>
+			<groupId>org.kurento</groupId>
+			<artifactId>kurento-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.kurento</groupId>
+			<artifactId>kurento-utils-js</artifactId>
+		</dependency>
+
+		<!-- Nubomedia -->
+		<dependency>
+			<groupId>de.fhg.fokus.nubomedia</groupId>
+			<artifactId>nubomedia-media-client</artifactId>
+			<version>${nubomedia-media-client.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Create a runnable JAR file -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>${start-class}</mainClass>
+					<layout>ZIP</layout>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Call to bower install when compiling -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>bower</executable>
+					<arguments>
+						<argument>install</argument>
+						<argument>--allow-root</argument>
+					</arguments>
+					<mainClass>${start-class}</mainClass>
+				</configuration>
+			</plugin>
+
+			<!-- Remove bower artifacts on mvn clean -->
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/main/resources/static/bower_components</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<!-- Filtering resources (${label}) -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>banner.txt</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>.</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>bower.json</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>kurento-snapshots</id>
+			<name>Kurento Snapshot Repository</name>
+			<url>http://maven.kurento.org/archiva/repository/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+</project>
