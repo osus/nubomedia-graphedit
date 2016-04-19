@@ -1,0 +1,25 @@
+
+                                    `.-:////:-.`
+                               -+shmmmmmmmmmmmmmmhs/-
+                           `/ymmmmmmmmmmmmmmmmmmmmmmmms/`
+                         -smmmmmmmmyo+/:----:/+ohmmmmmmmms.
+                       -ymmmmmmy+.                -+hmmmmmmy.      -------`
+                     `ommmmmd+`                      .+dmmmmmo     +oooooo-
+                    .hmmmmm+                           `ommmmmh`   +oooooo-
+                   .dmmmmh.                              ```````   +oooooo-  sdddddds
+                  `dmmmmy                              .dhhhhhh.   ````````  smmmmmmy
+          ./+osyysymmmmy                               .mmmmmmm.             smmmmmmy
+      `:sdmmmmmmmmmmmmd`                               .mmmmmmm.  -----`     +yyyyyy+
+    `+dmmmmmmdhyyyhdmm+                                .hhhhhhh.  ooooo-              --------
+   -dmmmmmy:`       `:`                                           ooooo-  .----.      oooooooo`
+  -mmmmmy.                                                        .....`  hmmmms      oooooooo`
+  dmmmms                                                    yhd-          hmmmms      oooooooo`
+ :mmmmm`                                                    syy-          /++++:      ::::::::
+ /mmmmm
+ `mmmmm/  -ss:   os` os`   -s/ -ssssss+-  .+syys+.  -//.    ://`  .::///- -/////:.   //    .//`
+  +mmmmm: :mdm/  hm. hm.   /mo :my---/mm`:md:..:dm/ /o+o`  -o+o` /o:.```` :o:``.:o+  oo   `o/++
+   smmmmh :ms:m+ ym. hm.   /mo :mh+++smo ym/    :mh /o.o: `o/:o`.oo:::::. :o-    /o- oo   +o`.o/
+    /mmmh :ms :moym. hm.   /mo :my:::+mh sm+    /my /o.-o./o`/o`.oo.....` :o-    +o- oo  /o+//+o:
+     `odh :ms  -mmm. +my::/dm- :my///omm`.dm+::+mm- /o. +oo: /o` :o/----. :o/---/o/  oo -o:..../o.
+        - .+:   .++`  ./+++:`  .++++++:`  `:+oo+:`  .-` `--  .-`  `-----. .------`   -- --     `--
+                                                                           version ${project.version}

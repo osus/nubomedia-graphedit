@@ -1,0 +1,14 @@
+*~
+target
+.classpath
+.project
+.settings
+*orig
+.springBeans
+*tmp/
+*backup
+*Backup
+log.xml
+.externalToolBuilders
+*.pyc
+*bower_components/
