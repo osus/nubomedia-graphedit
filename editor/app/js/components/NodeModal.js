@@ -4,12 +4,14 @@ import { Modal, Button, Input } from 'react-bootstrap';
 
 export default class NodeModal extends React.Component {
   render() {
+    // Key listener
     let onKeydownProp = (e) => {
       if (e.keyCode == 13) {
         this.props.onSavePropsNode();
       }
     };
 
+    // Props fields
     let def = this.props.nodedefs.defs[this.props.node.type];
     let properties = def.properties || {};
     let modalFields = Object.keys(properties).map(
@@ -54,7 +56,7 @@ export default class NodeModal extends React.Component {
         </Modal.Header>
         <Modal.Body>
           <h4>Node:</h4>
-          <div className="form-horizontal">
+          <div className={this.props.saveDisabled ? 'form-horizontal has-error' : 'form-horizontal'}>
             <Input type="text"
                    name="nodeName"
                    label="Name: "
