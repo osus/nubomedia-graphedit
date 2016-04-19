@@ -15,11 +15,7 @@ export default class InfoBar extends React.Component {
   render() {
     return (
       <div className="form-inline">
-        <Input type='text'
-            ref="input_box"
-            label={"Project:\u00A0"} // no-break space, must be interpreted as Javascript string
-            value={this.state.projectName}>
-        </Input>
+        <h4 style={{'margin-left': '20px'}}>{this.state.projectName ? this.state.projectName : 'NuboEditor'}</h4>
       </div>
     )
   }
