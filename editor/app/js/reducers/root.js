@@ -55,7 +55,7 @@ function globalReducer(state, action) {
       mutable.getEditor().copyNode(selectedNode);
       mutable.getEditor().deleteNode(selectedNode);
       return {...state,
-        graphs: { ...state.graphs, [action.payload.name]: mutable.getEditedGraph()}
+        graphs: { ...state.graphs, [state.editor.currentGraph]: mutable.getEditedGraph()}
       };
 
     case ActionTypes.COPY_SELECTED_NODE:
@@ -87,7 +87,7 @@ function globalReducer(state, action) {
       }
       mutable.getEditor().deleteNode(mutable.getEditor().selectedNode);
       return {...state,
-        graphs: { ...state.graphs, [action.payload.name]: mutable.getEditedGraph()}
+        graphs: { ...state.graphs, [state.editor.currentGraph]: mutable.getEditedGraph()}
       };
 
     case ActionTypes.SAVE_CURRENT_GRAPH:
