@@ -32,14 +32,19 @@ function globalReducer(state, action) {
       let posOffsetIndex = (state.editor.curNodeId % 12) - 6;
       let offset = posOffsetIndex * 15;
       mutable.getEditor().createNode(action.payload.type, state.nodedefs.defs[action.payload.type], "node_" + state.editor.curNodeId,  "node_" + state.editor.curNodeId, 400 + offset, 200 + offset);
-      return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
+      return {...state,
+        editor: {...state.editor, curNodeId: state.editor.curNodeId+1},
+        graphs: { ...state.graphs, [state.editor.currentGraph]: mutable.getEditedGraph()}
+      };
 
     case ActionTypes.DELETE_NODE:
       if (!mutable.getEditor() || !(action.payload.node.type in state.nodedefs.defs)) {
         throw "Unknown node type " + action.payload.node.type;
       }
       mutable.getEditor().deleteNode(action.payload.node);
-      return state;
+      return {...state,
+        graphs: { ...state.graphs, [action.payload.name]: mutable.getEditedGraph()}
+      };
 
     case ActionTypes.CUT_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
@@ -49,7 +54,9 @@ function globalReducer(state, action) {
       let selectedNode = mutable.getEditor().selectedNode;
       mutable.getEditor().copyNode(selectedNode);
       mutable.getEditor().deleteNode(selectedNode);
-      return state;
+      return {...state,
+        graphs: { ...state.graphs, [action.payload.name]: mutable.getEditedGraph()}
+      };
 
     case ActionTypes.COPY_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
@@ -68,7 +75,10 @@ function globalReducer(state, action) {
       let posCopiedNodeOffsetIndex = (state.editor.curNodeId % 12) - 6;
       let copiedNodeoffset         = posCopiedNodeOffsetIndex * 15;
       mutable.getEditor().createNode(copiedNode.type, state.nodedefs.defs[copiedNode.type], "node_" + state.editor.curNodeId, "node_" + state.editor.curNodeId, 400 + copiedNodeoffset, 200 + copiedNodeoffset);
-      return {...state, editor: {...state.editor, curNodeId: state.editor.curNodeId+1}};
+      return {...state,
+        editor: {...state.editor, curNodeId: state.editor.curNodeId+1},
+        graphs: { ...state.graphs, [state.editor.currentGraph]: mutable.getEditedGraph()}
+      };
 
     case ActionTypes.DELETE_SELECTED_NODE:
       if(!mutable.getEditor() || !mutable.getEditor().selectedNode) {
@@ -76,7 +86,9 @@ function globalReducer(state, action) {
         return state;
       }
       mutable.getEditor().deleteNode(mutable.getEditor().selectedNode);
-      return state;
+      return {...state,
+        graphs: { ...state.graphs, [action.payload.name]: mutable.getEditedGraph()}
+      };
 
     case ActionTypes.SAVE_CURRENT_GRAPH:
       if (mutable.getEditor() && action.payload.name) {

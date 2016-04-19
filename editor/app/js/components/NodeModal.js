@@ -70,7 +70,7 @@ export default class NodeModal extends React.Component {
         <Modal.Footer>
           <Button onClick={this.props.onDeleteNode} bsStyle="danger" style={{float:"left"}}>Delete Node</Button>
           <Button onClick={this.props.closeNodeModal}>Close</Button>
-          <Button onClick={this.props.onSavePropsNode} bsStyle="primary">Save Changes</Button>
+          <Button onClick={this.props.onSavePropsNode} bsStyle="primary" disabled={this.props.saveDisabled}>Save Changes</Button>
         </Modal.Footer>
       </Modal>
     );

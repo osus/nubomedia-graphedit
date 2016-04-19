@@ -49,12 +49,14 @@ class NuboEditor extends React.Component {
           <InfoBar editor={this.props.editor}
                    renameGraph={this.props.onRenameGraph}
           />
-          <GraphPanel editor={this.props.editor}
-                      onSetEditorPanel={this.props.onSetEditorPanel}
-                      setProjectProperties={(projectName, packageName, graphName) => this.setProjectProperties(projectName, packageName, graphName)}
-                      closeProject={() => this.closeProject(true)}
-                      onDeleteNode={this.props.onDeleteNode}
-                      nodedefs={this.props.nodedefs}
+          <GraphPanel
+            editor={this.props.editor} graphs={this.props.graphs}
+            onSetEditorPanel={this.props.onSetEditorPanel}
+            setProjectProperties={(projectName, packageName, graphName) => this.setProjectProperties(projectName, packageName, graphName)}
+            closeProject={() => this.closeProject(true)}
+            onDeleteNode={this.props.onDeleteNode}
+            onSaveCurrentGraph={this.props.onSaveCurrentGraph}
+            nodedefs={this.props.nodedefs}
           />
         </Shortcuts>
       </div>

@@ -9,7 +9,7 @@ export default class GraphPanel extends React.Component {
     super(props);
     this.state = {
       showProjectModal: false, projectEdit: false,
-      showNodeModal: false, node: null, initialNode: null, currentNodeName: null
+      showNodeModal: false, node: null, initialNode: null, currentNodeName: null, saveDisabled: false
     };
   }
 
@@ -32,28 +32,47 @@ export default class GraphPanel extends React.Component {
       (key) => {
         this.state.node.properties[key] = this.state.initialNode.props[key];
       });
-    this.setState({showNodeModal: false, node: null});
+    this.setState({showNodeModal: false, node: null, saveDisabled: false});
   }
   nodeClickHandler(editor, node) {
-    this.setState({showNodeModal: true, node: node, initialNode: React.cloneElement(node, node.properties), currentNodeName: node.name});
+    this.setState({showNodeModal: true, node: node, initialNode: React.cloneElement(node, node.properties), currentNodeName: node.name, saveDisabled: false});
   }
   onDeleteNode() {
     this.props.onDeleteNode(this.state.node);
-    this.setState({showNodeModal: false, node: null, initialNode: null, currentNodeName: null});
+    this.setState({showNodeModal: false, node: null, initialNode: null, currentNodeName: null, saveDisabled: false});
   }
   onSavePropsNode() {
-    if (this.state.currentNodeName != null && this.state.currentNodeName != this.state.node.name) {
+    if (this.state.currentNodeName != null &&
+        this.state.currentNodeName != this.state.node.name &&
+        this._isNodeNameUnique(this.state.currentNodeName)
+    ) {
       this.state.node.name = this.state.currentNodeName;
       this.setState({node: this.state.node});
     }
-    this.setState({showNodeModal: false, node: null, initialNode: null, currentNodeName: null});
+    if (this._isNodeNameUnique(this.state.currentNodeName)) {
+      this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
+      this.setState({showNodeModal: false, node: null, initialNode: null, currentNodeName: null, saveDisabled: false});
+    }
   }
   onChangeNodeName(e) {
-    this.setState({currentNodeName: e.target.value});
+    this.setState({currentNodeName: e.target.value, saveDisabled: !this._isNodeNameUnique(e.target.value)});
   }
   onChangeNodeProp(e) {
     this.state.node.properties[e.target.name] = e.target.value;
     this.setState({node: this.state.node});
+  }
+
+  // Util
+  _isNodeNameUnique(value) {
+    let graph  = this.props.graphs[this.props.editor.currentGraph];
+    let unique = true;
+    console.log(graph);
+    graph.nodes.forEach((node) => {
+      if (node.id != this.state.node.id && node.name == value) {
+        unique = false;
+      }
+    });
+    return unique;
   }
 
   render() {
@@ -72,6 +91,7 @@ export default class GraphPanel extends React.Component {
         <NodeModal
           node={this.state.node}
           currentNodeName={this.state.currentNodeName}
+          saveDisabled={this.state.saveDisabled}
           nodedefs={this.props.nodedefs}
           onDeleteNode={this.onDeleteNode.bind(this)}
           closeNodeModal={this.closeNodeModal.bind(this)}
