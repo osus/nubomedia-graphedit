@@ -43,7 +43,7 @@ function globalReducer(state, action) {
       }
       mutable.getEditor().deleteNode(action.payload.node);
       return {...state,
-        graphs: { ...state.graphs, [action.payload.name]: mutable.getEditedGraph()}
+        graphs: { ...state.graphs, [state.editor.currentGraph]: mutable.getEditedGraph()}
       };
 
     case ActionTypes.CUT_SELECTED_NODE:

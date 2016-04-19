@@ -15,6 +15,13 @@ export default class ProjectModal extends React.Component {
     this.props.setProjectProperties(this.state.projectName, this.state.packageName);
   }
   render() {
+    // Key listener
+    let onKeydownProp = (e) => {
+      if (e.keyCode == 13) {
+        this.onSave();
+      }
+    };
+
     let modalTitle = (!this.props.projectEdit) ? "Create project" : "Edit project";
     let onChangeProjectName = (e) => {
       this.setState({projectName: e.target.value})
@@ -35,6 +42,7 @@ export default class ProjectModal extends React.Component {
                    labelClassName="col-xs-3"
                    wrapperClassName="col-xs-9"
                    onChange={onChangeProjectName}
+                   onKeyDown={onKeydownProp}
                    value={this.state.projectName}
                    autoFocus={true}/>
           </div>
@@ -45,6 +53,7 @@ export default class ProjectModal extends React.Component {
                    labelClassName="col-xs-3"
                    wrapperClassName="col-xs-9"
                    onChange={onChangePackageName}
+                   onKeyDown={onKeydownProp}
                    value={this.state.packageName}/>
           </div>
         </Modal.Body>
