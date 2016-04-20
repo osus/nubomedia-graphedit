@@ -49,8 +49,29 @@ function deriveDesignModel(inModel) {
 	
     return model;
 }
+function getNodeConectedTo(nodes, connections, nodeid, origin){
+	var numnodes=nodes.length;
+	var numconnections=connections.length;
+	var found=[];
+	
+	for(var i=0; i<numconnections; i++){
+		var connection=connections[i];
+		//console.log("Checking: "+i+" "+connection.source+" === "+nodeid);
+		if(connection.source===nodeid){
+			var node=getNodeById(nodes, connection.target);
+			if(connection.target!=origin)
+				node.connected=getNodeConectedTo(nodes, connections, node.id, origin);//busco los que se conectan a este recursivamente
+			else
+				node.connected=[];
+			found.push(node);
+		}
+	}
+	return found;
+}
+
+var hierarchy=[];
 function processNodes(inModel){
-	var hierarchy=[];
+	hierarchy=[];
 	var keys=Object.keys(inModel.graphs);
 	var graph=inModel.graphs[keys[0]];//take only first graph no matter its name
 	var connections=graph.connections;
@@ -58,79 +79,79 @@ function processNodes(inModel){
 	
 	var numnodes=nodes.length;
 	var numconnections=connections.length;
+	var ordernodes=[];
 	
 	var i=0;
 	for(i=0; i<numnodes; i++){
 		var node=nodes[i];
-		if(node.type==="WebRtcEndpoint" && hierarchy.length==0){//first point
-			var newnode={};
-			newnode.name=node.name;
-			newnode.id=node.id;
-			newnode.type=node.type;
-			newnode.properties=node.properties;
-			newnode.stream="mediaPipeline";
-			newnode.inObject=node.name;
-			hierarchy.push(newnode);
+		if(node.type==="WebRtcEndpoint"){//first point
+			var newnode=JSON.parse(JSON.stringify(node));
+			var connected=getNodeConectedTo(nodes, connections, node.id, node.id);//nodos conectados al anterior
+			newnode.connected=connected;
+			ordernodes.push(newnode);
 			break;
 		}
 	}
-	//cambio esto
-	//en vez de recorrer las connections desde el webrtc, recorro los componentes desde el webrtc
-	//busco las connections del webrtc
-	//las mapeo
-	//busco los nodos que se conectan al webrtc
-	//los mapeo
-	//los que se conectan a los anteriores
-	//hasta el final
+	//console.log(JSON.stringify(ordernodes, null, 2));
+	//tengo la secuencia completa de nodos conectados entre si en los "connected"
+	//returns in the global var hierarchy
 	
-	
-	//tengo el punto de inicio, ahora analizo las connections buscando el webrtc como source
-	for(i=0; i<numconnections; i++){
-		var connection=connections[i];
-		var lastnode=hierarchy[hierarchy.length-1].id;
-		if(connection.target===hierarchy[0].id){//si es el ultimo nodo que se reinyecta al primero, fin.
-			var sourcenode=getNodeById(nodes, connection.source);
-			hierarchy[0].inObject=sourcenode.name;
-			break;
-		}else if(connection.source===lastnode){
-			var sourcenode=getNodeById(nodes, connection.target);
-			var newnode={};
-			newnode.id=connection.target;
-			newnode.name=sourcenode.name;
-			newnode.type=sourcenode.type;
-			newnode.properties=sourcenode.properties;
-			//newnode.stream=newnode.name;
-			newnode.stream="mediaPipeline";
-			newnode.inObject=newnode.name;
-			hierarchy.push(newnode);
-		}
-	}
+	generateNodesPool(ordernodes, undefined);
 	//console.log(JSON.stringify(hierarchy, null, 2));
 	console.log('Analyzing model nodes...'.yellow + '  Done.'.green);
 	//console.log(JSON.stringify(hierarchy, null, 2));
 	var generated=generateCodeFromFilters(hierarchy);
 	return generated;
 }
+function generateNodesPool(ordernodes, parent){
+	var numconnections=ordernodes.length;
+	
+	for(var i=0; i<numconnections; i++){
+		var node=ordernodes[i];
+		var newnode={};
+		var found=false;
+		for(var j=0; j<hierarchy.length; j++){
+			if(hierarchy[j].id==node.id){//the node is already in the model, add reference
+				found=true;
+				hierarchy[j].properties.inObject=parent.name;
+				break;
+			}
+		}
+		if(!found){
+			newnode.id=node.id;
+			newnode.name=node.name;
+			newnode.type=node.type;
+			newnode.properties=node.properties;
+			newnode.properties.inStream="mediaPipeline";
+			newnode.properties.name=node.name;
+			if(parent!=undefined)
+				newnode.properties.inObject=parent.name;
+			else
+				newnode.properties.inObject=null;
+			hierarchy.push(newnode);
+			generateNodesPool(node.connected, node);
+		}		
+	}
+}
 function generateCodeFromFilters(nodes){
 	//filtersList
 	var imports="";
+	var importsarr=[];
 	var code="";
 	var events="";
 	
 	var len=nodes.length;
 	for(var i=0; i<len; i++){
 		var node=nodes[i];
-		node.properties.name=node.name;
-		if(i>0){
-			node.properties.inStream=nodes[i-1].stream;
-			node.properties.inObject=nodes[i-1].inObject;
-		}
+
 		switch(node.type){
 			case "WebRtcEndpoint":
 				break;
 			case "RecorderEndpoint":
 				console.log('Generating RecorderEndpoint code...'.yellow + '  Done.'.green);
-				imports+=filtersList.RecorderEndpoint.imports.join("\r\n");
+				importsarr = importsarr.concat(filtersList.RecorderEndpoint.imports.filter(function (item) {
+				    return importsarr.indexOf(item) < 0;
+				}));
 				code+=filtersList.RecorderEndpoint.code.join("\r\n");
 				events+=filtersList.RecorderEndpoint.events.join("\r\n");
 				code=processNodeProperties(code, node.properties);
@@ -138,23 +159,29 @@ function generateCodeFromFilters(nodes){
 				break;
 			case "FaceOverlayFilter":
 				console.log('Generating FaceOverlayFilter code...'.yellow + '  Done.'.green);
-				imports+=filtersList.FaceOverlayFilter.imports.join("\r\n");
+				importsarr = importsarr.concat(filtersList.FaceOverlayFilter.imports.filter(function (item) {
+				    return importsarr.indexOf(item) < 0;
+				}));
 				code+=filtersList.FaceOverlayFilter.code.join("\r\n");
 				events+=filtersList.FaceOverlayFilter.events.join("\r\n");
 				code=processNodeProperties(code, node.properties);
 				events=processNodeProperties(events, node.properties);
 				break;
 			case "ImageOverlayFilter":
-				console.log('Generating FaceOverlayFilter code...'.yellow + '  Done.'.green);
-				imports+=filtersList.ImageOverlayFilter.imports.join("\r\n");
+				console.log('Generating ImageOverlayFilter code...'.yellow + '  Done.'.green);
+				importsarr = importsarr.concat(filtersList.ImageOverlayFilter.imports.filter(function (item) {
+				    return importsarr.indexOf(item) < 0;
+				}));
 				code+=filtersList.ImageOverlayFilter.code.join("\r\n");
 				events+=filtersList.ImageOverlayFilter.events.join("\r\n");
 				code=processNodeProperties(code, node.properties);
 				events=processNodeProperties(events, node.properties);
 				break;
 			case "ZBarFilter":
-				console.log('Generating FaceOverlayFilter code...'.yellow + '  Done.'.green);
-				imports+=filtersList.ZBarFilter.imports.join("\r\n");
+				console.log('Generating ZBarFilter code...'.yellow + '  Done.'.green);
+				importsarr = importsarr.concat(filtersList.ZBarFilter.imports.filter(function (item) {
+				    return importsarr.indexOf(item) < 0;
+				}));
 				code+=filtersList.ZBarFilter.code.join("\r\n");
 				events+=filtersList.ZBarFilter.events.join("\r\n");
 				code=processNodeProperties(code, node.properties);
@@ -162,7 +189,9 @@ function generateCodeFromFilters(nodes){
 				break;
 			case "PlateDetectorFilter":
 				console.log('Generating PlateDetectorFilter code...'.yellow + '  Done.'.green);
-				imports+=filtersList.PlateDetectorFilter.imports.join("\r\n");
+				importsarr = importsarr.concat(filtersList.PlateDetectorFilter.imports.filter(function (item) {
+				    return importsarr.indexOf(item) < 0;
+				}));
 				code+=filtersList.PlateDetectorFilter.code.join("\r\n");
 				events+=filtersList.PlateDetectorFilter.events.join("\r\n");
 				code=processNodeProperties(code, node.properties);
@@ -170,34 +199,28 @@ function generateCodeFromFilters(nodes){
 				break;
 			case "ChromaFilter":
 				console.log('Generating ChromaFilter code...'.yellow + '  Done.'.green);
-				imports+=filtersList.ChromaFilter.imports.join("\r\n");
+				importsarr = importsarr.concat(filtersList.ChromaFilter.imports.filter(function (item) {
+				    return importsarr.indexOf(item) < 0;
+				}));
 				code+=filtersList.ChromaFilter.code.join("\r\n");
 				events+=filtersList.ChromaFilter.events.join("\r\n");
 				processNodeProperties(code, events, node.properties);
 				code=processNodeProperties(code, node.properties);
 				events=processNodeProperties(events, node.properties);
 				break;
-			case "PlateDetectorFilter":
-				console.log('Generating PlateDetectorFilter code...'.yellow + '  Done.'.green);
-				imports+=filtersList.PlateDetectorFilter.imports.join("\r\n");
-				code+=filtersList.PlateDetectorFilter.code.join("\r\n");
-				events+=filtersList.PlateDetectorFilter.events.join("\r\n");
-				processNodeProperties(code, events, node.properties);
-				code=processNodeProperties(code, node.properties);
-				events=processNodeProperties(events, node.properties);
-				break;
-				
-				
 		}
-		imports+="\r\n";
-		code+="\r\n";
-		events+="\r\n";
+		//imports+="\r\n\r\n";
+		code+="\r\n\r\n";
+		events+="\r\n\r\n";
 	}
+	
+
+	
 	var model={
-		"imports" : imports,
+		"imports" : importsarr.join("\r\n"),
 		"filters" : code,
 		"events" : events,
-		"outStream" : nodes[0].inObject,
+		"outStream" : nodes[0].properties.inObject,
 		"webrtcobject" : nodes[0].name
 	}
 	//console.log(JSON.stringify(model, null, 2));
@@ -209,9 +232,9 @@ function processNodeProperties(origin, properties){
     Object.keys(properties).forEach(function(key) {
         var placeHolder = '\{\{' + key + '\}\}';
         var value = properties[key];
-        if (value) {
+        //if (value) {
         	output = output.replace(new RegExp( placeHolder, 'g'), value);
-        }
+        //}
     });
     return output;
 }
