@@ -28,11 +28,70 @@ Double click on any component to open its details where properties can be set. T
 
 ## Validation
 
-TBD
+Before converting the model into code developers must "validate" the application with the validation option in the Graph Tool. This feature checks the model ensuring all the properties in each component have been filled and there are not orphan nodes in both or any of it sources and targets. 
+
+![Component properties](img/screenshot6.png)
+
+When the model passes validation, the project can be saved.
 
 ## Convert to code
 
-TBD
+Follow the [Codegen Installation Guide](codegeninstall.md) if you have not installed the Codegen tool yet.
+Now just launch the Codegen tool with the path to the saved model and the path to the folder where the project must be generated.
+
+```
+bin/esl-nubo gen -m /path/to/your/model.ngeprj -o output
+```
+
+This will convert you `model.ngeprj` model into your `output` folder. 
+
+A new folder will be created in `output` with the model name with the full source code for that model.
+
+![Output structure](img/screenshot7.png)
+
+You can now review the generated code, your variable (model component) names, events, class names, package...
+
+```
+package com.zed.test;
+
+...
+
+import org.kurento.client.ZBarFilter;
+import org.kurento.client.CodeFoundEvent;
+import org.kurento.client.FaceOverlayFilter;
+import org.kurento.client.ImageOverlayFilter;
+
+...
+
+webrtc = new WebRtcEndpoint.Builder(mediaPipeline).build();
+
+ZBarFilter zbar = new ZBarFilter.Builder(mediaPipeline).build();
+zbar.connect(webrtc);
+
+FaceOverlayFilter face = new FaceOverlayFilter.Builder(mediaPipeline).build();
+face.setOverlayedImage("http://mydomain.com/icon.png", -0.35f, -1.2f, 1.6f, 1.6f);
+face.connect(zbar);
+
+ImageOverlayFilter image = new ImageOverlayFilter.Builder(mediaPipeline).build();
+image.addImage("123456", "http://mydomain.com/icon1.png", -0.35f, -1.2f, 1.6f, 1.6f, true, true);
+image.connect(face);
+
+webrtc.connect(image);
+
+zbar.addCodeFoundListener(new EventListener<CodeFoundEvent>() {
+  @Override
+  public void onEvent(CodeFoundEvent event) {
+    JsonObject response = new JsonObject();
+    response.addProperty("id", "codeFound");
+    response.addProperty("code", event.getValue());
+    try {
+        session.sendMessage(new TextMessage(response.toString()));
+    } catch (Throwable t) {
+        //TODO
+    }
+  }
+});
+```
 
 ## Publish
 
