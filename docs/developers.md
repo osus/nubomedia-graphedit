@@ -7,6 +7,8 @@ Launch de tool:
 
 ![Graph Tool Main Window](img/screenshot1.png)
 
+## Create project
+
 Create a new project from Project -> New.
 The project must be given a package and a name and these will be the package name and the main class name in the generated code.
 
@@ -24,3 +26,14 @@ Double click on any component to open its details where properties can be set. T
 
 ![Component properties](img/screenshot5.png)
 
+## Validation
+
+TBD
+
+## Convert to code
+
+TBD
+
+## Publish
+
+TBD
