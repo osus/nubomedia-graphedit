@@ -14,8 +14,8 @@ export default class InfoBar extends React.Component {
   }
   render() {
     return (
-      <div className="form-inline">
-        <h4 style={{'margin-left': '20px'}}>{this.state.projectName ? this.state.projectName : 'NuboEditor'}</h4>
+      <div className="col-xs-6">
+        <h4>{this.state.projectName ? this.state.projectName : 'NuboEditor'}</h4>
       </div>
     )
   }
