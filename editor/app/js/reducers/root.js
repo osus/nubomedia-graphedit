@@ -132,10 +132,17 @@ function globalReducer(state, action) {
       };
 
     case ActionTypes.SET_GRAPH_PANEL:
-      mutable.setContainer(action.payload.el, action.payload.projectcb, action.payload.nodecb);
+      mutable.setContainer(action.payload.el, action.payload.projectcb, action.payload.nodecb, action.payload.validatecb);
       if (action.payload.el) {
         mutable.setupNewEditor(state.graphs[state.editor.currentGraph], state.nodedefs);
       }
+      return state;
+
+    case ActionTypes.VALIDATE_PANEL:
+      if (!mutable.getEditor() || !mutable.getEditor().validateHandler) {
+        throw "No validate handler";
+      }
+      mutable.getEditor().validateHandler(mutable.getEditor().validateEditor());
       return state;
   }
   return state;

@@ -27,3 +27,6 @@ export const SET_PROJECT_PROPERTIES = 'SET_PROJECT_PROPERTIES'
 
 // Global and mutable bits
 export const SET_GRAPH_PANEL = 'SET_GRAPH_PANEL'
+
+// Validation management
+export const VALIDATE_PANEL = 'VALIDATE_PANEL'

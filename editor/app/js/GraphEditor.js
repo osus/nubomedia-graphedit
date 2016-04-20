@@ -54,7 +54,7 @@ function makeUUID(node, ep) { return `${node}.${ep}` }
 
 export default class GraphEditor {
 
-    constructor(container, projectcb, nodecb) {
+    constructor(container, projectcb, nodecb, validatecb) {
         this.instance = jsPlumb.getInstance({
             // default drag options
             DragOptions: { cursor: 'pointer', zIndex: 2000 },
@@ -66,10 +66,13 @@ export default class GraphEditor {
         });
         this.instance.setContainer(container);
 
+        // Handlers
         this.projectClickHandler = projectcb;
         this.nodeClickHandler    = nodecb;
+        this.validateHandler     = validatecb;
         this.deselectNodeHandler = null;
 
+        // Nodes
         this.nodes = [];
         this.selectedNode = null;
         this.copiedNode   = null;
@@ -82,39 +85,6 @@ export default class GraphEditor {
                 }
             }
         });
-
-        // var basicType = {
-        //     connector: 'StateMachine',
-        //     paintStyle: { strokeStyle: 'red', lineWidth: 4 },
-        //     hoverPaintStyle: { strokeStyle: 'blue' },
-        //     overlays: ['Arrow']
-        // };
-        // this.instance.registerConnectionType('basic', basicType);
-
-        // // listen for new connections; initialise them the same way we initialise the connections at startup.
-        // this.instance.bind('connection', (connInfo/*, originalEvent*/) => {
-        //     this.initConnection(connInfo.connection);
-        // });
-
-        // // listen for clicks on connections
-        // this.instance.bind('click', (connection/*, originalEvent*/) => {
-        //    // if (confirm('Delete connection from ' + conn.sourceId + ' to ' + conn.targetId + '?'))
-        //      //   instance.detach(conn);
-        //     connection.toggleType('basic'); // Sample operation
-        //     console.log('click(): connection', connection);
-        // });
-
-        // this.instance.bind('connectionDrag', (connection) => {
-        //     console.log('connectionDrag(): connection ' + connection.id + ' is being dragged. suspendedElement is ', connection.suspendedElement, ' of type ', connection.suspendedElementType);
-        // });
-
-        // this.instance.bind('connectionDragStop', (connection) => {
-        //     console.log('connectionDragStop(): connection ' + connection.id + ' was dragged\n', connection);
-        // });
-
-        // this.instance.bind('connectionMoved', (params) => {
-        //     console.log('connectionMoved(): connection ' + params.connection.id + ' was moved\n', params);
-        // });
     }
 
     destroy() {
@@ -234,8 +204,88 @@ export default class GraphEditor {
         }));
     }
 
-    // initConnection(connection) {
-    //     //connection.getOverlay('label').setLabel(connection.sourceId.substring(15) + '-' + connection.targetId.substring(15));
-    //     console.log("Connection: ", connection);
-    // }
+    // TODO: Finish validations
+    validateEditor() {
+        // Validator skeleton
+        let validator = {
+            error: '',
+            nodes: []
+        };
+
+        /* -------------------
+         *  VALIDATION: If the editor doesn't have nodes
+         * ------------------- */
+        if (this.nodes.length == 0) {
+            validator.error = true;
+            validator.nodes["general"] = [{
+                property: "Empty",
+                description: "No nodes created."
+            }];
+        }
+
+        this.nodes.forEach((node) => {
+            // Validator node skeleton
+            validator.nodes[node.name] = {
+                connections: {
+                    sources: {},
+                    targets: {}
+                },
+                properties: []
+            };
+
+            /* -------------------
+             *  VALIDATION: Validate if the node have empty properties
+             * ------------------- */
+
+            if(Object.keys(node.properties).length != 0) {
+                for (let property in node.properties) {
+                    if (node.properties.hasOwnProperty(property)) {
+
+                        // Empty
+                        if (node.properties[property] == "") {
+                            validator.error = true;
+                            validator.nodes[node.name].properties.push({
+                                property: property,
+                                description: property.charAt(0).toUpperCase() + property.slice(1) + " is empty."
+                            });
+                        }
+                    }
+                }
+            }
+
+            /* -------------------
+             *  VALIDATION: Validate if the node connections are corrected by type
+             * ------------------- */
+
+            // Get all sources and targets anchors connections
+            node.anchors.forEach((anchor) => {
+                if (anchor.source) {
+                    validator.nodes[node.name].connections.sources[anchor.name] = [];
+                } else {
+                    validator.nodes[node.name].connections.targets[anchor.name] = []
+                }
+                this.getConnections().forEach((connection) => {
+                    if (connection.source == node.name && connection.sourceEP == anchor.name) {
+                        validator.nodes[node.name].connections.sources[anchor.name].push(connection);
+                    }
+                    if (connection.target == node.name && connection.targetEP == anchor.name) {
+                        validator.nodes[node.name].connections.targets[anchor.name].push(connection);
+                    }
+                });
+            });
+            // Filter validations by node type
+            switch(node.group) {
+                case 'filters':
+                break;
+
+                case 'hubs':
+                break;
+
+                case 'elements':
+                break;
+            }
+        });
+
+        return validator;
+    }
 }

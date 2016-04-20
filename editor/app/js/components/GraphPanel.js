@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import ValidatorPanel from './ValidatorPanel'
 import ProjectModal from './ProjectModal';
 import NodeModal from './NodeModal';
 
@@ -9,7 +10,8 @@ export default class GraphPanel extends React.Component {
     super(props);
     this.state = {
       showProjectModal: false, projectEdit: false,
-      showNodeModal: false, node: null, initialNode: null, currentNodeName: null, saveDisabled: false
+      showNodeModal: false, node: null, initialNode: null, currentNodeName: null, saveDisabled: false,
+      showValidatorPanel: false, validator: null
     };
   }
 
@@ -62,6 +64,14 @@ export default class GraphPanel extends React.Component {
     this.setState({node: this.state.node});
   }
 
+  // Validator
+  toggleValidatorPanel() {
+    this.setState({showValidatorPanel: !this.state.showValidatorPanel})
+  }
+  validateHandler(validator) {
+    //console.log(validator);
+  }
+
   // Util
   _isNodeNameUnique(value) {
     let graph  = this.props.graphs[this.props.editor.currentGraph];
@@ -106,12 +116,22 @@ export default class GraphPanel extends React.Component {
         </div>
         {projectmodal}
         {nodemodal}
+        <ValidatorPanel
+          editor={this.props.editor}
+          showValidatorPanel={this.state.showValidatorPanel}
+          toggleValidatorPanel={this.toggleValidatorPanel.bind(this)}
+        />
       </div>
     );
   }
   // Can't use callback ref because a dynamic callback (needed to use 'this') gets fired every update
   componentDidMount() {
-    this.props.onSetEditorPanel(this.refs.editor_panel, this.projectClickHandler.bind(this), this.nodeClickHandler.bind(this));
+    this.props.onSetEditorPanel(
+      this.refs.editor_panel,
+      this.projectClickHandler.bind(this),
+      this.nodeClickHandler.bind(this),
+      this.validateHandler.bind(this)
+    );
   }
   componentWillUnmount() {
     this.props.onSetEditorPanel(null);

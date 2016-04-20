@@ -53,6 +53,7 @@ class NuboEditor extends React.Component {
           />
           <TaskBar
             editor={this.props.editor}
+            onValidatePanel={this.props.onValidatePanel}
           />
           <GraphPanel
             editor={this.props.editor} graphs={this.props.graphs}
@@ -301,7 +302,9 @@ function mapDispatchToProps(dispatch) {
     onPasteSelectedNode: () => dispatch({type: ActionTypes.PASTE_SELECTED_NODE}),
     onDeleteSelectedNode: () => dispatch({type: ActionTypes.DELETE_SELECTED_NODE}),
 
-    onSetEditorPanel: (el, projectcb, nodecb) => dispatch({type: ActionTypes.SET_GRAPH_PANEL, payload: {el, projectcb, nodecb}}),
+    onSetEditorPanel: (el, projectcb, nodecb, validatecb) => dispatch({type: ActionTypes.SET_GRAPH_PANEL, payload: {el, projectcb, nodecb, validatecb}}),
+
+    onValidatePanel: () => dispatch({type: ActionTypes.VALIDATE_PANEL})
   };
 }
 

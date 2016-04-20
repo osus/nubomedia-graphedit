@@ -103,3 +103,20 @@ path, ._jsPlumb_endpoint {
 .navbar {
     border-radius: 0 !important;
 }
+
+.validator-panel {
+    max-height: 200px;
+    overflow-y: scroll;
+    margin-bottom: 0 !important;
+}
+
+.validator-panel .well {
+    margin-bottom: 0 !important;
+}
+
+.notify{
+    background: red;
+    position: relative;
+    top: -15px;
+    left: -10px;
+}
