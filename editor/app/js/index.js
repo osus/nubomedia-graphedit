@@ -15,6 +15,7 @@ import rootReducer from './reducers/root'
 import * as ActionTypes from "./actions/actionTypes"
 
 import GraphPanel from './components/GraphPanel'
+import TaskBar from './components/TaskBar'
 import InfoBar from './components/InfoBar'
 import MenuBar from './components/MenuBar'
 
@@ -46,8 +47,12 @@ class NuboEditor extends React.Component {
             onPasteSelectedNode={() => this.props.onPasteSelectedNode()}
             onDeleteSelectedNode={() => this.props.onDeleteSelectedNode()}
           />
-          <InfoBar editor={this.props.editor}
-                   renameGraph={this.props.onRenameGraph}
+          <InfoBar
+            editor={this.props.editor}
+            renameGraph={this.props.onRenameGraph}
+          />
+          <TaskBar
+            editor={this.props.editor}
           />
           <GraphPanel
             editor={this.props.editor} graphs={this.props.graphs}

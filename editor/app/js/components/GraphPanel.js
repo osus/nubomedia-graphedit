@@ -101,7 +101,7 @@ export default class GraphPanel extends React.Component {
         />;
     }
     return (
-      <div id="graphpanel" className="panel panel-default" style={{height:"600px",width:"100%"}}>
+      <div id="graphpanel" className="col-xs-12 panel panel-default" style={{height:"100%",width:"100%"}}>
         <div className="demo nuboged" ref="editor_panel" id="nuboged-container" >
         </div>
         {projectmodal}
