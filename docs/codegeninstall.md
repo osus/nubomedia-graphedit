@@ -4,7 +4,7 @@ Code Generator for Nubomedia project.
 
 ## Prerequisites
 
-[NodeJS](https://nodejs.org/) and [Gulp](http://gulpjs.com/).
+[NodeJS](https://nodejs.org/).
 
 This project is built using JavaScript and built using NodeJS-based tools. So please install the latest node from your OS package manager or from the [NodeJS site](https://nodejs.org/).
 
@@ -57,6 +57,7 @@ Generates the `model1.ngeprj` into the `output` target folder.
 ```
 bin/esl-nubo gen -m models/model1.ngeprj -o output
 ```
+Model is the project file from the Graph Editor and output the folder where the project code will be generated. 
 
 ## Docker pack and run:
 ```
