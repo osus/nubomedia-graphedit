@@ -48,7 +48,6 @@ Examples:
   index.js gen -m <model.json> -o           Generates the model into the output
   <outputDir>                               directory
 
-(c) 2016. Pedro J. Molina
 ```
 
 ## Usage sample:
