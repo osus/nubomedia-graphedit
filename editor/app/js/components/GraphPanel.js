@@ -18,7 +18,9 @@ export default class GraphPanel extends React.Component {
   // Project
   closeProjectModal() {
     this.setState({showProjectModal: false});
-    this.props.closeProject();
+    if (!this.state.projectEdit) {
+      this.props.closeProject();
+    }
   }
   projectClickHandler(edit) {
     this.setState({showProjectModal: true, projectEdit: edit});
