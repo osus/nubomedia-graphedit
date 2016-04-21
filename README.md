@@ -12,6 +12,6 @@ Full documentation is available in the [docs](docs/index.md) folder.
 
 The documentation for this project can also be read online in [Read The Docs](http://nubomedia-graph-editor.readthedocs.org/)
 
-## License
+## Licensing and distribution
 
-TBD
+Software associated to NUBOMEDIA is provided as open source under GNU Library or "Lesser" General Public License, version 2.1 (LGPL-2.1). Please check the specific terms and conditions linked to this open source license at http://opensource.org/licenses/LGPL-2.1. Please note that software derived as a result of modifying the source code of NUBOMEDIA software in order to fix a bug or incorporate enhancements is considered a derivative work of the product. Software that merely uses or aggregates (i.e. links to) an otherwise unmodified version of existing software is not considered a derivative work.
