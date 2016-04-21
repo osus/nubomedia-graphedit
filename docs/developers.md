@@ -38,6 +38,7 @@ When the model passes validation, the project can be saved.
 
 Follow the [Codegen Installation Guide](codegeninstall.md) if you have not installed the Codegen tool yet.
 Now just launch the Codegen tool with the path to the saved model and the path to the folder where the project must be generated.
+The Codegen tool is still a prototype of what should be in a future. Although the graph tool can generate any kind of model, the Codegen does only work with a basic use case of a webrtc component in loopback where any kind or amount of filters can be inserted between source and target streams. RecorderEndpoint is also supported.
 
 ```
 bin/esl-nubo gen -m /path/to/your/model.ngeprj -o output
@@ -93,6 +94,11 @@ zbar.addCodeFoundListener(new EventListener<CodeFoundEvent>() {
 });
 ```
 
-## Publish
+At this point, developers can modify the application code to satisfy their business logic requirements. In the piece of code above, for example, developers should decide what to do in the event dispatched when a code bar is detected. Similar modifications should be done not only on events but also in any point where the developer needs propietary integrations such as database.
 
-TBD
+## Deploy
+
+The generated project is ready to deploy with all the requirements and dependencies for Docker and Maven ready.
+The project has to be deployed using the [Nubomedia PaaS](http://nubomedia.readthedocs.org/en/latest/paas/paas-introduction/). To be able to import into the PaaS, a Git repository is needed at this moment, developers must comit the generated project into a repository and finally, from the PaaS interface, deploy the application.
+
+ 

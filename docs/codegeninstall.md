@@ -1,6 +1,6 @@
 # Codegen Installation Guide
 
-Code Generator for Nubomedia project.
+Code Generator for Nubomedia project. This is still a prototype version with just some components mapped and ready to work. 
 
 ## Prerequisites
 
