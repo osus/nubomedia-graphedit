@@ -57,6 +57,7 @@ class NuboEditor extends React.Component {
           />
           <GraphPanel
             editor={this.props.editor} graphs={this.props.graphs}
+            onValidatePanel={this.props.onValidatePanel}
             onSetEditorPanel={this.props.onSetEditorPanel}
             setProjectProperties={(projectName, packageName, graphName) => this.setProjectProperties(projectName, packageName, graphName)}
             closeProject={() => this.closeProject(true)}

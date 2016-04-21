@@ -85,6 +85,9 @@ export default class GraphEditor {
                 }
             }
         });
+
+        // Validate on create GraphEditor
+        this.validateEditor();
     }
 
     destroy() {
@@ -160,6 +163,10 @@ export default class GraphEditor {
         this.deselectNodeHandler = _deselectNode;
         // Add node
         this.nodes.push(node);
+
+        // Validate on create node
+        this.validateEditor();
+
         return el;
     }
 
@@ -177,6 +184,9 @@ export default class GraphEditor {
         _deleteEndpoints(node.element.id, node.anchors);
         this.instance.getContainer().removeChild(node.element);
         this.selectedNode = (this.selectedNode != node) ? this.selectedNode : null;
+
+        // Validate on delete node
+        this.validateEditor();
     }
 
     copyNode(node) {
@@ -205,46 +215,47 @@ export default class GraphEditor {
     }
 
     // TODO: Finish validations
+    /**
+     * This function validates all editor components.
+     * Validate:
+     *  - Project:
+     *      - Validate if has nodes
+     *  - Nodes:
+     *      - Empty properties
+     *      - Unused connections by group type:
+     *          # filters: Validates the input and output connections are
+     *                     connected to another node.
+     *          # hubs: At least one source and one target must be connected
+     *          # elements: At least one target must be connected
+     */
     validateEditor() {
         // Validator skeleton
         let validator = {
-            error: '',
-            nodes: []
+            error: false,
+            nodes: {}
         };
 
-        /* -------------------
-         *  VALIDATION: If the editor doesn't have nodes
-         * ------------------- */
-        if (this.nodes.length == 0) {
-            validator.error = true;
-            validator.nodes["general"] = [{
-                property: "Empty",
-                description: "No nodes created."
-            }];
-        }
-
+        /*
+            Nodes
+         */
         this.nodes.forEach((node) => {
             // Validator node skeleton
-            validator.nodes[node.name] = {
+            let nodeError = {
                 connections: {
                     sources: {},
                     targets: {}
                 },
-                properties: []
+                errors: []
             };
 
-            /* -------------------
-             *  VALIDATION: Validate if the node have empty properties
-             * ------------------- */
-
+            // Node Properties
             if(Object.keys(node.properties).length != 0) {
                 for (let property in node.properties) {
                     if (node.properties.hasOwnProperty(property)) {
-
                         // Empty
                         if (node.properties[property] == "") {
                             validator.error = true;
-                            validator.nodes[node.name].properties.push({
+                            nodeError.errors.push({
                                 property: property,
                                 description: property.charAt(0).toUpperCase() + property.slice(1) + " is empty."
                             });
@@ -253,39 +264,55 @@ export default class GraphEditor {
                 }
             }
 
-            /* -------------------
-             *  VALIDATION: Validate if the node connections are corrected by type
-             * ------------------- */
-
-            // Get all sources and targets anchors connections
+            // Node Connections
             node.anchors.forEach((anchor) => {
                 if (anchor.source) {
-                    validator.nodes[node.name].connections.sources[anchor.name] = [];
+                    nodeError.connections.sources[anchor.name] = [];
                 } else {
-                    validator.nodes[node.name].connections.targets[anchor.name] = []
+                    nodeError.connections.targets[anchor.name] = [];
                 }
                 this.getConnections().forEach((connection) => {
                     if (connection.source == node.name && connection.sourceEP == anchor.name) {
-                        validator.nodes[node.name].connections.sources[anchor.name].push(connection);
+                        nodeError.connections.sources[anchor.name].push(connection);
                     }
                     if (connection.target == node.name && connection.targetEP == anchor.name) {
-                        validator.nodes[node.name].connections.targets[anchor.name].push(connection);
+                        nodeError.connections.targets[anchor.name].push(connection);
                     }
                 });
             });
-            // Filter validations by node type
             switch(node.group) {
                 case 'filters':
-                break;
+                    break;
 
                 case 'hubs':
-                break;
+                    break;
 
                 case 'elements':
-                break;
+                    break;
+            }
+
+            if (nodeError.errors.length > 0) {
+                validator.nodes[node.name] = nodeError;
             }
         });
 
-        return validator;
+        /*
+            Project
+         */
+        if (this.nodes.length == 0) {
+            validator.error = true;
+            validator.nodes["general"] = {
+                connections: {
+                    sources: {},
+                    targets: {}
+                },
+                errors: [{
+                    property: "Editor",
+                    description: "No nodes created."
+                }]
+            };
+        }
+        console.log(validator);
+        this.validateHandler(validator);
     }
 }
