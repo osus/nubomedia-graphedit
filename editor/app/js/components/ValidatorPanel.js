@@ -20,18 +20,39 @@ export default class ValidatorPanel extends React.Component {
       (key) => {
         let node       = nodes[key];
         let title      = <h4>{key.charAt(0).toUpperCase() + key.slice(1)}</h4>;
-        let errors     = node.errors.map(
+        // Properties
+        let errorsPropertiesTitle = <h5>Properties errors:</h5>;
+        let errorsProperties = node.errors.properties.map(
           (error) => {
             return <li key={key}>{error.property}: {error.description}</li>
           });
+
+        // Connections Sources & Targets
+        let errorsConnectionsTitle = <h5>Connections errors:</h5>;
+        let errorsConnectionsSources = node.errors.connections.sources.map(
+          (error) => {
+            return <li key={key}>{error.property}: {error.description}</li>
+          });
+        let errorsConnectionsTargets = node.errors.connections.targets.map(
+          (error) => {
+            return <li key={key}>{error.property}: {error.description}</li>
+          });
+
         return (
           <div className="error" key={key}>
             {title}
+            {errorsProperties.length > 0 ? errorsPropertiesTitle : ''}
             <ul>
-              {errors}
+              {errorsProperties}
+            </ul>
+            {errorsConnectionsSources.length > 0 || errorsConnectionsTargets.length ? errorsConnectionsTitle : ''}
+            <ul>
+              {errorsConnectionsSources}
+              {errorsConnectionsTargets}
             </ul>
           </div>);
       });
+
     let badgeNotification = null;
     if (this.props.editor.name) {
       badgeNotification =

@@ -148,7 +148,7 @@ export default class GraphEditor {
             drag: (e) => { dragged = true }
         });
         let props = (savedProps) ? savedProps : mapObject(def.properties, (val, key) => val.default || "");
-        let node = {element: el, type:type, id:id, name: name, properties: props, anchors: def.anchors};
+        let node = {element: el, type:type, id:id, name: name, properties: props, anchors: def.anchors, group: def.group};
         el.addEventListener("click", (e) => {
             if (dragged) {
                 dragged = false;
@@ -214,7 +214,6 @@ export default class GraphEditor {
         }));
     }
 
-    // TODO: Finish validations
     /**
      * This function validates all editor components.
      * Validate:
@@ -223,7 +222,7 @@ export default class GraphEditor {
      *  - Nodes:
      *      - Empty properties
      *      - Unused connections by group type:
-     *          # filters: Validates the input and output connections are
+     *          # filters: Validates one source and one target are
      *                     connected to another node.
      *          # hubs: At least one source and one target must be connected
      *          # elements: At least one target must be connected
@@ -241,57 +240,108 @@ export default class GraphEditor {
         this.nodes.forEach((node) => {
             // Validator node skeleton
             let nodeError = {
-                connections: {
-                    sources: {},
-                    targets: {}
+                anchors: {
+                    sources: [],
+                    targets: []
                 },
-                errors: []
+                errors: {
+                    properties: [],
+                    connections: {
+                        sources: [],
+                        targets: []
+                    }
+                }
             };
-
             // Node Properties
             if(Object.keys(node.properties).length != 0) {
                 for (let property in node.properties) {
                     if (node.properties.hasOwnProperty(property)) {
                         // Empty
                         if (node.properties[property] == "") {
-                            validator.error = true;
-                            nodeError.errors.push({
+                            nodeError.errors.properties.push({
                                 property: property,
-                                description: property.charAt(0).toUpperCase() + property.slice(1) + " is empty."
+                                description: property + " is empty."
                             });
                         }
                     }
                 }
             }
-
-            // Node Connections
+            // Node Anchors
             node.anchors.forEach((anchor) => {
-                if (anchor.source) {
-                    nodeError.connections.sources[anchor.name] = [];
-                } else {
-                    nodeError.connections.targets[anchor.name] = [];
-                }
+                let anchorConnections = {
+                    name: anchor.name,
+                    connections: []
+                };
                 this.getConnections().forEach((connection) => {
                     if (connection.source == node.name && connection.sourceEP == anchor.name) {
-                        nodeError.connections.sources[anchor.name].push(connection);
+                        anchorConnections.connections.push(connection);
                     }
                     if (connection.target == node.name && connection.targetEP == anchor.name) {
-                        nodeError.connections.targets[anchor.name].push(connection);
+                        anchorConnections.connections.push(connection);
                     }
                 });
+                if (anchor.source) {
+                    nodeError.anchors.sources.push(anchorConnections)
+                } else {
+                    nodeError.anchors.targets.push(anchorConnections);
+                }
             });
+            // Node connections
             switch(node.group) {
                 case 'filters':
+                    nodeError.anchors.sources.forEach((source) => {
+                        if (source.connections.length == 0 && nodeError.errors.connections.sources.length == 0) {
+                            nodeError.errors.connections.sources.push({
+                                property: "Source connection",
+                                description: "This filter node hasn't connection source connected to another node."
+                            });
+                        }
+                    });
+                    nodeError.anchors.targets.forEach((target) => {
+                        if (target.connections.length == 0 && nodeError.errors.connections.targets.length == 0) {
+                            nodeError.errors.connections.targets.push({
+                                property: "Target connection",
+                                description: "This filter node hasn't connection target connected by another node."
+                            });
+                        }
+                    });
                     break;
 
+                // TODO: Validate all targets
                 case 'hubs':
+                    nodeError.anchors.sources.forEach((source) => {
+                        if (source.connections.length == 0 && nodeError.errors.connections.sources.length == 0) {
+                            nodeError.errors.connections.sources.push({
+                                property: "Source connection",
+                                description: "This hub node needs at least be connected to another node."
+                            });
+                        }
+                    });
+                    nodeError.anchors.targets.forEach((target) => {
+                        if (target.connections.length == 0 && nodeError.errors.connections.targets.length == 0) {
+                            nodeError.errors.connections.targets.push({
+                                property: "Target connection",
+                                description: "This hub node requires at least one connection from another node to its target."
+                            });
+                        }
+                    });
                     break;
 
                 case 'elements':
+                    nodeError.anchors.targets.forEach((target) => {
+                        if (target.connections.length == 0 && nodeError.errors.connections.targets.length == 0) {
+                            nodeError.errors.connections.targets.push({
+                                property: "Target connection",
+                                description: "This element node requires at least one connection from another node to its target."
+                            });
+                        }
+                    });
                     break;
             }
 
-            if (nodeError.errors.length > 0) {
+            if (nodeError.errors.properties.length > 0 ||
+                nodeError.errors.connections.targets.length > 0 ||
+                nodeError.errors.connections.targets.length > 0) {
                 validator.nodes[node.name] = nodeError;
             }
         });
@@ -300,19 +350,24 @@ export default class GraphEditor {
             Project
          */
         if (this.nodes.length == 0) {
-            validator.error = true;
-            validator.nodes["general"] = {
-                connections: {
+            validator.nodes["project"] = {
+                anchors: {
                     sources: {},
                     targets: {}
                 },
-                errors: [{
-                    property: "Editor",
-                    description: "No nodes created."
-                }]
+                errors: {
+                    properties: [{
+                        property: "Editor",
+                        description: "No nodes created."
+                    }],
+                    connections: {
+                        sources: [],
+                        targets: []
+                    }
+                }
             };
         }
-        console.log(validator);
+        validator.error = Object.keys(validator.nodes).length != 0;
         this.validateHandler(validator);
     }
 }
