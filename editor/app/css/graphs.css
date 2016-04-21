@@ -104,19 +104,36 @@ path, ._jsPlumb_endpoint {
     border-radius: 0 !important;
 }
 
+.btn-validator {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom: 0;
+}
+
+.btn-validator:focus {
+    outline: 0;
+}
+
 .validator-panel {
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: scroll;
     margin-bottom: 0 !important;
 }
 
 .validator-panel .well {
     margin-bottom: 0 !important;
+    min-height: 300px;
+    padding-top: 0;
+    border-radius: 0;
 }
 
-.notify{
+.notify {
     background: red;
     position: relative;
     top: -15px;
     left: -10px;
+}
+
+.notify-ok {
+    background: limegreen !important;
 }

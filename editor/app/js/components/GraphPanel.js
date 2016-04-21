@@ -57,6 +57,7 @@ export default class GraphPanel extends React.Component {
       this.props.onSaveCurrentGraph(this.props.editor.currentGraph);
       this.setState({showNodeModal: false, node: null, initialNode: null, currentNodeName: null, saveDisabled: false});
     }
+    this.props.onValidatePanel();
   }
   onChangeNodeName(e) {
     this.setState({currentNodeName: e.target.value, saveDisabled: !this._isNodeNameUnique(e.target.value)});
@@ -71,7 +72,10 @@ export default class GraphPanel extends React.Component {
     this.setState({showValidatorPanel: !this.state.showValidatorPanel})
   }
   validateHandler(validator) {
-    //console.log(validator);
+    this.setState({validator: validator});
+    if (!validator.error && this.state.showValidatorPanel) {
+      this.setState({showValidatorPanel: false})
+    }
   }
 
   // Util
@@ -120,6 +124,7 @@ export default class GraphPanel extends React.Component {
         {nodemodal}
         <ValidatorPanel
           editor={this.props.editor}
+          validator={this.state.validator}
           showValidatorPanel={this.state.showValidatorPanel}
           toggleValidatorPanel={this.toggleValidatorPanel.bind(this)}
         />

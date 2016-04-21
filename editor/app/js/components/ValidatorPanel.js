@@ -6,48 +6,49 @@ export default class ValidatorPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      validator: null
+      error: false, nodes: {}
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.validator != null) {
+      this.setState({error: nextProps.validator.error, nodes: nextProps.validator.nodes});
     }
   }
   render() {
+    let nodes = this.state.nodes || {};
+    let errorFields = Object.keys(nodes).map(
+      (key) => {
+        let node       = nodes[key];
+        let title      = <h4>{key.charAt(0).toUpperCase() + key.slice(1)}</h4>;
+        let errors     = node.errors.map(
+          (error) => {
+            return <li key={key}>{error.property}: {error.description}</li>
+          });
+        return (
+          <div className="error" key={key}>
+            {title}
+            <ul>
+              {errors}
+            </ul>
+          </div>);
+      });
+    let badgeNotification = null;
+    if (this.props.editor.name) {
+      badgeNotification =
+        <span className={errorFields.length > 0 ? 'badge notify' : 'badge notify notify-ok'}>
+          {errorFields.length > 0 ? errorFields.length : '√'}
+        </span>
+    }
     return (
       <div className="col-sx-12 navbar-fixed-bottom">
-        <Button onClick={this.props.toggleValidatorPanel} disabled={!this.props.editor.name}>
+        <Button className="btn-validator" onClick={this.props.toggleValidatorPanel} disabled={!this.props.editor.name || !this.state.error}>
           {!this.props.showValidatorPanel ? 'Open Validator' : 'Close Validator'}
         </Button>
-        <span className="badge notify">3</span>
+        {badgeNotification}
         <Collapse in={this.props.showValidatorPanel}>
           <div className="validator-panel">
             <Well>
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-              nim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-              Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-
+              {errorFields}
             </Well>
           </div>
         </Collapse>

@@ -142,7 +142,7 @@ function globalReducer(state, action) {
       if (!mutable.getEditor() || !mutable.getEditor().validateHandler) {
         throw "No validate handler";
       }
-      mutable.getEditor().validateHandler(mutable.getEditor().validateEditor());
+      mutable.getEditor().validateEditor();
       return state;
   }
   return state;
