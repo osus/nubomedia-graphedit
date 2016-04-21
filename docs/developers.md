@@ -26,6 +26,11 @@ Double click on any component to open its details where properties can be set. T
 
 ![Component properties](img/screenshot5.png)
 
+Click on any component to select it, then you can use `edit`options to cut/copy/paste/delete.
+Drag from any source point of any component to any sink to connect those nodes. 
+Drag any side of one wire and drop outside to remove the connection.
+
+
 ## Validation
 
 Before converting the model into code developers must "validate" the application with the validation option in the Graph Tool. This feature checks the model ensuring all the properties in each component have been filled and there are not orphan nodes in both or any of it sources and targets. 
