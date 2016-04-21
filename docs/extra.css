@@ -1,0 +1,19 @@
+.wy-side-nav-search::before {
+    background: url('https://raw.githubusercontent.com/GlassOceanos/nubomedia-graphedit/master/docs/logo.png');
+    content: '';
+    width: 150px;
+    height: 55px;
+    display: block;
+    margin: 0 auto 10px;
+}
+.wy-side-nav-search {
+    background-color: white;
+}
+
+.icon.icon-home {
+    color: rgb(85, 85, 85);
+}
+
+.wy-nav-content {
+    background: white;
+}
