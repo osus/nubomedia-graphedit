@@ -15,5 +15,4 @@ The project can be found on Github: [https://github.com/GlassOceanos/nubomedia-g
 - [Installation Guide](installation.md)
 - [Codegen Installation Guide](codegeninstall.md)
 - [Developers Guide](developers.md)
-- [Reference Manual](reference.md)
 - [Software Architecture](architecture.md)

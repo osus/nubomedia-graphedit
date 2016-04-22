@@ -4,7 +4,6 @@ pages:
 - 'Installation Guide': installation.md
 - 'Codegen Installation Guide': codegeninstall.md
 - 'Developers Guide': developers.md
-- 'Reference Manual': reference.md
 - 'Software Architecture': architecture.md
 theme: readthedocs
 extra_css: [extra.css]
