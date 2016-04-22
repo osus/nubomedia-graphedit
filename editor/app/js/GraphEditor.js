@@ -291,7 +291,6 @@ export default class GraphEditor {
                 case 'filters':
                     nodeError.anchors.sources.forEach((source) => {
                         if (source.connections.length == 0) {
-                            console.log('Source error');
                             nodeError.errors.connections.sources.push({
                                 property: "Source connection",
                                 description: "This filter node hasn't connection source connected to another node."
@@ -301,7 +300,6 @@ export default class GraphEditor {
                     nodeError.anchors.targets.forEach((target) => {
                         console.log(target);
                         if (target.connections.length == 0) {
-                            console.log('Target error');
                             nodeError.errors.connections.targets.push({
                                 property: "Target connection",
                                 description: "This filter node hasn't connection target connected by another node."
