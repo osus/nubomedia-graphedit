@@ -49,6 +49,7 @@ export default class NodeModal extends React.Component {
           </Input>
         </div>);
       });
+    let propertiesTitle = (modalFields.length != 0) ? <h4>Properties:</h4> : '';
     return (
       <Modal show={true} onHide={this.props.closeNodeModal} bsSize="large">
         <Modal.Header closeButton>
@@ -66,7 +67,7 @@ export default class NodeModal extends React.Component {
                    value={this.props.currentNodeName}>
             </Input>
           </div>
-          <h4>Properties:</h4>
+          {propertiesTitle}
           {modalFields}
         </Modal.Body>
         <Modal.Footer>

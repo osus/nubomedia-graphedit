@@ -24,18 +24,18 @@ export default class ValidatorPanel extends React.Component {
         let errorsPropertiesTitle = <h5>Properties errors:</h5>;
         let errorsProperties = node.errors.properties.map(
           (error) => {
-            return <li key={key}>{error.property}: {error.description}</li>
+            return <li key={error.property}>{error.property}: {error.description}</li>
           });
 
         // Connections Sources & Targets
         let errorsConnectionsTitle = <h5>Connections errors:</h5>;
         let errorsConnectionsSources = node.errors.connections.sources.map(
           (error) => {
-            return <li key={key}>{error.property}: {error.description}</li>
+            return <li key={error.property}>{error.property}: {error.description}</li>
           });
         let errorsConnectionsTargets = node.errors.connections.targets.map(
           (error) => {
-            return <li key={key}>{error.property}: {error.description}</li>
+            return <li key={error.property}>{error.property}: {error.description}</li>
           });
 
         return (
