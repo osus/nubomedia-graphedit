@@ -290,7 +290,8 @@ export default class GraphEditor {
             switch(node.group) {
                 case 'filters':
                     nodeError.anchors.sources.forEach((source) => {
-                        if (source.connections.length == 0 && nodeError.errors.connections.sources.length == 0) {
+                        if (source.connections.length == 0) {
+                            console.log('Source error');
                             nodeError.errors.connections.sources.push({
                                 property: "Source connection",
                                 description: "This filter node hasn't connection source connected to another node."
@@ -298,7 +299,9 @@ export default class GraphEditor {
                         }
                     });
                     nodeError.anchors.targets.forEach((target) => {
-                        if (target.connections.length == 0 && nodeError.errors.connections.targets.length == 0) {
+                        console.log(target);
+                        if (target.connections.length == 0) {
+                            console.log('Target error');
                             nodeError.errors.connections.targets.push({
                                 property: "Target connection",
                                 description: "This filter node hasn't connection target connected by another node."
@@ -351,7 +354,7 @@ export default class GraphEditor {
             }
 
             if (nodeError.errors.properties.length > 0 ||
-                nodeError.errors.connections.targets.length > 0 ||
+                nodeError.errors.connections.sources.length > 0 ||
                 nodeError.errors.connections.targets.length > 0) {
                 validator.nodes[node.name] = nodeError;
             }
