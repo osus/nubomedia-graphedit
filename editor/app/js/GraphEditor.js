@@ -307,35 +307,46 @@ export default class GraphEditor {
                     });
                     break;
 
-                // TODO: Validate all targets
                 case 'hubs':
+                    let hubSourceHaveConnection = false;
+                    let hubTargetHaveConnection = false;
                     nodeError.anchors.sources.forEach((source) => {
-                        if (source.connections.length == 0 && nodeError.errors.connections.sources.length == 0) {
-                            nodeError.errors.connections.sources.push({
-                                property: "Source connection",
-                                description: "This hub node needs at least be connected to another node."
-                            });
+                        if (!hubSourceHaveConnection && source.connections.length > 0) {
+                            hubSourceHaveConnection = true;
                         }
                     });
                     nodeError.anchors.targets.forEach((target) => {
-                        if (target.connections.length == 0 && nodeError.errors.connections.targets.length == 0) {
-                            nodeError.errors.connections.targets.push({
-                                property: "Target connection",
-                                description: "This hub node requires at least one connection from another node to its target."
-                            });
+                        if (!hubTargetHaveConnection && target.connections.length > 0) {
+                            hubTargetHaveConnection = true;
                         }
                     });
+                    if (!hubSourceHaveConnection) {
+                        nodeError.errors.connections.sources.push({
+                            property: "Source connection",
+                            description: "This hub node needs at least be connected to another node."
+                        });
+                    }
+                    if (!hubTargetHaveConnection) {
+                        nodeError.errors.connections.targets.push({
+                            property: "Target connection",
+                            description: "This hub node requires at least one connection from another node to its target."
+                        });
+                    }
                     break;
 
                 case 'elements':
+                    let elementTargetHaveConnection = false;
                     nodeError.anchors.targets.forEach((target) => {
-                        if (target.connections.length == 0 && nodeError.errors.connections.targets.length == 0) {
-                            nodeError.errors.connections.targets.push({
-                                property: "Target connection",
-                                description: "This element node requires at least one connection from another node to its target."
-                            });
+                        if (!elementTargetHaveConnection && target.connections.length > 0) {
+                            elementTargetHaveConnection = true;
                         }
                     });
+                    if (!elementTargetHaveConnection) {
+                        nodeError.errors.connections.targets.push({
+                            property: "Target connection",
+                            description: "This element node requires at least one connection from another node to its target."
+                        });
+                    }
                     break;
             }
 
