@@ -67,7 +67,7 @@ export default class ValidatorPanel extends React.Component {
         </Button>
         {badgeNotification}
         <Collapse in={this.props.showValidatorPanel}>
-          <div className="validator-panel">
+          <div id="validator-panel" className="validator-panel">
             <Well>
               {errorFields}
             </Well>

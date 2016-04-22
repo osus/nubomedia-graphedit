@@ -15,6 +15,13 @@ export default class GraphPanel extends React.Component {
     };
   }
 
+  // Panel
+  onClickEditorPanel(e) {
+    if (e.target != document.getElementById('validator-panel')) {
+      this.setState({showValidatorPanel: false});
+    }
+  }
+
   // Project
   closeProjectModal() {
     this.setState({showProjectModal: false});
@@ -69,12 +76,12 @@ export default class GraphPanel extends React.Component {
 
   // Validator
   toggleValidatorPanel() {
-    this.setState({showValidatorPanel: !this.state.showValidatorPanel})
+    this.setState({showValidatorPanel: !this.state.showValidatorPanel});
   }
   validateHandler(validator) {
     this.setState({validator: validator});
     if (!validator.error && this.state.showValidatorPanel) {
-      this.setState({showValidatorPanel: false})
+      this.setState({showValidatorPanel: false});
     }
   }
 
@@ -118,7 +125,7 @@ export default class GraphPanel extends React.Component {
     }
     return (
       <div id="graphpanel" className="col-xs-12 panel panel-default" style={{height:"100%",width:"100%"}}>
-        <div className="demo nuboged" ref="editor_panel" id="nuboged-container" >
+        <div className="demo nuboged" ref="editor_panel" id="nuboged-container" onClick={this.onClickEditorPanel.bind(this)}>
         </div>
         {projectmodal}
         {nodemodal}
