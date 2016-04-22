@@ -298,7 +298,6 @@ export default class GraphEditor {
                         }
                     });
                     nodeError.anchors.targets.forEach((target) => {
-                        console.log(target);
                         if (target.connections.length == 0) {
                             nodeError.errors.connections.targets.push({
                                 property: "Target connection",
