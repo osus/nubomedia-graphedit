@@ -86,6 +86,14 @@ export default class GraphEditor {
             }
         });
 
+        // Validate on create connection
+        this.instance.bind('connection', () => {
+            this.validateEditor();
+        });
+        // Validate on delete connection
+        this.instance.bind('connectionDetached', () => {
+            this.validateEditor();
+        });
         // Validate on create GraphEditor
         this.validateEditor();
     }
