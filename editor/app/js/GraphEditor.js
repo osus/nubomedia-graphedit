@@ -281,10 +281,10 @@ export default class GraphEditor {
                     connections: []
                 };
                 this.getConnections().forEach((connection) => {
-                    if (connection.source == node.name && connection.sourceEP == anchor.name) {
+                    if (connection.source == node.id && connection.sourceEP == anchor.name) {
                         anchorConnections.connections.push(connection);
                     }
-                    if (connection.target == node.name && connection.targetEP == anchor.name) {
+                    if (connection.target == node.id && connection.targetEP == anchor.name) {
                         anchorConnections.connections.push(connection);
                     }
                 });
