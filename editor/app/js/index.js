@@ -37,7 +37,7 @@ class NuboEditor extends React.Component {
             graphs={this.props.graphs} nodedefs={this.props.nodedefs} editor={this.props.editor}
             createProject={() => this.createProject()}
             editProject={() => this.editProject()}
-            loadProject={() => this.loadProject()}
+            loadProject={(file) => this.loadProject(file)}
             saveProject={() => this.saveProject()}
             saveProjectAs={() => this.saveProjectAs()}
             closeProject={() => this.closeProject()}
@@ -132,14 +132,27 @@ class NuboEditor extends React.Component {
     this.props.onSetProjectProperties(projectName, packageName);
   }
 
-  loadProject() {
-    let path = platformAPI.selectOpenProject();
-    console.log(path);
-    if (path) {
-      let prj = platformAPI.readJSONFile(path) || {graphs:{}, editor: {}};
-      this._setProject(prj.graphs, prj.editor, path);
-      if (prj.editor.currentGraph) {
-        this.graphSelect(prj.editor.currentGraph);
+  loadProject(file) {
+    if (file) {
+      // Web
+      let done = (prj) => {
+        prj = prj || {graphs:{}, editor: {}};
+        this._setProject(prj.graphs, prj.editor, "");
+        if (prj.editor.currentGraph) {
+          this.graphSelect(prj.editor.currentGraph);
+        }
+      };
+      platformAPI.readFile(file, done);
+    } else {
+      // Desktop
+      let path = platformAPI.selectOpenProject();
+      console.log(path);
+      if (path) {
+        let prj = platformAPI.readJSONFile(path) || {graphs:{}, editor: {}};
+        this._setProject(prj.graphs, prj.editor, path);
+        if (prj.editor.currentGraph) {
+          this.graphSelect(prj.editor.currentGraph);
+        }
       }
     }
   }

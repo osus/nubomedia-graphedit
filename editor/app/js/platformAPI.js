@@ -1,5 +1,7 @@
 // Communicating with functions in the electron server process
 
+import * as webApp from './webApp/main';
+
 export const desktopMode = window.require;
 
 var ipc = desktopMode?
@@ -15,7 +17,11 @@ export function readJSONFile(filename) {
 }
 
 export function writeJSONFile(filename, obj) {
-  return ipc.sendSync('writeJSONFile', { filename, obj });
+  return desktopMode ? ipc.sendSync('writeJSONFile', { filename, obj }) : webApp.writeFile(filename, obj);
+}
+
+export function readFile(file, callback) {
+  return webApp.readFile(file, callback);
 }
 
 export function selectOpenProject() {

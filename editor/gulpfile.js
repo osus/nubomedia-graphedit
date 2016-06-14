@@ -33,7 +33,7 @@ var files = {
   vendor_js: [
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/bootstrap/dist/js/bootstrap.min.js',
-    'node_modules/jsplumb/dist/js/jsPlumb-2.0.7-min.js'
+    'node_modules/jsplumb/dist/js/jsPlumb-2.1.4-min.js'
   ],
   html:          [
     srcPath+'index.html',
