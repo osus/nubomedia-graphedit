@@ -12,10 +12,6 @@ export function readNodeJSONFiles(directory) {
   return ipc.sendSync('readNodeJSONFiles', directory);
 }
 
-export function readJSONFile(filename) {
-  return ipc.sendSync('readJSONFile', filename);
-}
-
 export function writeJSONFile(filename, obj) {
   return desktopMode ? ipc.sendSync('writeJSONFile', { filename, obj }) : webApp.writeFile(filename, obj);
 }

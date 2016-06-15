@@ -62,18 +62,6 @@ app.on('ready', function() {
     event.returnValue = path?path:null; // Protect from 'undefined' causing Electron error
   });
 
-  ipc.on('readNodeJSONFiles', function(event, arg) {
-    console.log('readNodeJSONFiles', arg);
-    try {
-      let d = recursiveReadJSON(arg) || {};
-      console.log("read: ", d);
-      event.returnValue = d;
-    } catch (e) {
-      console.log('ERROR: ', e);
-      event.returnValue = null;
-    }
-  });
-
   ipc.on('readJSONFile', function(event, arg) {
     console.log('readJSONFile: ', arg);
     try {
@@ -97,36 +85,6 @@ app.on('ready', function() {
       event.returnValue = false;
     }
   });
-
-  // -------------------
-  // Functions
-  // -------------------
-  function recursiveReadJSON(arg) {
-    let nodes = {};
-    let dir = fs.readdirSync(arg, "utf8");
-
-    // Iterate directory or files
-    dir.forEach(function(file) {
-      let filePath = arg + "/" + file;
-
-      // Directory with JSON files
-      if (fs.lstatSync(filePath).isDirectory()) {
-        let node = recursiveReadJSON(filePath);
-        let nodeName = Object.keys(node);
-        for (var i = 0; i < nodeName.length; i++) {
-          let a    = nodeName[i];
-          nodes[a] = node[a] || null;
-        }
-      // Only JSON file
-      // TODO: Check the extension file (.ngend)
-      } else {
-        let node = JSON.parse(fs.readFileSync(filePath, "utf8"));
-        let nodeName    = Object.keys(node)[0];
-        nodes[nodeName] = node[nodeName] || null;
-      }
-    });
-    return nodes;
-  }
 
   // Open the devtools.
   //mainWindow.openDevTools();

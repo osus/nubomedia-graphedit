@@ -1,4 +1,6 @@
-var gulp = require('gulp');   
+'use strict';
+
+var gulp = require('gulp');
 //var livereload = require('gulp-livereload');
 var babelify = require('babelify');
 var browserify = require('browserify');
@@ -9,9 +11,12 @@ var shell = require('gulp-shell')
 var del = require('del');
 var runSequence = require('run-sequence');
 var liveServer = require("live-server");
+var jsoncombine = require("gulp-jsoncombine");
+var _ = require('lodash');
 
 var srcPath = 'app/';
 var dstPath = 'dist/';
+var ndsPath = 'data/nodes/';
 
 // Paths that gulp should watch
 var files = {
@@ -67,6 +72,21 @@ gulp.task('js', function() {
     .pipe(gulp.dest(dstPath + 'js'));
 });
 
+
+gulp.task('nodes', function() {
+  return gulp.src(ndsPath+'**/*.ngend')
+    .pipe(jsoncombine('nodes.js', function(data) {
+      var json = {};
+      _.forEach(data, function(value) {
+        var nodeName   = Object.keys(value)[0];
+        json[nodeName] = value[nodeName];
+      });
+      return new Buffer("'use strict';\n\nexport const nodes = " + JSON.stringify(json) + ";");
+    }))
+    .on('error', gutil.log)
+    .pipe(gulp.dest(srcPath + 'js'));
+});
+
 // ------------
 COPY('images', files.images, 'images');
 COPY('css', files.css, 'css');
@@ -84,10 +104,6 @@ gulp.task('watch', function() {
   gulp.watch(files.vendor_js, ['vendor_js']);
   gulp.watch(files.html, ['html']);
   gulp.watch(files.static, ['static']);
-
-//  livereload.listen({basePath:dstPath});
-//  gulp.watch(dstPath + '**').on('change', livereload.changed);
-
   liveServer.start({root:dstPath})
 });
 
@@ -96,7 +112,7 @@ gulp.task('watch', function() {
 
 gulp.task('clean', function() { return del(dstPath) });
 
-gulp.task('build', ['js', 'images', 'css', 'fonts', 'vendor_js', 'html', 'static']);
+gulp.task('build', ['js', 'nodes', 'images', 'css', 'fonts', 'vendor_js', 'html', 'static']);
 
 gulp.task('rebuild', function(cb) { runSequence('clean', 'build', cb) });
 gulp.task('default', function(cb) { runSequence('rebuild', 'watch', cb) });

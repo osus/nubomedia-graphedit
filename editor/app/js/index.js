@@ -8,6 +8,7 @@ import { Provider, connect } from 'react-redux'
 import { Button, Navbar, Nav, NavItem, DropdownButton, MenuItem } from 'react-bootstrap'
 import Shortcuts from 'react-shortcuts/component'
 
+import * as nodes from './nodes';
 import * as platformAPI from './platformAPI'
 import * as shortcutKeymap from './keymap'
 
@@ -72,12 +73,7 @@ class NuboEditor extends React.Component {
 
   componentDidMount() {
     // Load nodedefs
-    let nodedefs;
-    if (platformAPI.desktopMode) {
-      nodedefs = {defs:platformAPI.readNodeJSONFiles("data/nodes")};
-    } else {
-      nodedefs = defaultNodedefs;
-    }
+    let nodedefs = {defs:nodes.nodes};
     this.props.onAddNodedefs(nodedefs.defs);
   }
 
@@ -188,99 +184,6 @@ class NuboEditor extends React.Component {
     }
   }
 }
-
-// --------------------
-
-// Since the browser can't read files, we have a copy of the default nodedefs here to work with
-const defaultNodedefs = {
-  "defs": {
-    "WebRtcEndpoint": { "anchors" : [
-      { "name": "src1", "pos":[1, 0.25,  1, 0], "source":true},
-      { "name": "src2", "pos":[0, 0.75, -1, 0], "source":true},
-      { "name": "tgt1", "pos":[1, 0.75,  1, 0]},
-      { "name": "tgt2", "pos":[0, 0.25, -1, 0]}],
-      "image": {
-        "width": 194,
-        "height": 97,
-        "name": "WebRtcEndpoint"
-      },
-      "properties": {
-        "testProp": {
-          "type": "string",
-          "nativeName": "Test Prop"
-        },
-        "testProp2": {
-          "type": "string",
-          "nativeName": "Test Prop 2",
-          "default": "default value for prop 2"
-        },
-        "testArrayProp": {
-          "type": ["type 1", {"name":"Array Option 2", "value":"type 2"}, "type 3"],
-          "nativeName": "Test Array Prop",
-          "default": "type 2"
-        },
-        "testDictionaryProp": {
-          "type": {"type1": "Dictionary Option 1", "type2": "Dictionary Option 2"},
-          "nativeName": "Test Dictionary Prop",
-          "default": "type2"
-        }
-      }
-    },
-    "RtpEndpoint": { "anchors" : [
-      { "name": "src1", "pos":[1, 0.25,  1, 0], "source":true},
-      { "name": "src2", "pos":[0, 0.75, -1, 0], "source":true},
-      { "name": "tgt1", "pos":[1, 0.75,  1, 0]},
-      { "name": "tgt2", "pos":[0, 0.25, -1, 0]}],
-      "image": {
-        "width": 195,
-        "height": 97,
-        "name": "RtpEndpoint"
-      },
-    },
-    "FaceOverlayFilter": { "anchors" : [
-      { "name": "src1", "pos":[1, 0.5,  1, 0], "source":true},
-      { "name": "tgt1", "pos":[0, 0.5, -1, 0]}],
-      "image": {
-        "width": 173,
-        "height": 78,
-        "name": "FaceOverlayFilter"
-      },
-    },
-    "CompositeHub": { "anchors" : [
-      { "name": "src1", "pos":[0, 0.5, -1,  0], "source":true},
-      { "name": "tgt1", "pos":[1, 0.5,  1,  0]},
-      { "name": "tgt2", "pos":[0.5, 0,  0, -1]},
-      { "name": "tgt3", "pos":[0.5, 1,  0,  1]}],
-      "image": {
-        "width": 90,
-        "height": 90,
-        "name": "CompositeHub"
-      },
-    },
-    "DispatcherHub": { "anchors" : [
-      { "name": "src1", "pos":[1, 0.5,  1,  0], "source":true},
-      { "name": "src2", "pos":[0, 0.5, -1,  0], "source":true},
-      { "name": "tgt1", "pos":[0.5, 0,  0, -1]},
-      { "name": "tgt2", "pos":[0.5, 1,  0,  1]}],
-      "image": {
-        "width": 90,
-        "height": 90,
-        "name": "DispatcherHub"
-      },
-    },
-    "DispatcherOneToManyHub": { "anchors" : [
-      { "name": "src1", "pos":[1, 0.5, 1, 0], "source":true},
-      { "name": "src2", "pos":[0.5, 0, 0, -1], "source":true},
-      { "name": "src3", "pos":[0, 0.5, -1, 0], "source":true},
-      { "name": "tgt1", "pos":[0.5, 1, 0, 1]}],
-      "image": {
-        "width": 90,
-        "height": 90,
-        "name": "DispatcherOneToManyHub"
-      },
-    }
-  }
-};
 
 let store = createStore(rootReducer);
 
