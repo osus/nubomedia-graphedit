@@ -7,7 +7,7 @@ export default class EditorMenu extends React.Component {
   onSelectLoadFile(event) {
     var file = event.target.files[0];
     if (file) {
-      this.props.loadProject(file);
+      this.props.loadProjectFromWeb(file);
     }
   }
   render() {

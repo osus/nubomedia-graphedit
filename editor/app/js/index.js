@@ -38,7 +38,8 @@ class NuboEditor extends React.Component {
             graphs={this.props.graphs} nodedefs={this.props.nodedefs} editor={this.props.editor}
             createProject={() => this.createProject()}
             editProject={() => this.editProject()}
-            loadProject={(file) => this.loadProject(file)}
+            loadProject={() => this.loadProject()}
+            loadProjectFromWeb={(file) => this.loadProjectFromWeb(file)}
             saveProject={() => this.saveProject()}
             saveProjectAs={() => this.saveProjectAs()}
             closeProject={() => this.closeProject()}
@@ -128,29 +129,27 @@ class NuboEditor extends React.Component {
     this.props.onSetProjectProperties(projectName, packageName);
   }
 
-  loadProject(file) {
-    if (file) {
-      // Web
-      let done = (prj) => {
-        prj = prj || {graphs:{}, editor: {}};
-        this._setProject(prj.graphs, prj.editor, "");
-        if (prj.editor.currentGraph) {
-          this.graphSelect(prj.editor.currentGraph);
-        }
-      };
-      platformAPI.readFile(file, done);
-    } else {
-      // Desktop
-      let path = platformAPI.selectOpenProject();
-      console.log(path);
-      if (path) {
-        let prj = platformAPI.readJSONFile(path) || {graphs:{}, editor: {}};
-        this._setProject(prj.graphs, prj.editor, path);
-        if (prj.editor.currentGraph) {
-          this.graphSelect(prj.editor.currentGraph);
-        }
+  loadProject() {
+    let path = platformAPI.selectOpenProject();
+    console.log(path);
+    if (path) {
+      let prj = platformAPI.readJSONFile(path) || {graphs:{}, editor: {}};
+      this._setProject(prj.graphs, prj.editor, path);
+      if (prj.editor.currentGraph) {
+        this.graphSelect(prj.editor.currentGraph);
       }
     }
+  }
+
+  loadProjectFromWeb(file) {
+    let done = (prj) => {
+      prj = prj || {graphs:{}, editor: {}};
+      this._setProject(prj.graphs, prj.editor, "");
+      if (prj.editor.currentGraph) {
+        this.graphSelect(prj.editor.currentGraph);
+      }
+    };
+    platformAPI.readFile(file, done);
   }
 
   _setProject(graphs, editor, path) {
