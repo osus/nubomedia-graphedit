@@ -19,7 +19,9 @@
   },
   "homepage": "",
   "dependencies": {
+    "body-parser": "^1.15.1",
     "bootstrap": "^3.3.5",
+    "express": "^4.13.4",
     "jquery": "^2.1.4",
     "jsplumb": "^2.1.4",
     "lodash": "^4.11.1",
@@ -42,6 +44,7 @@
     "gulp": "^3.9.0",
     "gulp-jsoncombine": "^1.0.3",
     "gulp-livereload": "^3.8.0",
+    "gulp-nodemon": "^2.1.0",
     "gulp-shell": "^0.5.1",
     "gulp-util": "^3.0.6",
     "live-server": "^0.9.0",

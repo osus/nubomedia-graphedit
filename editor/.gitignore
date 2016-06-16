@@ -2,4 +2,8 @@ node_modules/
 bower_components/
 npm-debug.log
 dist/
+app/tmp/gen/*
+app/tmp/model/*
+!app/tmp/gen/empty
+!app/tmp/model/empty
 app/js/nodes.js

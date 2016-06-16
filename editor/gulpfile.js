@@ -7,7 +7,8 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
-var shell = require('gulp-shell')
+var shell = require('gulp-shell');
+var nodemon = require('gulp-nodemon');
 var del = require('del');
 var runSequence = require('run-sequence');
 var liveServer = require("live-server");
@@ -107,6 +108,13 @@ gulp.task('watch', function() {
   liveServer.start({root:dstPath})
 });
 
+// Server task
+gulp.task('server', function() {
+  nodemon({
+    script: srcPath + 'server/main.js'
+  })
+});
+
 // ------------
 // common executable tasks
 
@@ -115,5 +123,5 @@ gulp.task('clean', function() { return del(dstPath) });
 gulp.task('build', ['js', 'nodes', 'images', 'css', 'fonts', 'vendor_js', 'html', 'static']);
 
 gulp.task('rebuild', function(cb) { runSequence('clean', 'build', cb) });
-gulp.task('default', function(cb) { runSequence('rebuild', 'watch', cb) });
+gulp.task('default', function(cb) { runSequence('rebuild', 'watch', 'server', cb) });
 gulp.task('electron', ['rebuild'], shell.task(['electron ' + dstPath]));

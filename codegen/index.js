@@ -32,15 +32,15 @@ function run() {
 
     //args validation  
     if (cmd != "gen") {
-        console.log('Invalid command specified: ' + cmd.red);
+        console.error('Invalid command specified: ' + cmd.red);
     return 1;
     }
     if (!model || !existsFile(model)) {
-        console.log('Model not found: ' + (model || '').red);
+        console.error('Model not found: ' + (model || '').red);
         return 1;
     }
     if (!outputDir || !existsFile(outputDir)) {
-        console.log('Output directory not found: ' + (outputDir || '').red);
+        console.error('Output directory not found: ' + (outputDir || '').red);
         return 1;
     }
 

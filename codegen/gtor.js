@@ -15,7 +15,11 @@ function generate(gtor, modelFile, outputDirectory) {
     filtersList=loadFiltersModules();
     
     var model = deriveDesignModel(originalModel);
-    
+
+		if (!model) {
+			return 0;
+		}
+
     //console.log(JSON.stringify(filtersList, null, 2));    
     //console.log(JSON.stringify(model, null, 2));
     //console.log('Done.'.green);
@@ -44,10 +48,11 @@ function generate(gtor, modelFile, outputDirectory) {
 
 function deriveDesignModel(inModel) {
 	var model=processNodes(inModel);
-	model.name=inModel.editor.name;
-	model.package=inModel.editor.package;
-	
-    return model;
+	if (model) {
+		model.name=inModel.editor.name;
+		model.package=inModel.editor.package;
+	}
+	return model;
 }
 function getNodeConectedTo(nodes, connections, nodeid, origin){
 	var numnodes=nodes.length;
@@ -215,7 +220,11 @@ function generateCodeFromFilters(nodes){
 	}
 	
 
-	
+	if (nodes[0] == null) {
+		console.error('Invalid model');
+		return;
+	}
+
 	var model={
 		"imports" : importsarr.join("\r\n"),
 		"filters" : code,
@@ -336,7 +345,7 @@ function deleteFolderRecursive(path) {
         });
         fs.rmdirSync(path);
     }
-};
+}
 
 function loadModel(modelFile) {
     var data = fs.readFileSync(modelFile);
