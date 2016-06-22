@@ -9,7 +9,7 @@ export default class TaskBar extends React.Component {
   render() {
     return (
       <div className="col-xs-6">
-        <Button className="pull-right" bsStyle="info" onClick={this.props.onValidatePanel} disabled={!this.props.editor.name || !this.props.editor.package}>Validate</Button>
+        <Button id="taskgenerate" className="pull-right" bsStyle="info" onClick={this.props.generateCode} disabled={!this.props.editor.name || !this.props.editor.package}>Generate</Button>
       </div>
     )
   }

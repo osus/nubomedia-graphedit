@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ValidatorPanel from './ValidatorPanel'
 import ProjectModal from './ProjectModal';
 import NodeModal from './NodeModal';
+import GenerateCodeModal from './GenerateCodeModal';
 
 export default class GraphPanel extends React.Component {
   constructor(props) {
@@ -11,7 +12,8 @@ export default class GraphPanel extends React.Component {
     this.state = {
       showProjectModal: false, projectEdit: false,
       showNodeModal: false, node: null, initialNode: null, currentNodeName: null, saveDisabled: false,
-      showValidatorPanel: false, validator: null
+      showValidatorPanel: false, validator: null,
+      showGenerateCodePanel: false, project: null
     };
   }
 
@@ -85,11 +87,17 @@ export default class GraphPanel extends React.Component {
     }
   }
 
+  // GenerateCode
+  closeGenerateCodeModal() {
+    this.setState({showGenerateCodePanel: false});
+  }
+  generateCodeClickHandler(project) {
+    this.setState({showGenerateCodePanel: true, project: project});
+  }
   // Util
   _isNodeNameUnique(value) {
     let graph  = this.props.graphs[this.props.editor.currentGraph];
     let unique = true;
-    console.log(graph);
     graph.nodes.forEach((node) => {
       if (node.id != this.state.node.id && node.name == value) {
         unique = false;
@@ -101,6 +109,7 @@ export default class GraphPanel extends React.Component {
   render() {
     let projectmodal = null;
     let nodemodal    = null;
+    let generatecodemodal = null;
     if (this.state.showProjectModal) {
       projectmodal =
         <ProjectModal editor={this.props.editor}
@@ -123,12 +132,20 @@ export default class GraphPanel extends React.Component {
           onChangeNodeProp={this.onChangeNodeProp.bind(this)}
         />;
     }
+    if (this.state.showGenerateCodePanel) {
+      generatecodemodal =
+        <GenerateCodeModal
+          closeGenerateCodeModal={this.closeGenerateCodeModal.bind(this)}
+          project={this.state.project}
+        />
+    }
     return (
       <div id="graphpanel" className="col-xs-12 panel panel-default" style={{height:"100%",width:"100%"}}>
         <div className="demo nuboged" ref="editor_panel" id="nuboged-container" onClick={this.onClickEditorPanel.bind(this)}>
         </div>
         {projectmodal}
         {nodemodal}
+        {generatecodemodal}
         <ValidatorPanel
           editor={this.props.editor}
           validator={this.state.validator}
@@ -144,7 +161,8 @@ export default class GraphPanel extends React.Component {
       this.refs.editor_panel,
       this.projectClickHandler.bind(this),
       this.nodeClickHandler.bind(this),
-      this.validateHandler.bind(this)
+      this.validateHandler.bind(this),
+      this.generateCodeClickHandler.bind(this)
     );
   }
   componentWillUnmount() {

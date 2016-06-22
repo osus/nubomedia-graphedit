@@ -25,7 +25,6 @@ import MenuBar from './components/MenuBar'
 // Main component, the app so to speak
 // TODO: break apart into more components, this is big and unwieldy
 
-
 class NuboEditor extends React.Component {
   render() {
     return (
@@ -55,7 +54,7 @@ class NuboEditor extends React.Component {
           />
           <TaskBar
             editor={this.props.editor}
-            onValidatePanel={this.props.onValidatePanel}
+            generateCode={() => this.generateCode()}
           />
           <GraphPanel
             editor={this.props.editor} graphs={this.props.graphs}
@@ -182,6 +181,13 @@ class NuboEditor extends React.Component {
       }
     }
   }
+
+  generateCode() {
+    this.props.onGenerateCode({
+      graphs: store.getState().graphs,
+      editor: store.getState().editor
+    });
+  }
 }
 
 let store = createStore(rootReducer);
@@ -191,7 +197,7 @@ function mapStateToProps(state)  {
   return {
     nodedefs: state.nodedefs,
     graphs: state.graphs,
-    editor: state.editor,
+    editor: state.editor
   };
 }
 
@@ -209,6 +215,7 @@ function mapDispatchToProps(dispatch) {
     onSetProject: (graphs, editor, filename) => dispatch({type: ActionTypes.SET_PROJECT, payload: {graphs, editor, filename}}),
     onSetProjectFilename: (filename) => dispatch({type: ActionTypes.SET_PROJECT_FILENAME, payload: {filename}}),
     onSetProjectProperties: (projectName, packageName) => dispatch({type: ActionTypes.SET_PROJECT_PROPERTIES, payload: {projectName, packageName}}),
+    onGenerateCode: (project) => dispatch({type: ActionTypes.GENERATE_CODE, payload: {project}}),
 
     onCreateNode: (type) => dispatch({type: ActionTypes.CREATE_NODE, payload: {type}}),
     onDeleteNode: (node) => dispatch({type: ActionTypes.DELETE_NODE, payload: {node}}),
@@ -218,7 +225,7 @@ function mapDispatchToProps(dispatch) {
     onPasteSelectedNode: () => dispatch({type: ActionTypes.PASTE_SELECTED_NODE}),
     onDeleteSelectedNode: () => dispatch({type: ActionTypes.DELETE_SELECTED_NODE}),
 
-    onSetEditorPanel: (el, projectcb, nodecb, validatecb) => dispatch({type: ActionTypes.SET_GRAPH_PANEL, payload: {el, projectcb, nodecb, validatecb}}),
+    onSetEditorPanel: (el, projectcb, nodecb, validatecb, generatecodecb) => dispatch({type: ActionTypes.SET_GRAPH_PANEL, payload: {el, projectcb, nodecb, validatecb, generatecodecb}}),
 
     onValidatePanel: () => dispatch({type: ActionTypes.VALIDATE_PANEL})
   };

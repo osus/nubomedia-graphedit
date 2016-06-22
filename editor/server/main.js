@@ -12,6 +12,7 @@ var zlib = require('zlib');
 // Express
 var express = require('express');
 var bodyParser = require('body-parser');
+var cors = require('cors')
 var app = express();
 
 // Config vars
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+app.use(cors());
 
 app.post('/', function(req, res) {
   var status   = 200;
@@ -52,6 +54,7 @@ app.post('/', function(req, res) {
     response.success = false;
     response.data = decoder.write(data).trim();
     console.log('[!] ' + response.data);
+    exec.kill();
   });
 
   // Send response
@@ -61,8 +64,9 @@ app.post('/', function(req, res) {
       'Content-Length': res.length
     });
     if (status == 200) {
-      _compressDirectory(genPath + graph.editor.name, graph.editor.name);
-      response.data = 'http://' + req.get('host') + '/download?file=' + graph.editor.name;
+      var generatedFilename = graph.editor.name + '_' + Math.floor(Date.now() / 1000);
+      _compressDirectory(genPath + graph.editor.name, generatedFilename);
+      response.data = 'http://' + req.get('host') + '/download?file=' + generatedFilename.replace(" ", "%20");
     }
     res.status(status).send(response);
   });
@@ -80,7 +84,9 @@ app.get('/download', function(req, res) {
     response.success = false;
     response.data    = "File not found";
     res.status(status).send(response);
+    return;
   }
+  fs.chmodSync(file, '777');
   res.download(file, req.query.file + '.tar.gz', function(err) {
     if (!err) {
       fs.unlink(file);
@@ -105,7 +111,7 @@ function _compressDirectory(path, name) {
     .pipe(tar.Pack())
     .pipe(zlib.Gzip())
     .pipe(fstream.Writer({
-      'path': downloadPath + name + ".tar.gz",
-      'mode': 777
+      path: downloadPath + name + ".tar.gz",
+      mode: 777
     }));
 }

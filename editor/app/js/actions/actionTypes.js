@@ -24,6 +24,7 @@ export const CREATE_PROJECT         = 'CREATE_PROJECT'
 export const SET_PROJECT            = 'SET_PROJECT'
 export const SET_PROJECT_FILENAME   = 'SET_PROJECT_FILENAME'
 export const SET_PROJECT_PROPERTIES = 'SET_PROJECT_PROPERTIES'
+export const GENERATE_CODE          = 'GENERATE_CODE'
 
 // Global and mutable bits
 export const SET_GRAPH_PANEL = 'SET_GRAPH_PANEL'

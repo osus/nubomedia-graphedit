@@ -54,7 +54,7 @@ function makeUUID(node, ep) { return `${node}.${ep}` }
 
 export default class GraphEditor {
 
-    constructor(container, projectcb, nodecb, validatecb) {
+    constructor(container, projectcb, nodecb, validatecb, generatecodecb) {
         this.instance = jsPlumb.getInstance({
             // default drag options
             DragOptions: { cursor: 'pointer', zIndex: 2000 },
@@ -70,6 +70,7 @@ export default class GraphEditor {
         this.projectClickHandler = projectcb;
         this.nodeClickHandler    = nodecb;
         this.validateHandler     = validatecb;
+        this.generateCodeClickHandler = generatecodecb;
         this.deselectNodeHandler = null;
 
         // Nodes

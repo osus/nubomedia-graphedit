@@ -12,6 +12,7 @@ export default class ValidatorPanel extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.validator != null) {
       this.setState({error: nextProps.validator.error, nodes: nextProps.validator.nodes});
+      $("#taskgenerate").prop('disabled', nextProps.validator.error);
     }
   }
   render() {

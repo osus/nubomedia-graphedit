@@ -21,6 +21,7 @@
   "dependencies": {
     "body-parser": "^1.15.1",
     "bootstrap": "^3.3.5",
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "fstream": "^1.0.10",
     "jquery": "^2.1.4",
@@ -32,6 +33,7 @@
     "react-file-input": "^0.2.5",
     "react-redux": "^4.0.6",
     "react-shortcuts": "^0.9.0",
+    "react-spinner": "^0.2.6",
     "redux": "^3.0.5",
     "tar": "^2.2.1"
   },

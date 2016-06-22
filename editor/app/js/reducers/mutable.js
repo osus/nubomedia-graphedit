@@ -10,16 +10,18 @@ var editorContainer   = null;
 var editorProjectcb   = null;
 var editorNodecb      = null;
 var editorValidatecb  = null;
+var editorGeneratecodecb  = null;
 
 export function getEditor() {
   return editor;
 }
 
-export function setContainer(el, projectcb, nodecb, validatecb) {
+export function setContainer(el, projectcb, nodecb, validatecb, generatecodecb) {
   editorContainer   = el;
   editorProjectcb   = projectcb;
   editorNodecb      = nodecb;
   editorValidatecb  = validatecb;
+  editorGeneratecodecb = generatecodecb;
 }
 
 export function getEditedGraph() {
@@ -44,7 +46,7 @@ function setEditor(e) {
 export function setupNewEditor(graph, nodedefs) {
   setEditor(null);
   if (graph) {
-    setEditor(new GraphEditor(editorContainer, editorProjectcb, editorNodecb, editorValidatecb));
+    setEditor(new GraphEditor(editorContainer, editorProjectcb, editorNodecb, editorValidatecb, editorGeneratecodecb));
     editor.batch( function(editor) {
       graph.nodes.forEach((node) => editor.createNode(node.type, nodedefs.defs[node.type], node.id, node.name, node.x, node.y, node.properties));
       graph.connections.forEach((c) => editor.createConnection(c.source, c.sourceEP, c.target, c.targetEP));

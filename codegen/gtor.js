@@ -126,7 +126,7 @@ function generateNodesPool(ordernodes, parent){
 			newnode.id=node.id;
 			newnode.name=node.name;
 			newnode.type=node.type;
-			newnode.properties=node.properties;
+			newnode.properties=(typeof node.properties !== 'undefined') ? node.properties : {};
 			newnode.properties.inStream="mediaPipeline";
 			newnode.properties.name=node.name;
 			if(parent!=undefined)

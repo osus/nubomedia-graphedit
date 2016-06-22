@@ -9,7 +9,6 @@ var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var shell = require('gulp-shell');
 var nodemon = require('gulp-nodemon');
-var chmod = require('gulp-chmod');
 var del = require('del');
 var runSequence = require('run-sequence');
 var liveServer = require("live-server");
