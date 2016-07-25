@@ -18,6 +18,10 @@
     ]
   },
   "homepage": "",
+  "engines": {
+    "node": ">=5.1.0",
+    "npm": "~3.3.12"
+  },
   "dependencies": {
     "body-parser": "^1.15.1",
     "bootstrap": "^3.3.5",
