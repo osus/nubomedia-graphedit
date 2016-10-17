@@ -1,3 +1,7 @@
+[![][NUBOMEDIA Logo]][NUBOMEDIA]
+
+Copyright © 2016 [NUBOMEDIA]. Licensed under [Apache 2.0 License].
+
 Nubomedia Graph Editor
 ======================
 Nubomedia graphical modelling and code generation tools.
